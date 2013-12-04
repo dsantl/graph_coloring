@@ -1,5 +1,5 @@
 package graph_coloring.structure;
 
-public class Node {
+public abstract class Node {
 
 }
