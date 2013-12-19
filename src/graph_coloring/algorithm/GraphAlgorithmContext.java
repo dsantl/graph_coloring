@@ -1,7 +1,9 @@
 package graph_coloring.algorithm;
 
+import java.util.List;
+
 import graph_coloring.structure.Graph;
-import graph_coloring.structure.Nodes;
+import graph_coloring.structure.Node;
 
 public class GraphAlgorithmContext {
 	
@@ -12,8 +14,8 @@ public class GraphAlgorithmContext {
 		this.algorithm = algorithm;
 	}
 	
-	public Nodes startAlgorithm(Nodes nodes, Graph graph)
+	public void startAlgorithm(List<Node> nodes, Graph graph)
 	{
-		return this.algorithm.startAlgorithm(nodes, graph);
+		algorithm.startAlgorithm(nodes, graph);
 	}
 }

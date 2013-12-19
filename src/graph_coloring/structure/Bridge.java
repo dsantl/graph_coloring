@@ -1,9 +1,27 @@
 package graph_coloring.structure;
 
+import graph_coloring.common.Pair;
+
 public abstract class Bridge {
+
+	protected int leftNode;
+	protected int rightNode;
 	
-	//node1 is always smaller than node2
-	protected int node1;
-	protected int node2;
+	Bridge(int leftNode, int rightNode){
+		this.leftNode = leftNode;
+		this.rightNode = rightNode;
+	}
 	
+	public int getLeftNode(){
+		return leftNode;
+	}
+	
+	public int getRightNode(){
+		return rightNode;
+	}
+
+	public Pair<Integer, Integer> getPair() {
+		Pair<Integer, Integer> pair = new Pair<Integer, Integer>(leftNode, rightNode);
+		return pair;
+	}
 }

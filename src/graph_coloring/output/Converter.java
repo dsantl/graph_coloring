@@ -1,9 +1,12 @@
 package graph_coloring.output;
 
+import java.io.FileNotFoundException;
+import java.io.UnsupportedEncodingException;
+
 import graph_coloring.structure.Graph;
 
 public interface Converter {
 
-	public void convertGraphToFile(Graph graph, String fileName);
+	public void convertGraphToFile(Graph graph, String fileName) throws FileNotFoundException, UnsupportedEncodingException;
 	
 }

@@ -5,26 +5,29 @@ import java.io.IOException;
 
 import graph_coloring.input.EricssonFileFormat;
 import graph_coloring.input.FileFormat;
+import graph_coloring.stat.ComputeStatistics;
+import graph_coloring.stat.ErrorFunctionEricsson;
+import graph_coloring.structure.Graph;
 
 public class Main {
 
 	public static void main(String[] args) {
 		
 		FileFormat fileFormat = new EricssonFileFormat();
+		Graph graph = null;
 		try {
-			fileFormat.getGraphFromFile("/home/dino/Desktop/diplomski/FER-Kansai.txt");
-			System.out.println("END");
+			graph = fileFormat.getGraphFromFile("/home/dino/Desktop/diplomski/FER-Kansai.txt");
 		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (NumberFormatException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
+		
+		ComputeStatistics stat = new ErrorFunctionEricsson();
+		
+		System.out.println(stat.computeStat(graph));
+		
 	}
-
 }
