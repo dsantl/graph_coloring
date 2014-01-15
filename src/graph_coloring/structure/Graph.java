@@ -1,6 +1,9 @@
 package graph_coloring.structure;
 
+
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -10,6 +13,21 @@ public class Graph {
 	
 	protected Map<Integer, Node> nodeRepos = new HashMap<Integer, Node>();
 	protected Map<Pair<Integer, Integer>, Bridge> bridgeRepos = new HashMap<Pair<Integer, Integer>, Bridge>();
+	
+	public List<Bridge> getNodeNeighbours(int nodeIndex){
+		List<Bridge> ret = new ArrayList<Bridge>();
+		for(Integer neighbour : nodeRepos.keySet()){
+			Pair<Integer, Integer> first = new Pair<Integer, Integer>(nodeIndex, neighbour);
+			Pair<Integer, Integer> second = new Pair<Integer, Integer>(neighbour, nodeIndex);
+			
+			if ( bridgeRepos.containsKey(first) )
+				ret.add( bridgeRepos.get(first) );
+			else if (  bridgeRepos.containsKey(second) ){
+				ret.add ( bridgeRepos.get(second) );
+			}
+		}
+		return ret;
+	}
 	
 	public void addNode(Node node){
 		nodeRepos.put(node.getId(), node);
@@ -42,6 +60,10 @@ public class Graph {
 	
 	public Set<Integer> getNodeIndices(){
 		return nodeRepos.keySet();
+	}
+	
+	public int getNodeSize(){
+		return nodeRepos.size();
 	}
 	
 }

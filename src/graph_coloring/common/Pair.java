@@ -20,11 +20,12 @@ public class Pair<L,R>{
 	  public boolean equals(Object o){
 		  if (o == null)
 			  return false;
-		 @SuppressWarnings("unchecked")
+		
+		@SuppressWarnings("unchecked")
 		Pair<L,R> current = (Pair<L, R>) o;
-		if ( current == this.left && current.right == this.right )
+		if ( current.left.equals(this.left) && current.right.equals(this.right) )
 			  return true;
-		  return false;
+		return false;
 	  }
 	  
 }

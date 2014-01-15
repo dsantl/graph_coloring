@@ -17,7 +17,7 @@ public class EricssonNode extends Node{
 	}
 	
 	
-	public int getNodeClass(){
+	public char getNodeClass(){
 		return this.nodeClass;
 	}
 	

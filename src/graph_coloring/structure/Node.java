@@ -10,9 +10,14 @@ public abstract class Node {
 	protected int color;
 	protected int id;
 	
+	
 	public Node(int id, int color){
 		this.color = color;
 		this.id = id;
+	}
+	
+	public void setColor(int color){
+		this.color = color;
 	}
 	
 	public void addNeighbor(int node){

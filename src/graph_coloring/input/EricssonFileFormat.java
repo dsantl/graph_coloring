@@ -1,6 +1,7 @@
 package graph_coloring.input;
 
 import java.io.IOException;
+import java.util.Iterator;
 
 import graph_coloring.structure.Bridge;
 import graph_coloring.structure.ColorClass;
@@ -29,7 +30,6 @@ public class EricssonFileFormat implements FileFormat {
 
 			ColorClass colorClass = new ColorClass();
 			for (int j = 1; j < splitLine.length; ++j) {
-				colorClass = new ColorClass();
 				colorClass.addColor(Integer.parseInt(splitLine[j]));
 			}
 			graph.colorClasses.put(colorClassId, colorClass);
@@ -55,19 +55,21 @@ public class EricssonFileFormat implements FileFormat {
 			colorable = Boolean.parseBoolean(splitLine[4]);
 			nodeClass = splitLine[1].charAt(0);
 			startColor = Integer.parseInt(splitLine[3]);
-
+			color = startColor;
+			
 			if (colorable) {
 				colorClass = Integer.parseInt(splitLine[2]);
-				if (graph.colorClasses.get(colorClass).containsColor(
-						startColor)) {
+				if (graph.colorClasses.get(colorClass).containsColor(startColor)) {
 					color = startColor;
 				} else {
-					color = -1;
+					color = -1; //current color is -1 because startColor is not valid
+					Iterator<Integer> it = graph.colorClasses.get(colorClass).getAllColors().iterator();
+				    color = it.next();
 				}
 			}
-
+			
 			Node node = new EricssonNode(id, color, startColor, colorClass,
-					nodeClass, colorable);
+										 nodeClass, colorable);
 			graph.addNode(node);
 		}
 

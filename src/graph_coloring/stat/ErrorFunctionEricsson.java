@@ -4,10 +4,12 @@ import java.util.Set;
 
 import graph_coloring.common.Pair;
 import graph_coloring.structure.EricssonBridge;
+import graph_coloring.structure.EricssonNode;
 import graph_coloring.structure.Graph;
+import graph_coloring.structure.Node;
 
 public class ErrorFunctionEricsson implements ComputeStatistics{
-
+	
 	@Override
 	public double computeStat(Graph graph) {
 		
@@ -17,10 +19,16 @@ public class ErrorFunctionEricsson implements ComputeStatistics{
 		
 		for(Pair<Integer, Integer> bridge : bridges){
 			EricssonBridge eBridge = (EricssonBridge) graph.getBridge(bridge);
-			int color1 = graph.getNode(eBridge.getLeftNode()).getColor();
-			int color2 = graph.getNode(eBridge.getRightNode()).getColor();
-			if ( color1 != color2 ) 
-				ret += eBridge.getWeight();
+			int leftNode = eBridge.getLeftNode();
+			int rightNode = eBridge.getRightNode();
+			EricssonNode lNode = (EricssonNode) graph.getNode(leftNode);
+			EricssonNode rNode = (EricssonNode) graph.getNode(rightNode);
+			
+			if ( (lNode.getNodeClass() == rNode.getNodeClass()) && 
+				 (lNode.getColor() == rNode.getColor()) &&
+				 (lNode.getColorable() == true || rNode.getColorable() == true) ){	
+					ret += eBridge.getWeight();
+			}
 		}
 		
 		return ret;

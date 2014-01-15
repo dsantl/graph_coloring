@@ -10,7 +10,9 @@ public class EricssonGraph extends Graph{
 	@Override
 	public void addBridge(Bridge bridge){
 		if (bridgeRepos.containsKey(bridge.getPair()))
+		{
 			return;
+		}
 		bridgeRepos.put(bridge.getPair(), bridge);
 	}
 	
