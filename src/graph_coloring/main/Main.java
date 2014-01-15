@@ -27,6 +27,9 @@ public class Main {
 		
 		try {
 			//graph = fileFormat.getGraphFromFile("/home/dino/Desktop/diplomski/FER-Tokai.txt");
+			//graph = fileFormat.getGraphFromFile("/home/dino/Desktop/FER-Tokai_coloring.txt");
+			
+			//graph = fileFormat.getGraphFromFile("Tokai-new.out");
 			graph = fileFormat.getGraphFromFile("Tokai.out");
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -35,22 +38,22 @@ public class Main {
 		/*
 		FERoutput out = new FERoutput();
 		try {
-			out.convertGraphToFile(graph, "Tokai.out");
+			out.convertGraphToFile(graph, "Tokai-new.out");
 		}
 		catch(Exception e){
 			e.printStackTrace();
 		}
 		*/
+		
 		ComputeStatistics stat = new ErrorFunctionEricsson();
 		double oldError = stat.computeStat(graph);
-				
 		
-		GraphAlgorithmContext algorithm = new GraphAlgorithmContext(new MinimalNeighbourWeight());
-		algorithm.startAlgorithm(null, graph);
+		//GraphAlgorithmContext algorithm = new GraphAlgorithmContext(new MinimalNeighbourWeight());
+		//algorithm.startAlgorithm(null, graph);
 		
 		System.out.println(oldError);		
-		System.out.println(stat.computeStat(graph));		
-		
+		//System.out.println(stat.computeStat(graph));		
+		System.out.format("%d %d\n", graph.getNodeSize(), graph.getBridgeSize());
 		long end = System.currentTimeMillis();
 		System.out.println(end-start);
 

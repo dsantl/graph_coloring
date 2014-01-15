@@ -57,6 +57,7 @@ public class EricssonFileFormat implements FileFormat {
 			startColor = Integer.parseInt(splitLine[3]);
 			color = startColor;
 			
+			
 			if (colorable) {
 				colorClass = Integer.parseInt(splitLine[2]);
 				if (graph.colorClasses.get(colorClass).containsColor(startColor)) {

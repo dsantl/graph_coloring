@@ -18,15 +18,14 @@ public class MinimalNeighbourWeight implements GraphColoringAlgorithm{
 	public void startAlgorithm(List<Node> nodes, Graph graph) {
 		
 		Random rnd = new Random();
-		int changeNumber = graph.getNodeSize();
 		
-		for(int i = 0 ; i < changeNumber ; ++i){
-			System.out.format("%d / %d\n", i, changeNumber);
-			int index = rnd.nextInt(graph.getNodeSize());
+		for( Integer index : graph.getNodeIndices() ){
+			if (rnd.nextDouble() > 0.2)
+				continue;
+			//System.out.println(index);
 			EricssonNode eNode = (EricssonNode) graph.getNode(index);
 			if ( eNode.getColorable() == false )
 			{
-				i -= 1;
 				continue;
 			}
 			

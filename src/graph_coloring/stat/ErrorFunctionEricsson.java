@@ -27,6 +27,8 @@ public class ErrorFunctionEricsson implements ComputeStatistics{
 			if ( (lNode.getNodeClass() == rNode.getNodeClass()) && 
 				 (lNode.getColor() == rNode.getColor()) &&
 				 (lNode.getColorable() == true || rNode.getColorable() == true) ){	
+					
+					//System.out.format("%d %d\n", lNode.getId(), rNode.getId());
 					ret += eBridge.getWeight();
 			}
 		}

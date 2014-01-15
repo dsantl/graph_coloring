@@ -16,7 +16,10 @@ public class Graph {
 	
 	public List<Bridge> getNodeNeighbours(int nodeIndex){
 		List<Bridge> ret = new ArrayList<Bridge>();
-		for(Integer neighbour : nodeRepos.keySet()){
+		
+		int nodeSize = nodeRepos.get(nodeIndex).getNeighborsSize();
+		
+		for(int neighbour = 0 ; neighbour < nodeSize ; ++neighbour){
 			Pair<Integer, Integer> first = new Pair<Integer, Integer>(nodeIndex, neighbour);
 			Pair<Integer, Integer> second = new Pair<Integer, Integer>(neighbour, nodeIndex);
 			
@@ -38,7 +41,7 @@ public class Graph {
 		int node1 = bridge.getLeftNode();
 		int node2 = bridge.getRightNode();
 		nodeRepos.get(node1).addNeighbor(node2);
-		nodeRepos.get(node2).addNeighbor(node2);
+		nodeRepos.get(node2).addNeighbor(node1);
 	}
 	
 	public Node getNode(int node){

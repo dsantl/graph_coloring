@@ -13,7 +13,7 @@ public class EricssonGraph extends Graph{
 		{
 			return;
 		}
-		bridgeRepos.put(bridge.getPair(), bridge);
+		super.addBridge(bridge);
 	}
 	
 }
