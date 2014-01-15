@@ -19,17 +19,27 @@ public class MinimalNeighbourWeight implements GraphColoringAlgorithm{
 		
 		Random rnd = new Random();
 		
+		int cnt = 0;
+		
 		for( Integer index : graph.getNodeIndices() ){
-			if (rnd.nextDouble() > 0.2)
-				continue;
-			//System.out.println(index);
+			
+			System.out.format("%d %d\n", cnt, graph.getNodeSize());
+			cnt += 1;
+			
 			EricssonNode eNode = (EricssonNode) graph.getNode(index);
+			
 			if ( eNode.getColorable() == false )
 			{
 				continue;
 			}
 			
 			int colorClass = eNode.getColorClass();
+			
+			if (((EricssonGraph)graph).colorClasses.get(colorClass).containsColor(eNode.getColor()))
+				if (rnd.nextDouble() > 0.3)
+					continue;
+			
+						
 			int newColor = getMinimalErrorColor((EricssonGraph)graph, index, colorClass);
 			eNode.setColor(newColor);
 		}
@@ -38,11 +48,12 @@ public class MinimalNeighbourWeight implements GraphColoringAlgorithm{
 
 	private int getMinimalErrorColor(EricssonGraph graph, int index, int colorClass) {
 		List<Bridge> neighbours = graph.getNodeNeighbours(index);
+		
 		Set<Integer> colors = graph.colorClasses.get(colorClass).getAllColors();
 		
 		double mini = Double.MAX_VALUE;
-		int currColor = graph.getNode(index).getColor();
-		int colorNode = currColor;
+		
+		int colorNode = -1;
 		
 		for(Integer color : colors){
 			graph.getNode(index).setColor(color);
@@ -53,7 +64,6 @@ public class MinimalNeighbourWeight implements GraphColoringAlgorithm{
 			}
 		}
 		
-		graph.getNode(index).setColor(currColor);
 		return colorNode;
 	}
 
@@ -69,7 +79,10 @@ public class MinimalNeighbourWeight implements GraphColoringAlgorithm{
 	private boolean checkColors(Bridge bridge, Graph graph) {
 		int left = bridge.getLeftNode();
 		int right = bridge.getRightNode();
-		return graph.getNode(left).getColor() == graph.getNode(right).getColor();
+		int lColor = graph.getNode(left).getColor();
+		int rColor = graph.getNode(right).getColor();
+		
+		return lColor == rColor;
 	}
 	
 }

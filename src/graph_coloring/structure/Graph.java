@@ -15,11 +15,14 @@ public class Graph {
 	protected Map<Pair<Integer, Integer>, Bridge> bridgeRepos = new HashMap<Pair<Integer, Integer>, Bridge>();
 	
 	public List<Bridge> getNodeNeighbours(int nodeIndex){
+		
 		List<Bridge> ret = new ArrayList<Bridge>();
 		
-		int nodeSize = nodeRepos.get(nodeIndex).getNeighborsSize();
+		int nodeSize = this.getNode(nodeIndex).getNeighborsSize();
 		
-		for(int neighbour = 0 ; neighbour < nodeSize ; ++neighbour){
+		for(int i = 0 ; i < nodeSize ; ++i){
+			
+			int neighbour = this.getNode(nodeIndex).getNeighbor(i);
 			Pair<Integer, Integer> first = new Pair<Integer, Integer>(nodeIndex, neighbour);
 			Pair<Integer, Integer> second = new Pair<Integer, Integer>(neighbour, nodeIndex);
 			

@@ -44,6 +44,7 @@ public class FERFileFormat implements FileFormat{
 			boolean colorable = Boolean.parseBoolean(file.getNextLine());
 			int color = startColor;
 			
+			/*
 			if (colorable) {
 				if (graph.colorClasses.get(colorClass).containsColor(startColor)) {
 					color = startColor;
@@ -53,6 +54,7 @@ public class FERFileFormat implements FileFormat{
 				    color = it.next(); 
 				}
 			}
+			*/
 			
 			Node node = new EricssonNode(nodeId, color, startColor, colorClass, nodeClass, colorable);
 			graph.addNode(node);

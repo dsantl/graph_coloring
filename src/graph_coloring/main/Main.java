@@ -48,12 +48,12 @@ public class Main {
 		ComputeStatistics stat = new ErrorFunctionEricsson();
 		double oldError = stat.computeStat(graph);
 		
-		//GraphAlgorithmContext algorithm = new GraphAlgorithmContext(new MinimalNeighbourWeight());
-		//algorithm.startAlgorithm(null, graph);
+		GraphAlgorithmContext algorithm = new GraphAlgorithmContext(new MinimalNeighbourWeight());
+		algorithm.startAlgorithm(null, graph);
 		
-		System.out.println(oldError);		
-		//System.out.println(stat.computeStat(graph));		
-		System.out.format("%d %d\n", graph.getNodeSize(), graph.getBridgeSize());
+		System.out.format("Old error: %f\n", oldError);		
+		System.out.format("New error: %f\n", stat.computeStat(graph));		
+		
 		long end = System.currentTimeMillis();
 		System.out.println(end-start);
 

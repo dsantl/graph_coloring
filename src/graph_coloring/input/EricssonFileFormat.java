@@ -69,6 +69,7 @@ public class EricssonFileFormat implements FileFormat {
 				}
 			}
 			
+			
 			Node node = new EricssonNode(id, color, startColor, colorClass,
 										 nodeClass, colorable);
 			graph.addNode(node);
