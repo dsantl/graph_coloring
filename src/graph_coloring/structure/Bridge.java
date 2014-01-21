@@ -1,27 +1,24 @@
 package graph_coloring.structure;
 
-import graph_coloring.common.Pair;
+import graph_coloring.common.MinMaxPairInteger;
 
 public abstract class Bridge {
 
-	protected int leftNode;
-	protected int rightNode;
+	protected MinMaxPairInteger connection;
 	
 	Bridge(int leftNode, int rightNode){
-		this.leftNode = leftNode;
-		this.rightNode = rightNode;
+		connection = new MinMaxPairInteger(leftNode, rightNode);
 	}
 	
-	public int getLeftNode(){
-		return leftNode;
+	public int getLeft(){
+		return connection.getLeft();
 	}
 	
-	public int getRightNode(){
-		return rightNode;
+	public int getRight(){
+		return connection.getRight();
 	}
-
-	public Pair<Integer, Integer> getPair() {
-		Pair<Integer, Integer> pair = new Pair<Integer, Integer>(leftNode, rightNode);
-		return pair;
+	
+	public MinMaxPairInteger getPair() {
+		return connection;
 	}
 }

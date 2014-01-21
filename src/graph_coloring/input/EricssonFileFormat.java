@@ -32,7 +32,7 @@ public class EricssonFileFormat implements FileFormat {
 			for (int j = 1; j < splitLine.length; ++j) {
 				colorClass.addColor(Integer.parseInt(splitLine[j]));
 			}
-			graph.colorClasses.put(colorClassId, colorClass);
+			graph.addNewColorClass(colorClassId, colorClass);
 		}
 
 	}
@@ -56,19 +56,7 @@ public class EricssonFileFormat implements FileFormat {
 			nodeClass = splitLine[1].charAt(0);
 			startColor = Integer.parseInt(splitLine[3]);
 			color = startColor;
-			
-			
-			if (colorable) {
-				colorClass = Integer.parseInt(splitLine[2]);
-				if (graph.colorClasses.get(colorClass).containsColor(startColor)) {
-					color = startColor;
-				} else {
-					color = -1; //current color is -1 because startColor is not valid
-					Iterator<Integer> it = graph.colorClasses.get(colorClass).getAllColors().iterator();
-				    color = it.next();
-				}
-			}
-			
+			colorClass = Integer.parseInt(splitLine[2]);
 			
 			Node node = new EricssonNode(id, color, startColor, colorClass,
 										 nodeClass, colorable);
@@ -111,6 +99,8 @@ public class EricssonFileFormat implements FileFormat {
 		this.loadColorClasses(file, retGraph);
 		this.loadNodes(file, retGraph);
 		this.loadBridges(file, retGraph);
+		
+		retGraph.setError();
 		
 		return retGraph;
 	}

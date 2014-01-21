@@ -15,13 +15,12 @@ import java.util.Set;
 public class MinimalNeighbourWeight implements GraphColoringAlgorithm{
 	
 	@Override
-	public void startAlgorithm(List<Node> nodes, Graph graph) {
+	public void startAlgorithm(List<Integer> nodes, Graph graph) {
 		
-		Random rnd = new Random();
-		
+		//Random rnd = new Random();
 		int cnt = 0;
 		
-		for( Integer index : graph.getNodeIndices() ){
+		for( Integer index : nodes ){
 			
 			System.out.format("%d %d\n", cnt, graph.getNodeSize());
 			cnt += 1;
@@ -34,30 +33,24 @@ public class MinimalNeighbourWeight implements GraphColoringAlgorithm{
 			}
 			
 			int colorClass = eNode.getColorClass();
-			
-			if (((EricssonGraph)graph).colorClasses.get(colorClass).containsColor(eNode.getColor()))
-				if (rnd.nextDouble() > 0.3)
-					continue;
-			
 						
 			int newColor = getMinimalErrorColor((EricssonGraph)graph, index, colorClass);
-			eNode.setColor(newColor);
+			((EricssonGraph)graph).setNodeColor(index, newColor);
 		}
 		
 	}
 
 	private int getMinimalErrorColor(EricssonGraph graph, int index, int colorClass) {
-		List<Bridge> neighbours = graph.getNodeNeighbours(index);
 		
-		Set<Integer> colors = graph.colorClasses.get(colorClass).getAllColors();
+		List<Integer> colors = graph.getAllColorsOfClass(colorClass);
 		
 		double mini = Double.MAX_VALUE;
 		
 		int colorNode = -1;
 		
 		for(Integer color : colors){
-			graph.getNode(index).setColor(color);
-			double tmpRes = getNewWeight(neighbours, graph);
+			graph.setNodeColor(index, color);
+			double tmpRes = graph.getError();
 			if ( tmpRes < mini ){
 				mini = tmpRes;
 				colorNode = color;
@@ -66,23 +59,4 @@ public class MinimalNeighbourWeight implements GraphColoringAlgorithm{
 		
 		return colorNode;
 	}
-
-	private double getNewWeight(List<Bridge> neighbours, Graph graph) {
-		double ret = 0;
-		for( Bridge bridge : neighbours ){
-			if ( checkColors(bridge, graph) )
-				ret += ((EricssonBridge)bridge).getWeight();
-		}
-		return ret;
-	}
-
-	private boolean checkColors(Bridge bridge, Graph graph) {
-		int left = bridge.getLeftNode();
-		int right = bridge.getRightNode();
-		int lColor = graph.getNode(left).getColor();
-		int rColor = graph.getNode(right).getColor();
-		
-		return lColor == rColor;
-	}
-	
 }

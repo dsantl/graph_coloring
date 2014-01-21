@@ -3,8 +3,10 @@ package graph_coloring.output;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
+import java.util.List;
 import java.util.Set;
 
+import graph_coloring.common.MinMaxPairInteger;
 import graph_coloring.common.Pair;
 import graph_coloring.structure.ColorClass;
 import graph_coloring.structure.EricssonBridge;
@@ -20,12 +22,12 @@ public class FERoutput implements Converter{
 		EricssonGraph graph = (EricssonGraph) g;
 		
 		PrintWriter outFile = new PrintWriter(fileName, "UTF-8");
-		outFile.println(graph.colorClasses.size()); //number of color classes
+		outFile.println(graph.getColorClassSize()); //number of color classes
 		
-		for(Integer colorClass : graph.colorClasses.keySet()){
+		for(Integer colorClass : graph.getColorClasses()){
 			outFile.println(colorClass); //name of color class
-			outFile.println(graph.colorClasses.get(colorClass).getColorCount()); //number of colors
-			Set<Integer> colors = graph.colorClasses.get(colorClass).getAllColors();
+			outFile.println(graph.getColorCount(colorClass)); //number of colors
+			List<Integer> colors = graph.getAllColorsOfClass(colorClass);
 			for(Integer color : colors){
 				outFile.println(color); //id of color
 			}
@@ -45,10 +47,10 @@ public class FERoutput implements Converter{
 		}
 		
 		
-		Set<Pair<Integer, Integer>> bridges = graph.getBridgeIndices();
+		Set<MinMaxPairInteger> bridges = graph.getBridgeIndices();
 		
 		outFile.println(bridges.size()); //number of bridges
-		for(Pair<Integer, Integer> pair : bridges){
+		for(MinMaxPairInteger pair : bridges){
 			EricssonBridge bridge = (EricssonBridge) graph.getBridge(pair);
 			outFile.println(pair.getLeft()); //first node
 			outFile.println(pair.getRight()); //second node

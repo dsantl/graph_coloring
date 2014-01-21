@@ -1,10 +1,12 @@
 package graph_coloring.structure;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 public class ColorClass {
-	private Set<Integer> colors = new HashSet<Integer>();
+	private List<Integer> colors = new ArrayList<Integer>();
 
 	public boolean containsColor(int color) {
 		return colors.contains(color);
@@ -18,7 +20,7 @@ public class ColorClass {
 		return colors.size();
 	}
 	
-	public Set<Integer> getAllColors(){
+	public List<Integer> getAllColors(){
 		return colors;
 	}
 }

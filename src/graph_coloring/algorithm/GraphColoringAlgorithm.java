@@ -7,6 +7,6 @@ import graph_coloring.structure.Node;
 
 public interface GraphColoringAlgorithm {
 
-	public void startAlgorithm(List<Node> nodes, Graph graph);
+	public void startAlgorithm(List<Integer> nodes, Graph graph);
 	
 }

@@ -14,7 +14,7 @@ public class GraphAlgorithmContext {
 		this.algorithm = algorithm;
 	}
 	
-	public void startAlgorithm(List<Node> nodes, Graph graph)
+	public void startAlgorithm(List<Integer> nodes, Graph graph)
 	{
 		algorithm.startAlgorithm(nodes, graph);
 	}

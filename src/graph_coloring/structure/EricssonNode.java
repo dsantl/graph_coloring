@@ -7,7 +7,7 @@ public class EricssonNode extends Node{
 	private int colorClass; //color class of node (id)
 	private char nodeClass;  //class of node (A, B or C)
 	private boolean colorable; //if node is colorable
-
+	
 	public int getStartColor(){
 		return this.startColor;
 	}
@@ -23,6 +23,14 @@ public class EricssonNode extends Node{
 	
 	public boolean getColorable(){
 		return this.colorable;
+	}
+
+	public EricssonNode(EricssonNode oldNode){
+		super(oldNode);
+		startColor = oldNode.startColor;
+		colorClass = oldNode.colorClass;
+		nodeClass = oldNode.nodeClass; 
+		colorable = oldNode.colorable;
 	}
 	
 	public EricssonNode(int id, int color, int startColor, int colorClass, char nodeClass, boolean colorable) {

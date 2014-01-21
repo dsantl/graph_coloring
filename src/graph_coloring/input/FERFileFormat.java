@@ -31,7 +31,7 @@ public class FERFileFormat implements FileFormat{
 				int color = Integer.parseInt(file.getNextLine());
 				colorClass.addColor(color);
 			}
-			graph.colorClasses.put(classId, colorClass);
+			graph.addNewColorClass(classId, colorClass);
 		}
 		
 		int numberOfNodes = Integer.parseInt(file.getNextLine());
@@ -43,18 +43,6 @@ public class FERFileFormat implements FileFormat{
 			char nodeClass = file.getNextLine().charAt(0);
 			boolean colorable = Boolean.parseBoolean(file.getNextLine());
 			int color = startColor;
-			
-			/*
-			if (colorable) {
-				if (graph.colorClasses.get(colorClass).containsColor(startColor)) {
-					color = startColor;
-				} else {
-					color = -1; //current color is -1 because startColor is not valid
-					Iterator<Integer> it = graph.colorClasses.get(colorClass).getAllColors().iterator();
-				    color = it.next(); 
-				}
-			}
-			*/
 			
 			Node node = new EricssonNode(nodeId, color, startColor, colorClass, nodeClass, colorable);
 			graph.addNode(node);
@@ -70,6 +58,7 @@ public class FERFileFormat implements FileFormat{
 			graph.addBridge(bridge);
 		}
 		
+		graph.setError();
 		return graph;
 	}
 

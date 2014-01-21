@@ -2,8 +2,8 @@ package graph_coloring.common;
 
 public class Pair<L,R>{
 
-	  private final L left;
-	  private final R right;
+	  protected L left;
+	  protected R right;
 
 	  public Pair(L left, R right) {
 	    this.left = left;

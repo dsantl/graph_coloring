@@ -13,8 +13,9 @@ import graph_coloring.structure.Node;
 public class RandomAlgorithm implements GraphColoringAlgorithm{
 	
 	@Override
-	public void startAlgorithm(List<Node> nodes, Graph graph) {
+	public void startAlgorithm(List<Integer> nodes, Graph graph) {
 		
+		EricssonGraph eGraph = (EricssonGraph) graph;
 		Set<Integer> allNodes = graph.getNodeIndices();
 		
 		for(Integer index : allNodes){
@@ -23,13 +24,13 @@ public class RandomAlgorithm implements GraphColoringAlgorithm{
 				continue;
 			int colorClass = eNode.getColorClass();
 			int newColor = randomNewColor((EricssonGraph)graph, colorClass);
-			eNode.setColor(newColor);
+			eGraph.setNodeColor(index, newColor);
 		}
 		
 	}
 
 	private int randomNewColor(EricssonGraph graph, int colorClass) {
-		Set<Integer> colors = graph.colorClasses.get(colorClass).getAllColors();
+		List<Integer> colors = graph.getAllColorsOfClass(colorClass);
 		Random rnd = new Random();
 		int index  = rnd.nextInt(colors.size());
 		int cnt = 0;
