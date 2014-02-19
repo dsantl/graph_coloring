@@ -38,6 +38,7 @@ public class RandomAlgorithm implements GraphColoringAlgorithm{
 		for(Integer color : colors){
 			if ( cnt == index)
 				return color; 
+			cnt += 1;
 		}
 		
 		return -1;

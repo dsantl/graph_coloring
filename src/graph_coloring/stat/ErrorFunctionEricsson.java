@@ -15,6 +15,7 @@ public class ErrorFunctionEricsson {
 
 	public static double computeStat(Graph graph) {
 		
+		EricssonGraph eGraph = (EricssonGraph) graph;
 		double ret = 0;
 		
 		Set<MinMaxPairInteger> bridges = graph.getBridgeIndices();
@@ -26,12 +27,26 @@ public class ErrorFunctionEricsson {
 			EricssonNode lNode = (EricssonNode) graph.getNode(leftNode);
 			EricssonNode rNode = (EricssonNode) graph.getNode(rightNode);
 			
+			
 			if ( (lNode.getNodeClass() == rNode.getNodeClass()) && 
 				 (lNode.getColor() == rNode.getColor()) &&
 				 (lNode.getColorable() == true || rNode.getColorable() == true) ){	
 					
 					//System.out.format("%d %d\n", lNode.getId(), rNode.getId());
+					
 					ret += eBridge.getWeight();
+			
+				}
+		}
+		
+		ret *= 2;
+		
+		for(Integer node : eGraph.getNodeIndices()){
+			EricssonNode eNode = (EricssonNode) graph.getNode(node);
+			if (!eGraph.colorClassContainColor(eNode.getColorClass(), eNode.getColor()))
+			{
+				if ( eNode.getColorable() == true)
+					ret += 10000000.0;
 			}
 		}
 		

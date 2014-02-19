@@ -24,9 +24,9 @@ public class SimpleGenetic implements GraphColoringAlgorithm{
 	private Random randomGen = new Random();
 	private List<EricssonGraph> population;
 	private EricssonGraph bestGenome;
-	private int populationSize = 10;
-	private double mutationRate = 0.01;
-	private int maxIteration = 10;
+	private int populationSize = 20;
+	private double mutationRate = 0.001;
+	private int maxIteration = 100;
 	private List<Integer> colorableNodes;
 	
 	

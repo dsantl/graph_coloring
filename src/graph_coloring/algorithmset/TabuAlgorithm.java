@@ -103,6 +103,7 @@ public class TabuAlgorithm implements GraphColoringAlgorithm{
             graph.getNode(nodeGreedy.name).setColor(nodeGreedy.getColor());
         }
     }
+    
     public void setParameters(int tabuSize, int numberOfMoves, int maxIterations, IColorSelector colorSelector, Comparator<NodeGreedy> comparator){
         this.tabuSize = tabuSize;
         this.maxMoves = numberOfMoves;
@@ -122,7 +123,6 @@ public class TabuAlgorithm implements GraphColoringAlgorithm{
         tabuOrder = new LinkedList<Pair<NodeGreedy, Integer>>();
         int minCollisionsOfNodes = numOfCollisions(availableNodes);     
         
-        System.out.println(numOfCollisions(availableNodes));
         
         while ((numOfCollisions(availableNodes) > 0) && (numOfIterations < maxIterations)){
         	numOfIterations++;

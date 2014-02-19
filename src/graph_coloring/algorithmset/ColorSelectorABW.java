@@ -16,10 +16,6 @@ public class ColorSelectorABW implements IColorSelector {
         if (node.color_inside_domain) 
             availableColorsMap.put(node.color_start, 0);
     
-        System.out.println(node);
-        System.out.println(node.domain);
-        System.out.println(node.domain.colors);
-        
         for (Integer colorInteger : node.domain.colors) {
         	if (!availableColorsMap.containsKey(colorInteger)) 
         		availableColorsMap.put(colorInteger, colorInteger);

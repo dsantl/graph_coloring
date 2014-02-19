@@ -12,6 +12,16 @@ public class EricssonGraph extends Graph{
 	private Map<Integer, ColorClass> colorClasses = new HashMap<Integer, ColorClass>();
 	
 	private double graphError;
+	private int colorableNodes = 0;
+	private int changeColorNodes = 0;
+	
+	@Override
+	public void addNode(Node node){
+		super.addNode(node);
+		EricssonNode eNode = (EricssonNode) node;
+		if ( eNode.getColorable() )
+			colorableNodes += 1;
+	}
 	
 	public EricssonGraph(EricssonGraph graph){
 		super(graph);
@@ -27,12 +37,20 @@ public class EricssonGraph extends Graph{
 	
 	public void setError(){
 		this.graphError = 0;
+		this.changeColorNodes = 0;
 		for(Integer node : this.getNodeIndices()){
+			EricssonNode eNode = (EricssonNode) this.getNode(node);
 			double error = this.getNodeError(node);
 			graphError += error;
+			if ( eNode.getColorable() && eNode.getColor() != eNode.getStartColor() )
+				this.changeColorNodes += 1;
 		}
 		
 		this.graphError /= 2.0;
+	}
+	
+	public double getColorChange(){
+		return ((double)this.changeColorNodes)/this.colorableNodes;
 	}
 	
 	public EricssonGraph(){
@@ -43,7 +61,7 @@ public class EricssonGraph extends Graph{
 		return graphError;
 	}
 	
-	private double getNodeError(int node){
+	public double getNodeError(int node){
 		
 		double error = 0;
 		EricssonNode eNode = (EricssonNode) this.getNode(node);
@@ -54,6 +72,22 @@ public class EricssonGraph extends Graph{
 			EricssonNode eNeighbour = (EricssonNode) this.getNode(neighbour);
 			if ( eNeighbour.getColorable() || eNode.getColorable() )
 				if ( eNeighbour.getColor() == eNode.getColor() )
+					error += ((EricssonBridge)this.getBridge(node, neighbour)).getWeight();
+		}
+		return error;
+	}
+	
+	public double getNodeError(int node, int color){
+		
+		double error = 0;
+		EricssonNode eNode = (EricssonNode) this.getNode(node);
+		int len = eNode.getNeighborsSize();
+		
+		for(int i = 0 ; i < len ; ++i){
+			int neighbour = this.getNode(node).getNeighbor(i);
+			EricssonNode eNeighbour = (EricssonNode) this.getNode(neighbour);
+			if ( eNeighbour.getColorable() || eNode.getColorable() )
+				if ( eNeighbour.getColor() == color )
 					error += ((EricssonBridge)this.getBridge(node, neighbour)).getWeight();
 		}
 		return error;
@@ -79,11 +113,22 @@ public class EricssonGraph extends Graph{
 			return false;
 		
 		double oldError = this.getNodeError(node);
+		int oldColor = this.getNode(node).getColor();
+		
 		eNode.setColor(color);
 		double newError = this.getNodeError(node);
 		
 		this.graphError += newError - oldError;
 		
+		int changeTmp = 0;
+		
+		if ( oldColor == eNode.getStartColor() && color != eNode.getStartColor() )
+			changeTmp = 1;
+		else if ( oldColor != eNode.getStartColor() && color == eNode.getStartColor() )
+			changeTmp = -1;
+		
+		this.changeColorNodes += changeTmp;
+				
 		return true;
 	}
 	
@@ -155,6 +200,14 @@ public class EricssonGraph extends Graph{
 				ret.add(eNode.getId());
 		}
 		return ret;
+	}
+
+	public void reset(double oldError) {
+		for(Integer node : this.getNodeIndices() ){
+			EricssonNode eNode = (EricssonNode) nodeRepos.get(node);
+			eNode.setColor(eNode.getStartColor());
+		}
+		this.graphError = oldError;
 	}
 	
 }

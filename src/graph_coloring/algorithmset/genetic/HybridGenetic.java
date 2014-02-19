@@ -36,13 +36,13 @@ public class HybridGenetic implements GraphColoringAlgorithm{
 			EricssonGraph genome = new EricssonGraph(graph);
 			
 			
-			//GreedyAlgorithm alg = new  GreedyAlgorithm(genome);
-			//alg.setParameters("COL2", "ABW", 1);
-			//GraphAlgorithmContext algorithm = new GraphAlgorithmContext(alg);
-			//algorithm.startAlgorithm(colorableNodes, genome);
+			GreedyAlgorithm alg = new  GreedyAlgorithm(genome);
+			alg.setParameters("COL2", "ABW", 1);
+			GraphAlgorithmContext algorithm = new GraphAlgorithmContext(alg);
+			algorithm.startAlgorithm(colorableNodes, genome);
+			genome.setError();
 			
 			this.setRandomColors(genome);
-			
 			
 			System.out.format("%d %f\n", i, genome.getError());
 			
@@ -91,9 +91,6 @@ public class HybridGenetic implements GraphColoringAlgorithm{
 
 	private void mutation(EricssonGraph child) {
 		
-		//this.setRandomColors(child);
-		
-		
 		List<Integer> mutationNode = new ArrayList<Integer>();
 		
 		for(Integer node : this.colorableNodes){
@@ -102,15 +99,13 @@ public class HybridGenetic implements GraphColoringAlgorithm{
 			}
 		}
 		
-		//System.out.println(mutationNode.size());
-		
 		GreedyAlgorithm alg = new  GreedyAlgorithm(child);
 		alg.setParameters("LDO", "ABW", 1);
 		//GraphAlgorithmContext algorithm = new GraphAlgorithmContext(new MinimalNeighbourWeight());
-		GraphAlgorithmContext algorithm = new GraphAlgorithmContext(alg);
+		//GraphAlgorithmContext algorithm = new GraphAlgorithmContext(alg);
 		
-		algorithm.startAlgorithm(mutationNode, child);
-		
+		alg.startAlgorithm(mutationNode, child);
+		child.setError();
 	}
 
 	private EricssonGraph crossing() {

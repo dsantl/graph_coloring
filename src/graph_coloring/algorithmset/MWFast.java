@@ -13,7 +13,8 @@ import java.util.List;
 import java.util.Random;
 import java.util.Set;
 
-public class MinimalNeighbourWeight implements GraphColoringAlgorithm{
+//STDORDER
+public class MWFast implements GraphColoringAlgorithm{
 	
 	@Override
 	public void startAlgorithm(List<Integer> nodes, Graph graph) {
@@ -23,7 +24,7 @@ public class MinimalNeighbourWeight implements GraphColoringAlgorithm{
 		
 		for( Integer index : nodes ){
 			
-			System.out.format("%d %d\n", cnt, nodes.size());
+			//System.out.format("%d %d\n", cnt, nodes.size());
 			cnt += 1;
 			
 			EricssonNode eNode = (EricssonNode) graph.getNode(index);
@@ -36,9 +37,10 @@ public class MinimalNeighbourWeight implements GraphColoringAlgorithm{
 			int colorClass = eNode.getColorClass();
 						
 			int newColor = getMinimalErrorColor((EricssonGraph)graph, index, colorClass);
-			((EricssonGraph)graph).setNodeColor(index, newColor);
+			eNode.setColor(newColor);
+			//((EricssonGraph)graph).setNodeColor(index, newColor);
 		}
-		
+		((EricssonGraph)graph).setError();
 	}
 
 	private int getMinimalErrorColor(EricssonGraph graph, int index, int colorClass) {
