@@ -1,20 +1,29 @@
 package graph_coloring.stat;
 
-import graph_coloring.structure.EricssonGraph;
-import graph_coloring.structure.EricssonNode;
-import graph_coloring.structure.Graph;
+import graph_coloring.structure.weight_graph.ericsson_graph.EricssonGraph;
 
 public class ChangeColorGlobal {
 	
+	/**
+	 * Ratio of total colorable nodes and nodes who doesn't have start color
+	 * @param graph
+	 * @return ratio (double)
+	 */
 	public static double computeStat(EricssonGraph graph) {
 		
 		int counter = 0;
+		int total = 0;
 		
-		for(Integer nodeId : graph.getNodeIndices()){
-			EricssonNode eNode = (EricssonNode) graph.getNode(nodeId);
-			if ( eNode.getColor() != eNode.getStartColor() )
+		for(int i = 0 ; i < graph.getNodeSize() ; ++i){
+			
+			if ( graph.getNodeColorable(i) )
+			{
+				total += 1;
+			
+			if ( graph.getNodeColor(i) != graph.getNodeStartColor(i) )
 				counter += 1;
+			}
 		}
-		return ((double)counter)/graph.getNodeSize();
+		return ((double)counter)/total;
 	}
 }

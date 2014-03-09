@@ -9,7 +9,6 @@ import java.util.Set;
 
 import graph_coloring.algorithm.GraphAlgorithmContext;
 import graph_coloring.algorithm.GraphColoringAlgorithm;
-import graph_coloring.algorithmset.GreedyAlgorithm;
 import graph_coloring.algorithmset.MinimalNeighbourWeight;
 import graph_coloring.stat.ErrorFunctionEricsson;
 import graph_coloring.structure.ColorClass;
@@ -36,7 +35,7 @@ public class HybridGenetic implements GraphColoringAlgorithm{
 			EricssonGraph genome = new EricssonGraph(graph);
 			
 			
-			GreedyAlgorithm alg = new  GreedyAlgorithm(genome);
+			graph_coloring.algorithmset.greedy.GreedyAlgorithm alg = new  graph_coloring.algorithmset.greedy.GreedyAlgorithm(genome);
 			alg.setParameters("COL2", "ABW", 1);
 			GraphAlgorithmContext algorithm = new GraphAlgorithmContext(alg);
 			algorithm.startAlgorithm(colorableNodes, genome);
@@ -99,7 +98,7 @@ public class HybridGenetic implements GraphColoringAlgorithm{
 			}
 		}
 		
-		GreedyAlgorithm alg = new  GreedyAlgorithm(child);
+		graph_coloring.algorithmset.greedy.GreedyAlgorithm alg = new  graph_coloring.algorithmset.greedy.GreedyAlgorithm(child);
 		alg.setParameters("LDO", "ABW", 1);
 		//GraphAlgorithmContext algorithm = new GraphAlgorithmContext(new MinimalNeighbourWeight());
 		//GraphAlgorithmContext algorithm = new GraphAlgorithmContext(alg);

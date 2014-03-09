@@ -1,6 +1,9 @@
 package graph_coloring.algorithmset;
 
 import graph_coloring.algorithm.GraphColoringAlgorithm;
+import graph_coloring.algorithmset.greedy.Domain;
+import graph_coloring.algorithmset.greedy.IColorSelector;
+import graph_coloring.algorithmset.greedy.NodeGreedy;
 import graph_coloring.common.Pair;
 import graph_coloring.structure.Bridge;
 import graph_coloring.structure.ColorClass;
@@ -8,7 +11,6 @@ import graph_coloring.structure.EricssonBridge;
 import graph_coloring.structure.EricssonGraph;
 import graph_coloring.structure.EricssonNode;
 import graph_coloring.structure.Graph;
-import graph_coloring.structure.Node;
 
 import java.util.ArrayList;
 import java.util.Collections;

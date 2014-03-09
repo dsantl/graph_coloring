@@ -10,8 +10,8 @@ public class Pair<L,R>{
 	    this.right = right;
 	  }
 
-	  public L getLeft() { return left; }
-	  public R getRight() { return right; }
+	  public L getFirst() { return left; }
+	  public R getSecond() { return right; }
 
 	  @Override
 	  public int hashCode() { return left.hashCode() ^ right.hashCode(); }

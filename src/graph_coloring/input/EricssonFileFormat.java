@@ -1,15 +1,9 @@
 package graph_coloring.input;
 
 import java.io.IOException;
-import java.util.Iterator;
 
-import graph_coloring.structure.Bridge;
-import graph_coloring.structure.ColorClass;
-import graph_coloring.structure.EricssonBridge;
-import graph_coloring.structure.EricssonGraph;
-import graph_coloring.structure.EricssonNode;
 import graph_coloring.structure.Graph;
-import graph_coloring.structure.Node;
+import graph_coloring.structure.weight_graph.ericsson_graph.EricssonGraph;
 
 public class EricssonFileFormat implements FileFormat {
 
@@ -28,11 +22,10 @@ public class EricssonFileFormat implements FileFormat {
 
 			colorClassId = Integer.parseInt(splitLine[0]);
 
-			ColorClass colorClass = new ColorClass();
+			graph.addColorClass(colorClassId);
 			for (int j = 1; j < splitLine.length; ++j) {
-				colorClass.addColor(Integer.parseInt(splitLine[j]));
+				graph.addColorToColorClass(colorClassId, Integer.parseInt(splitLine[j]));
 			}
-			graph.addNewColorClass(colorClassId, colorClass);
 		}
 
 	}
@@ -47,20 +40,17 @@ public class EricssonFileFormat implements FileFormat {
 
 		for (int i = 0; i < numberOfNodes; ++i) {
 			String line = file.getNextLine();
-			int id, color = -1, startColor = -1, colorClass = -1;
-			char nodeClass;
+			int id, startColor, nodeDomain;
+			char nodeGroup;
 			boolean colorable;
 			String[] splitLine = line.split("\\s+");
 			id = Integer.parseInt(splitLine[0]);
 			colorable = Boolean.parseBoolean(splitLine[4]);
-			nodeClass = splitLine[1].charAt(0);
+			nodeGroup = splitLine[1].charAt(0);
 			startColor = Integer.parseInt(splitLine[3]);
-			color = startColor;
-			colorClass = Integer.parseInt(splitLine[2]);
+			nodeDomain = Integer.parseInt(splitLine[2]);
 			
-			Node node = new EricssonNode(id, color, startColor, colorClass,
-										 nodeClass, colorable);
-			graph.addNode(node);
+			graph.addEricssonNode(id, nodeGroup, nodeDomain, startColor, colorable); 
 		}
 
 	}
@@ -82,15 +72,13 @@ public class EricssonFileFormat implements FileFormat {
 			node1 = Integer.parseInt(splitLine[0]);
 			node2 = Integer.parseInt(splitLine[1]);
 			weight = Double.parseDouble(splitLine[2]);
-			Bridge bridge = new EricssonBridge(node1, node2, weight);
-			graph.addBridge(bridge);
+			graph.addWeightBridge(node1, node2, weight);
 		}
 
 	}
 
 	@Override
-	public Graph getGraphFromFile(String fileName)
-			throws NumberFormatException, IOException {
+	public Graph getGraphFromFile(String fileName) throws NumberFormatException, IOException {
 
 		EricssonGraph retGraph = new EricssonGraph();
 
@@ -99,8 +87,6 @@ public class EricssonFileFormat implements FileFormat {
 		this.loadColorClasses(file, retGraph);
 		this.loadNodes(file, retGraph);
 		this.loadBridges(file, retGraph);
-		
-		retGraph.setError();
 		
 		return retGraph;
 	}

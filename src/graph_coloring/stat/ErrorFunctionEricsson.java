@@ -1,51 +1,41 @@
 package graph_coloring.stat;
 
-import java.util.Set;
+import graph_coloring.common.OrderPair;
+import graph_coloring.structure.weight_graph.ericsson_graph.EricssonGraph;
 
-import graph_coloring.common.MinMaxPairInteger;
-import graph_coloring.common.Pair;
-import graph_coloring.structure.EricssonBridge;
-import graph_coloring.structure.EricssonNode;
-import graph_coloring.structure.Graph;
-import graph_coloring.structure.Node;
-import graph_coloring.structure.EricssonGraph;
 
 public class ErrorFunctionEricsson {
 	
-
-	public static double computeStat(Graph graph) {
+	/**
+	 * Compute error function of graph, O(M+N) where M is number of bridges and N number of nodes
+	 * @param graph
+	 * @return error value (double)
+	 */
+	public static double computeStat(EricssonGraph graph) {
 		
-		EricssonGraph eGraph = (EricssonGraph) graph;
 		double ret = 0;
 		
-		Set<MinMaxPairInteger> bridges = graph.getBridgeIndices();
-		
-		for(MinMaxPairInteger bridge : bridges){
-			EricssonBridge eBridge = (EricssonBridge) graph.getBridge(bridge);
-			int leftNode = eBridge.getLeft();
-			int rightNode = eBridge.getRight();
-			EricssonNode lNode = (EricssonNode) graph.getNode(leftNode);
-			EricssonNode rNode = (EricssonNode) graph.getNode(rightNode);
+		for(int i = 0 ; i < graph.getBridgeSize() ; ++i){
+			OrderPair eBridge = graph.getBridge(i);
+			int leftNode = eBridge.getFirst();
+			int rightNode = eBridge.getSecond();
 			
-			
-			if ( (lNode.getNodeClass() == rNode.getNodeClass()) && 
-				 (lNode.getColor() == rNode.getColor()) &&
-				 (lNode.getColorable() == true || rNode.getColorable() == true) ){	
-					
-					//System.out.format("%d %d\n", lNode.getId(), rNode.getId());
-					
-					ret += eBridge.getWeight();
-			
+			if ( (graph.getNodeGroup(leftNode) == graph.getNodeGroup(rightNode)) && 
+				 (graph.getNodeColor(leftNode) == graph.getNodeColor(rightNode)) &&
+				 (graph.getNodeColorable(leftNode) == true || graph.getNodeColorable(rightNode) == true)){	
+					ret += graph.getBridgeWeight(i);
 				}
 		}
 		
 		ret *= 2;
 		
-		for(Integer node : eGraph.getNodeIndices()){
-			EricssonNode eNode = (EricssonNode) graph.getNode(node);
-			if (!eGraph.colorClassContainColor(eNode.getColorClass(), eNode.getColor()))
+		for(int i = 0 ; i < graph.getNodeSize() ; ++i){
+			int colorClassId = graph.getNodeDomainName(i);
+			int color = graph.getNodeColor(i);
+			
+			if (!graph.colorClassContain(colorClassId, color))
 			{
-				if ( eNode.getColorable() == true)
+				if ( graph.getNodeColorable(i) == true)
 					ret += 10000000.0;
 			}
 		}

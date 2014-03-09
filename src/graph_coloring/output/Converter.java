@@ -7,6 +7,5 @@ import graph_coloring.structure.Graph;
 
 public interface Converter {
 
-	public void convertGraphToFile(Graph graph, String fileName) throws FileNotFoundException, UnsupportedEncodingException;
-	
+	public void convertGraphToFile(Graph g, String fileName) throws FileNotFoundException, UnsupportedEncodingException;	
 }

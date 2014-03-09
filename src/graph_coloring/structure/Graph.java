@@ -1,105 +1,143 @@
 package graph_coloring.structure;
 
+import graph_coloring.common.OrderPair;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
-import graph_coloring.structure.Node;
 
-import graph_coloring.common.MinMaxPairInteger;
+public class Graph implements IGraph{
 
-public class Graph {
+	//list of bridges
+	protected List<Bridge> bridgeList = new ArrayList<Bridge>();
 	
-	protected Map<Integer, Node> nodeRepos = new HashMap<Integer, Node>();
-	protected Map<MinMaxPairInteger, Bridge> bridgeRepos = new HashMap<MinMaxPairInteger, Bridge>();
+	//list of nodes
+	protected List<Node> nodeList = new ArrayList<Node>();
 	
-	public Graph(Graph graph) {
-		this.nodeRepos = new HashMap<Integer, Node>();
-		
-		
-		
-		this.bridgeRepos = graph.bridgeRepos;
-	}
-
-	public Graph(){
-		
-	}
+	//map id-index in list
+	private Map<Integer, Integer> nodeMap = new HashMap<Integer, Integer>();
 	
-	public void addNode(Node node){
-		nodeRepos.put(node.getId(), node);
-	}
 	
-	public int getStaturationNumber(int index){
-		
-		Node node = this.getNode(index);
-		Set<Integer> counter = new HashSet<Integer>();
-		
-		int len  = node.getNeighborsSize();
-		for(int i = 0 ; i < len ; ++i){
-			int neighbour = node.getNeighbor(i);
-			counter.add(this.getNode(neighbour).getColor());
-		}
-		
-		return counter.size();
-		
-	}
-	
-	public List<Bridge> getNodeBridges(int index) {
-		List<Bridge> ret = new ArrayList<Bridge>();
-		
-		Node node = this.getNode(index);
-		
-		int len = node.getNeighborsSize();
-		
-		for(int i = 0 ; i < len ; ++i){
-			ret.add(this.getBridge(index, node.getNeighbor(i)));
-		}
-		
-		return ret;
-		
-	}
-	
-	public void addBridge(Bridge bridge){
-		bridgeRepos.put(bridge.getPair(), bridge);
-		int node1 = bridge.getPair().getLeft();
-		int node2 = bridge.getPair().getRight();
-		
-		nodeRepos.get(node1).addNeighbor(node2);
-		nodeRepos.get(node2).addNeighbor(node1);
-	}
-	
-	public Node getNode(int node){
-		return nodeRepos.get(node);
-	}
-	
-	public Bridge getBridge(int node1, int node2){
-		return bridgeRepos.get(new MinMaxPairInteger(node1, node2));
-	}
-	
-	public Bridge getBridge(MinMaxPairInteger bridge) {
-		return bridgeRepos.get(bridge);
-	}
-	
+	/**
+	 * Get number of bridges
+	 * @return Number of bridges
+	 */
+	@Override
 	public int getBridgeSize(){
-		return bridgeRepos.size();
+		return bridgeList.size();
 	}
 	
-	public Set<MinMaxPairInteger> getBridgeIndices(){
-		return bridgeRepos.keySet();
+	/**
+	 * Get OrderPair objects with nodes
+	 * @param index of bridge (indices from 0)
+	 * @return OrderPair object (nodes)
+	 */
+	@Override
+	public OrderPair getBridge(int id){
+		return bridgeList.get(id).getNodes();
 	}
 	
-	
-	public Set<Integer> getNodeIndices(){
-		return nodeRepos.keySet();
+	/**
+	 * Get node from map
+	 * @param index
+	 * @return Node object
+	 */
+	protected Node getNode(int index){
+		return nodeList.get(index);
 	}
 	
-	public int getNodeSize(){
-		return nodeRepos.size();
+	/**
+	 * Get node color
+	 * @param index
+	 * @return Node color (integer)
+	 */
+	@Override
+	public int getNodeColor(int index){
+		return getNode(index).getColor();
+	}
+	
+	/**
+	 * Add node to structure
+	 * @param node
+	 */
+	protected void addNode(Node node){
+		nodeList.add(node);
+		nodeMap.put(node.getId(), nodeList.size()-1);
+	}
+	
+	/**
+	 * Add node in graph
+	 * @param id
+	 */
+	@Override
+	public void addNode(int id){
+		Node node = new Node(id);
+		this.addNode(node);
+	}
+	
+	/**
+	 * Add node in graph with color
+	 * @param id
+	 * @param color
+	 */
+	@Override
+	public void addNode(int id, int color){
+		Node node = new Node(id, color);
+		this.addNode(node);
+	}
+	
+	/**
+	 * Add bridge in graph
+	 * @param id1 first id of node
+	 * @param id2 second id of node
+	 */
+	@Override
+	public void addBridge(int id1, int id2){
+		Node node1 = nodeList.get(id1);
+		Node node2 = nodeList.get(id2);
+		
+		Bridge b = new Bridge(node1, node2);
+		
+		bridgeList.add(b);
+		node1.addBridge(b);
+		node2.addBridge(b);
 	}
 
+	/**
+	 * Get number of nodes
+	 * @return Number of nodes (integer)
+	 */
+	@Override
+	public int getNodeSize() {
+		return nodeList.size();
+	}
 
-	
+	/**
+	 * @param index 
+	 * @return node id
+	 */
+	public int getNodeId(int index) {
+		return this.getNode(index).getId();
+	}
+
+	/**
+	 * Set new color to node
+	 * @param index index of node
+	 * @param color new color
+	 */
+	@Override
+	public void setNodeColor(int index, int color) {
+		this.getNode(index).setColor(color);
+	}
+
+	/**
+	 * Get node index in current list
+	 * @param id
+	 * @return current node index
+	 */
+	@Override
+	public int getNodeIndex(int id) {
+		return this.nodeMap.get(id);
+	}
 }

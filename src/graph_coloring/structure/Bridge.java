@@ -1,24 +1,27 @@
 package graph_coloring.structure;
 
-import graph_coloring.common.MinMaxPairInteger;
+import graph_coloring.common.OrderPair;
 
-public abstract class Bridge {
-
-	protected MinMaxPairInteger connection;
+public class Bridge{
 	
-	Bridge(int leftNode, int rightNode){
-		connection = new MinMaxPairInteger(leftNode, rightNode);
+	//pair of nodes in bridge
+	
+	private OrderPair Nodes; 
+	
+	/***
+	 * Function add two nodes in bridge 
+	 * @param node1 reference to first node
+	 * @param node2 reference to second node
+	 */
+	public Bridge(Node node1, Node node2){
+		Nodes = new OrderPair(node1.getId(), node2.getId());
 	}
 	
-	public int getLeft(){
-		return connection.getLeft();
-	}
-	
-	public int getRight(){
-		return connection.getRight();
-	}
-	
-	public MinMaxPairInteger getPair() {
-		return connection;
+	/***
+	 * Get nodes in OrderPair object (first and second)
+	 * @return OrderPair object of nodes
+	 */
+	public OrderPair getNodes(){
+		return Nodes;
 	}
 }

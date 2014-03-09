@@ -1,48 +1,84 @@
 package graph_coloring.structure;
 
+import graph_coloring.common.OrderPair;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class Node {
-
-	protected List<Integer> neighbors = new ArrayList<Integer>();
-	protected int color;
-	protected int id;
+public class Node {
 	
-	public Node(Node oldNode){
-		this.neighbors = oldNode.neighbors;
-		this.color = oldNode.color;
-		this.id = oldNode.id;
+	private int id;
+	private int color = -1;
+	private List<Bridge> bridges = new ArrayList<Bridge>();
+	
+	
+	/**
+	 * Get number of bridges
+	 * @return Number of bridges
+	 */
+	public int getBridgeSize(){
+		return bridges.size();
 	}
 	
-	public Node(int id, int color){
-		this.color = color;
+	/**
+	 * Get OrderPair objects with nodes
+	 * @param id of bridge (indices from 0)
+	 * @return OrderPair object (nodes)
+	 */
+	public OrderPair getBridge(int id){
+		return bridges.get(id).getNodes();
+	}
+	
+	/**
+	 * Add bridge to node
+	 * @param bridge Object Bridge
+	 */
+	public void addBridge(Bridge bridge){
+		bridges.add(bridge);
+	}
+	
+	/**
+	 * Constructor for Node class
+	 * @param id node id in graph
+	 */
+	public Node(int id){
 		this.id = id;
 	}
 	
-	public void setColor(int color){
+	/**
+	 * Constructor for Node class
+	 * @param id node id in graph
+	 * @param color node color
+	 */
+	public Node(int id, int color){
+		this.id = id;
 		this.color = color;
 	}
 	
-	public void addNeighbor(int node){
-		neighbors.add(node);
+	/**
+	 * Get node color
+	 * @return node color or null if node doesn't have a color
+	 */
+	public Integer getColor(){
+		if ( color == -1 )
+			return null;
+		return this.color;
 	}
 	
-	public int getNeighborsSize(){
-		return neighbors.size();
-	}
-	
-	public int getNeighbor(int index){
-		return neighbors.get(index);
-	}
-	
-	public int getId(){
+	/**
+	 * Get node id
+	 * @return node id
+	 */
+	public Integer getId(){
 		return this.id;
 	}
 	
-	public int getColor(){
-		return this.color;
+	/**
+	 * Set new color to node
+	 * @param color
+	 */
+	public void setColor(int color){
+		this.color = color;
 	}
 	
 }

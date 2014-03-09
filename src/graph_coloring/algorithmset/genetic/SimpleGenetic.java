@@ -2,21 +2,12 @@ package graph_coloring.algorithmset.genetic;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
-import java.util.Set;
-
-import graph_coloring.algorithm.GraphAlgorithmContext;
 import graph_coloring.algorithm.GraphColoringAlgorithm;
-import graph_coloring.algorithmset.GreedyAlgorithm;
-import graph_coloring.algorithmset.MinimalNeighbourWeight;
-import graph_coloring.stat.ErrorFunctionEricsson;
-import graph_coloring.structure.ColorClass;
 import graph_coloring.structure.EricssonGraph;
 import graph_coloring.structure.EricssonNode;
 import graph_coloring.structure.Graph;
-import graph_coloring.structure.Node;
 
 public class SimpleGenetic implements GraphColoringAlgorithm{
 	

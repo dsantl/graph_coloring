@@ -3,7 +3,6 @@ package graph_coloring.algorithmset.genetic.permutation_genetic;
 import graph_coloring.structure.EricssonGraph;
 import graph_coloring.structure.Graph;
 import graph_coloring.algorithm.GraphColoringAlgorithm;
-import graph_coloring.algorithmset.MWFast;
 import graph_coloring.algorithmset.MinimalNeighbourWeight;
 
 import java.util.ArrayList;
@@ -32,7 +31,7 @@ public class PermutationGenetic implements GraphColoringAlgorithm{
 	@Override
 	public void startAlgorithm(List<Integer> nodes, Graph graph) {
 		
-		this.algorithm = new MWFast();
+		this.algorithm = new graph_coloring.algorithmset.greedy.MWFast();
 		this.graph = (EricssonGraph) graph;
 		this.size = (int)(nodes.size() * this.targetChange);
 		this.colorableNodes = nodes;
