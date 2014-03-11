@@ -1,8 +1,9 @@
 package graph_coloring.structure.weight_graph.ericsson_graph;
 
-import graph_coloring.structure.Node;
 
-public class EricssonNode extends Node{
+import graph_coloring.structure.weight_graph.WeightNode;
+
+public class EricssonNode extends WeightNode{
 
 	//Node group (A, B, C)
 	private char nodeGroup;

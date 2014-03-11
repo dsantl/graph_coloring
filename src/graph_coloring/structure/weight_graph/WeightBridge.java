@@ -1,7 +1,6 @@
 package graph_coloring.structure.weight_graph;
 
 import graph_coloring.structure.Bridge;
-import graph_coloring.structure.Node;
 
 public class WeightBridge extends Bridge{
 
@@ -14,7 +13,7 @@ public class WeightBridge extends Bridge{
 	 * @param node2
 	 * @param weight
 	 */
-	public WeightBridge(Node node1, Node node2, double weight){
+	public WeightBridge(WeightNode node1, WeightNode node2, double weight){
 		super(node1, node2);
 		this.weight = weight;
 	}

@@ -3,6 +3,9 @@ package graph_coloring.main;
 import graph_coloring.input.FERFileFormat;
 import graph_coloring.input.FileFormat;
 import graph_coloring.input.NodeColorFormat;
+import graph_coloring.order.OrderNodeLDO;
+import graph_coloring.order.OrderNodeSDO;
+import graph_coloring.order.OrderNodeSDOLDO;
 import graph_coloring.stat.ChangeColorGlobal;
 import graph_coloring.stat.CheckValidColoring;
 import graph_coloring.stat.ErrorFunctionEricsson;
@@ -45,6 +48,12 @@ public class Main {
 		catch(Exception e)
 		{
 			e.printStackTrace();
+		}
+		
+		graph.makeNodeOrder(new OrderNodeSDOLDO());
+		
+		for(int i = 0 ; i < graph.getNodeSize() ; ++i){
+			System.out.println(graph.getNodeSaturation(i));
 		}
 		
 		double oldError = ErrorFunctionEricsson.computeStat(graph);

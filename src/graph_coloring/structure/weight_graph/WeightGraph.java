@@ -2,9 +2,12 @@ package graph_coloring.structure.weight_graph;
 
 import graph_coloring.structure.Bridge;
 import graph_coloring.structure.Graph;
-import graph_coloring.structure.Node;
 
 public class WeightGraph extends Graph implements IWeightGraph{
+	
+	public double getNodeNeighbourWeight(int id){
+		
+	}
 	
 	/**
 	 * Get WeightBridge object
@@ -31,10 +34,12 @@ public class WeightGraph extends Graph implements IWeightGraph{
 	 */
 	@Override
 	public void addWeightBridge(int id1, int id2, double weight) {
-		Node node1 = nodeList.get(this.getNodeIndex(id1));
-		Node node2 = nodeList.get(this.getNodeIndex(id2));
+		WeightNode node1 = (WeightNode)nodeList.get(this.getNodeIndex(id1));
+		WeightNode node2 = (WeightNode)nodeList.get(this.getNodeIndex(id2));
 		Bridge b = new WeightBridge(node1, node2, weight);
 		this.addBridge(node1, node2, b);
+		node1.addWeight(weight);
+		node2.addWeight(weight);
 	}
 	
 }

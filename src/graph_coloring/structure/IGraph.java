@@ -7,6 +7,9 @@ public interface IGraph {
 	
 	public void setNodeColor(int index, int color);
 	
+	public int getNodeDegree(int index);
+	
+	public int getNodeSaturation(int index);
 	
 	public int getNodeColor(int index);
 	
@@ -28,5 +31,5 @@ public interface IGraph {
 	
 	public void makeNodeOrder(OrderMethod ord);
 
-	public void makeBridgeOrder(OrderMethod ord);
+	public void makeBridgeOrder(OrderMethod ord);	
 }

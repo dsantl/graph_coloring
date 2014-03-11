@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+
 public class Graph implements IGraph{
 
 	//list of bridges
@@ -147,8 +148,8 @@ public class Graph implements IGraph{
 	 */
 	protected void addBridge(Node node1, Node node2, Bridge b){
 		bridgeList.add(b);
-		node1.addBridge(b);
-		node2.addBridge(b);
+		node1.addNeighbour(node2);
+		node2.addNeighbour(node1);
 	}
 
 	/**
@@ -170,8 +171,16 @@ public class Graph implements IGraph{
 
 	@Override
 	public void makeBridgeOrder(OrderMethod ord) {
-		ord.makeOrder(bridgeList);
-		
+		ord.makeOrder(bridgeList);	
+	}
+
+	@Override
+	public int getNodeDegree(int index) {
+		return this.getNode(index).getBridgeSize();
 	}
 	
+	@Override
+	public int getNodeSaturation(int index) {
+		return this.getNode(index).getSaturation();
+	}
 }

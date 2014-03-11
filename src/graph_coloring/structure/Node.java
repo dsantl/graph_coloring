@@ -1,40 +1,48 @@
 package graph_coloring.structure;
 
-import graph_coloring.common.OrderPair;
-
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class Node extends ElementProperty {
 	
 	private int id;
 	private int color = -1;
-	private List<Bridge> bridges = new ArrayList<Bridge>();
-	
+	private List<Node> neighbours = new ArrayList<Node>();
 	
 	/**
 	 * Get number of bridges
 	 * @return Number of bridges
 	 */
 	public int getBridgeSize(){
-		return bridges.size();
+		return neighbours.size();
 	}
 	
 	/**
-	 * Get OrderPair objects with nodes
-	 * @param id of bridge (indices from 0)
-	 * @return OrderPair object (nodes)
+	 * Get neighbour node
+	 * @param index in neighbour list
+	 * @return node (Node)
 	 */
-	public OrderPair getBridge(int id){
-		return bridges.get(id).getNodes();
+	public Node getNeighbourId(int index){
+		return neighbours.get(index);
+	}
+	
+	public int getSaturation(){
+		Set<Integer> colors = new HashSet<Integer>();
+		for(Node node : neighbours){
+			colors.add(node.getColor());
+		}
+		return colors.size();
+
 	}
 	
 	/**
-	 * Add bridge to node
-	 * @param bridge Object Bridge
+	 * Add neighbour to node
+	 * @param node id
 	 */
-	public void addBridge(Bridge bridge){
-		bridges.add(bridge);
+	public void addNeighbour(Node node){
+		neighbours.add(node);
 	}
 	
 	/**
