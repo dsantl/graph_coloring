@@ -2,10 +2,9 @@ package graph_coloring.structure;
 
 import graph_coloring.common.OrderPair;
 
-public class Bridge{
+public class Bridge extends ElementProperty{
 	
 	//pair of nodes in bridge
-	
 	private OrderPair Nodes; 
 	
 	/***

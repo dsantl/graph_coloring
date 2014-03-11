@@ -1,6 +1,7 @@
 package graph_coloring.structure;
 
 import graph_coloring.common.OrderPair;
+import graph_coloring.order.OrderMethod;
 
 public interface IGraph {
 	
@@ -24,4 +25,8 @@ public interface IGraph {
 	public OrderPair getBridge(int index);
 	
 	public int getNodeSize();
+	
+	public void makeNodeOrder(OrderMethod ord);
+
+	public void makeBridgeOrder(OrderMethod ord);
 }

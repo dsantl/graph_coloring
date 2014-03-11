@@ -1,6 +1,7 @@
 package graph_coloring.structure;
 
 import graph_coloring.common.OrderPair;
+import graph_coloring.order.OrderMethod;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -19,6 +20,7 @@ public class Graph implements IGraph{
 	private Map<Integer, Integer> nodeMap = new HashMap<Integer, Integer>();
 	
 	
+	
 	/**
 	 * Get number of bridges
 	 * @return Number of bridges
@@ -34,8 +36,8 @@ public class Graph implements IGraph{
 	 * @return OrderPair object (nodes)
 	 */
 	@Override
-	public OrderPair getBridge(int id){
-		return bridgeList.get(id).getNodes();
+	public OrderPair getBridge(int index){
+		return bridgeList.get(index).getNodes();
 	}
 	
 	/**
@@ -94,14 +96,10 @@ public class Graph implements IGraph{
 	 */
 	@Override
 	public void addBridge(int id1, int id2){
-		Node node1 = nodeList.get(id1);
-		Node node2 = nodeList.get(id2);
-		
+		Node node1 = nodeList.get(this.getNodeIndex(id1));
+		Node node2 = nodeList.get(this.getNodeIndex(id2));
 		Bridge b = new Bridge(node1, node2);
-		
-		bridgeList.add(b);
-		node1.addBridge(b);
-		node2.addBridge(b);
+		this.addBridge(node1, node2, b);
 	}
 
 	/**
@@ -140,4 +138,40 @@ public class Graph implements IGraph{
 	public int getNodeIndex(int id) {
 		return this.nodeMap.get(id);
 	}
+	
+	/**
+	 * Add bridge to structure
+	 * @param node1 
+	 * @param node2
+	 * @param b bridge
+	 */
+	protected void addBridge(Node node1, Node node2, Bridge b){
+		bridgeList.add(b);
+		node1.addBridge(b);
+		node2.addBridge(b);
+	}
+
+	/**
+	 * Refresh map of id-index
+	 */
+	private void refreshNodeMap(){
+		nodeMap.clear();
+		for(int i = 0 ; i < this.getNodeSize() ; ++i){
+			nodeMap.put(this.getNodeId(i), i);
+		}
+	}
+	
+	@Override
+	public void makeNodeOrder(OrderMethod ord) {
+		List<? extends ElementProperty> nodeProp = nodeList;
+		ord.makeOrder(nodeProp);
+		refreshNodeMap();
+	}
+
+	@Override
+	public void makeBridgeOrder(OrderMethod ord) {
+		ord.makeOrder(bridgeList);
+		
+	}
+	
 }

@@ -40,7 +40,7 @@ public class Main {
 		*/
 		
 		try {
-			NodeColorFormat.setColorsFromFileToGraph("/home/dino/Desktop/bojanje_Tokai4.txt", graph);
+			NodeColorFormat.setColorsFromFileToGraph("/home/dino/Desktop/bojanje_Tokai3.txt", graph);
 		}
 		catch(Exception e)
 		{
@@ -54,7 +54,6 @@ public class Main {
 		System.out.format("Color change: %f\n", ChangeColorGlobal.computeStat(graph));
 		System.out.format("Valid coloring: %b\n", CheckValidColoring.computeStat(graph));
 		
-	
 		long end = System.currentTimeMillis();
 		System.out.println(end-start);
 

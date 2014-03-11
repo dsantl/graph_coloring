@@ -1,11 +1,16 @@
 package graph_coloring.algorithm;
 
-import java.util.List;
+import java.util.Map;
 
 import graph_coloring.structure.Graph;
 
 public interface GraphColoringAlgorithm {
 
-	public void startAlgorithm(List<Integer> nodes, Graph graph);
+	/**
+	 * Run algorithm, algorithm change graph object
+	 * @param graph
+	 * @param param Map - key is parameter name and value is some Object
+	 */
+	public void startAlgorithm(Graph graph, Map<String, Object> param);
 	
 }

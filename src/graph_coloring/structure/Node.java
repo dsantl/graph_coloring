@@ -5,7 +5,7 @@ import graph_coloring.common.OrderPair;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Node {
+public class Node extends ElementProperty {
 	
 	private int id;
 	private int color = -1;
@@ -80,5 +80,4 @@ public class Node {
 	public void setColor(int color){
 		this.color = color;
 	}
-	
 }

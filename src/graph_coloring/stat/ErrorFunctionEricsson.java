@@ -17,9 +17,9 @@ public class ErrorFunctionEricsson {
 		
 		for(int i = 0 ; i < graph.getBridgeSize() ; ++i){
 			OrderPair eBridge = graph.getBridge(i);
-			int leftNode = eBridge.getFirst();
-			int rightNode = eBridge.getSecond();
-			
+			int leftNode = graph.getNodeIndex(eBridge.getFirst());
+			int rightNode = graph.getNodeIndex(eBridge.getSecond());
+				
 			if ( (graph.getNodeGroup(leftNode) == graph.getNodeGroup(rightNode)) && 
 				 (graph.getNodeColor(leftNode) == graph.getNodeColor(rightNode)) &&
 				 (graph.getNodeColorable(leftNode) == true || graph.getNodeColorable(rightNode) == true)){	
@@ -33,10 +33,10 @@ public class ErrorFunctionEricsson {
 			int colorClassId = graph.getNodeDomainName(i);
 			int color = graph.getNodeColor(i);
 			
-			if (!graph.colorClassContain(colorClassId, color))
-			{
-				if ( graph.getNodeColorable(i) == true)
-					ret += 10000000.0;
+			if ( graph.getNodeColorable(i) == true){
+				if (!graph.colorClassContain(colorClassId, color)){
+						ret += 10000000.0;
+				}
 			}
 		}
 		
