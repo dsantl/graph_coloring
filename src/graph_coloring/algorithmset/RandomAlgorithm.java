@@ -5,8 +5,6 @@ import java.util.Random;
 import java.util.Set;
 
 import graph_coloring.algorithm.GraphColoringAlgorithm;
-import graph_coloring.structure.EricssonGraph;
-import graph_coloring.structure.EricssonNode;
 import graph_coloring.structure.Graph;
 import graph_coloring.structure.Node;
 

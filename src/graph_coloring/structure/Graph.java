@@ -1,5 +1,6 @@
 package graph_coloring.structure;
 
+import graph_coloring.color_selector.ColorSelector;
 import graph_coloring.common.OrderPair;
 import graph_coloring.order.OrderMethod;
 
@@ -173,7 +174,7 @@ public class Graph implements IGraph{
 	public void makeBridgeOrder(OrderMethod ord) {
 		ord.makeOrder(bridgeList);	
 	}
-
+	
 	@Override
 	public int getNodeDegree(int index) {
 		return this.getNode(index).getBridgeSize();
@@ -182,5 +183,10 @@ public class Graph implements IGraph{
 	@Override
 	public int getNodeSaturation(int index) {
 		return this.getNode(index).getSaturation();
+	}
+
+	@Override
+	public int chooseColor(int nodeIndex, ColorSelector colorSelector) {
+		return colorSelector.selectColor(this.getNode(nodeIndex), null);
 	}
 }

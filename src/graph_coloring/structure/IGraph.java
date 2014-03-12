@@ -1,5 +1,6 @@
 package graph_coloring.structure;
 
+import graph_coloring.color_selector.ColorSelector;
 import graph_coloring.common.OrderPair;
 import graph_coloring.order.OrderMethod;
 
@@ -32,4 +33,6 @@ public interface IGraph {
 	public void makeNodeOrder(OrderMethod ord);
 
 	public void makeBridgeOrder(OrderMethod ord);	
+
+	public int chooseColor(int nodeIndex, ColorSelector colorSelector);
 }

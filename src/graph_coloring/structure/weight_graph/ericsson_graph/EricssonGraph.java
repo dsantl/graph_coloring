@@ -5,6 +5,7 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
+import graph_coloring.color_selector.ColorSelector;
 import graph_coloring.structure.weight_graph.WeightGraph;
 
 public class EricssonGraph extends WeightGraph implements IEricssonGraph{
@@ -182,5 +183,11 @@ public class EricssonGraph extends WeightGraph implements IEricssonGraph{
 	public void addEricssonNode(int id, char nodeGroup, int domainName, int startColor, boolean colorable) {
 		EricssonNode node = new EricssonNode(id, nodeGroup, domainName, startColor, colorable);
 		this.addNode(node);
+	}
+	
+	@Override
+	public int chooseColor(int nodeIndex, ColorSelector colorSelector) {
+		Iterator<Integer> avbColors = this.getAvailableColorsOfNode(nodeIndex);
+		return colorSelector.selectColor(this.getNode(nodeIndex), avbColors);
 	}
 }
