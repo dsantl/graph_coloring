@@ -24,7 +24,7 @@ public class Node extends ElementProperty {
 	 * @param index in neighbour list
 	 * @return node (Node)
 	 */
-	public Node getNeighbourId(int index){
+	public Node getNeighbour(int index){
 		return neighbours.get(index);
 	}
 	

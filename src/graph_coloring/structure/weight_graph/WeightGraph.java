@@ -4,18 +4,14 @@ import graph_coloring.structure.Bridge;
 import graph_coloring.structure.Graph;
 
 public class WeightGraph extends Graph implements IWeightGraph{
-	
-	public double getNodeNeighbourWeight(int id){
-		
-	}
-	
+
 	/**
 	 * Get WeightBridge object
 	 * @param id
 	 * @return WeightBridge object
 	 */
-	private WeightBridge getWeightBridge(int id){
-		return (WeightBridge)bridgeList.get(id);
+	private WeightBridge getWeightBridge(int index){
+		return (WeightBridge)bridgeList.get(index);
 	}
 	
 	/**
@@ -40,6 +36,21 @@ public class WeightGraph extends Graph implements IWeightGraph{
 		this.addBridge(node1, node2, b);
 		node1.addWeight(weight);
 		node2.addWeight(weight);
+	}
+	
+	@Override
+	public double getNodeNeighbourWeight(int nodeIndex, int neighbourIndex) {
+		return ((WeightNode)this.getNode(nodeIndex)).getWeight(neighbourIndex);
+	}
+
+	@Override
+	public double getNodeError(int index) {
+		return ((WeightNode)this.getNode(index)).getError();
+	}
+
+	@Override
+	public int getNodeCollision(int index) {
+		return ((WeightNode)this.getNode(index)).getCollision();
 	}
 	
 }

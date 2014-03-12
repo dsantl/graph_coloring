@@ -3,9 +3,13 @@ package graph_coloring.main;
 import graph_coloring.input.FERFileFormat;
 import graph_coloring.input.FileFormat;
 import graph_coloring.input.NodeColorFormat;
+import graph_coloring.order.OrderBridgeWeight;
+import graph_coloring.order.OrderNodeCOL;
+import graph_coloring.order.OrderNodeFIT;
 import graph_coloring.order.OrderNodeLDO;
 import graph_coloring.order.OrderNodeSDO;
 import graph_coloring.order.OrderNodeSDOLDO;
+import graph_coloring.order.OrderNodeSTDORD;
 import graph_coloring.stat.ChangeColorGlobal;
 import graph_coloring.stat.CheckValidColoring;
 import graph_coloring.stat.ErrorFunctionEricsson;
@@ -50,10 +54,10 @@ public class Main {
 			e.printStackTrace();
 		}
 		
-		graph.makeNodeOrder(new OrderNodeSDOLDO());
+		graph.makeBridgeOrder(new OrderBridgeWeight());
 		
-		for(int i = 0 ; i < graph.getNodeSize() ; ++i){
-			System.out.println(graph.getNodeSaturation(i));
+		for(int i = 0 ; i < graph.getBridgeSize() ; ++i){
+			System.out.println(graph.getBridgeWeight(i));
 		}
 		
 		double oldError = ErrorFunctionEricsson.computeStat(graph);
