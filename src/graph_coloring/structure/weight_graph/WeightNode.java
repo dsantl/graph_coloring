@@ -1,29 +1,45 @@
 package graph_coloring.structure.weight_graph;
 
+import graph_coloring.common.Pair;
 import graph_coloring.structure.Node;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Comparator;
+import java.util.Iterator;
+import java.util.SortedSet;
+import java.util.TreeSet;
 
 public class WeightNode extends Node{
 
-	//weights to another nodes corresponding to neighbours
-	private List<Double> weights = new ArrayList<Double>();
-	
-	public double getWeight(int index){
-		return weights.get(index);
+	private class bWCmp implements Comparator<Pair<Double, WeightNode>>{
+
+		@Override
+		public int compare(Pair<Double, WeightNode> arg0, Pair<Double, WeightNode> arg1) {
+			return Double.compare(arg0.getFirst(), arg1.getFirst());
+		}
+		
 	}
 	
-	public void addWeight(double w){
-		weights.add(w);
+	//weights to another nodes corresponding to neighbours
+	private SortedSet<Pair<Double, WeightNode>> weights = new TreeSet<Pair<Double, WeightNode>>(new bWCmp());
+	
+	public Iterator<Pair<Double, WeightNode>> getNeighbours(){
+		return weights.iterator();
+	}
+	
+	public void addWeight(double weight, WeightNode node){
+		weights.add(new Pair<Double, WeightNode>(weight, node));
 	}
 	
 	public double getError(){
 		double error = 0;
 		
-		for(int i = 0 ; i < this.getBridgeSize() ; ++i){
-			if ( this.getNeighbour(i).getColor() == this.getColor() )
-				error += this.getWeight(i);
+		Iterator<Pair<Double, WeightNode>> it = this.getNeighbours();
+		
+		while(it.hasNext()){
+			Pair<Double, WeightNode> bridge = it.next();
+			
+			if ( bridge.getSecond().getColor() == this.getColor() )
+				error += bridge.getFirst();
 		}
 		
 		return error;
@@ -34,7 +50,7 @@ public class WeightNode extends Node{
 		
 		for(int i = 0 ; i < this.getBridgeSize() ; ++i){
 			if ( this.getNeighbour(i).getColor() == this.getColor() )
-				col += this.getWeight(i);
+				col += 1;
 		}
 		
 		return col;

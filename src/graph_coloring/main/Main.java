@@ -1,5 +1,8 @@
 package graph_coloring.main;
 
+import graph_coloring.algorithm.GraphAlgorithmContext;
+import graph_coloring.algorithmset.RandomAlgorithm;
+import graph_coloring.algorithmset.greedy.Greedy;
 import graph_coloring.input.FERFileFormat;
 import graph_coloring.input.FileFormat;
 import graph_coloring.input.NodeColorFormat;
@@ -46,6 +49,7 @@ public class Main {
 		}
 		*/
 		
+		/*
 		try {
 			NodeColorFormat.setColorsFromFileToGraph("/home/dino/Desktop/bojanje_Tokai3.txt", graph);
 		}
@@ -53,16 +57,16 @@ public class Main {
 		{
 			e.printStackTrace();
 		}
-		
-		graph.makeBridgeOrder(new OrderBridgeWeight());
-		
-		for(int i = 0 ; i < graph.getBridgeSize() ; ++i){
-			System.out.println(graph.getBridgeWeight(i));
-		}
+		*/
 		
 		double oldError = ErrorFunctionEricsson.computeStat(graph);
 		
-		System.out.format("Error: %f\n", oldError);		
+		System.out.println("Algorithm...");
+		GraphAlgorithmContext alg = new GraphAlgorithmContext(new Greedy("COL", "MF", 1));
+		alg.startAlgorithm(graph);
+		
+		System.out.format("Old error: %f\n", oldError);		
+		System.out.format("New error: %f\n", ErrorFunctionEricsson.computeStat(graph));
 		
 		System.out.format("Color change: %f\n", ChangeColorGlobal.computeStat(graph));
 		System.out.format("Valid coloring: %b\n", CheckValidColoring.computeStat(graph));

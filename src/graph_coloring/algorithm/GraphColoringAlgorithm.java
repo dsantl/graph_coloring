@@ -1,16 +1,51 @@
 package graph_coloring.algorithm;
 
-import java.util.Map;
+import java.util.Set;
 
 import graph_coloring.structure.Graph;
 
-public interface GraphColoringAlgorithm {
+public abstract class GraphColoringAlgorithm {
 
+	private Set<Integer> touchableNodes = null;
+	protected Graph graph;
+	
+	/**
+	 * Return true if node can change color (by user definition)
+	 * @param index Node index
+	 * @return true if node can change color or false if note is not in touchable node set
+	 */
+	protected boolean checkNode(int index){
+		
+		int id = graph.getNodeId(index);
+		if (touchableNodes == null)
+			return true;
+		
+		return touchableNodes.contains(id);
+	}
+	
+	protected abstract void algorithm();
+	
 	/**
 	 * Run algorithm, algorithm change graph object
 	 * @param graph
-	 * @param param Map - key is parameter name and value is some Object
+	 * @param param list of parameters depends of algorithm
 	 */
-	public void startAlgorithm(Graph graph, Map<String, Object> param);
+	public void startAlgorithm(Graph graph){
+		touchableNodes = null;
+		this.graph = graph;
+		this.algorithm();
+	}
 	
+	
+	/**
+	 * Run algorithm with touchable nodes
+	 * @param graph
+	 * @param touchNodeId List of touchable nodes (Ids)
+	 * @param params list of parameters depends of algorithm
+	 */
+	public void startAlgorithm(Graph graph, Set<Integer> touchNodeId){
+		touchableNodes = touchNodeId;
+		this.graph = graph;
+		this.algorithm();
+	}
 }

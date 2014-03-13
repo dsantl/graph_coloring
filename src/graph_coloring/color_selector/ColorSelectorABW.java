@@ -4,11 +4,14 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
+import graph_coloring.common.Pair;
 import graph_coloring.structure.Node;
+import graph_coloring.structure.weight_graph.WeightNode;
 import graph_coloring.structure.weight_graph.ericsson_graph.EricssonNode;
 
 public class ColorSelectorABW implements ColorSelector{
 	
+	//TODO
 	@SuppressWarnings("unchecked")
 	@Override
 	public int selectColor(Node node, Object param){
@@ -24,11 +27,18 @@ public class ColorSelectorABW implements ColorSelector{
 			nodeColors.add(colors.next());
 		}
 		
-		for(int i = 0 ; i  < eNode.getBridgeSize() ; ++i){
+		Iterator<Pair<Double, WeightNode>> it = eNode.getNeighbours();
+		
+		while(it.hasNext()){
 			if (nodeColors.size() == 1)
-				retColor = nodeColors.iterator().next();
-			nodeColors.remove(eNode.getNeighbour(i).getColor());
+				break;
+			nodeColors.remove(it.next().getSecond().getColor());
 		}
+		
+		if (nodeColors.contains(eNode.getColor()))
+			return eNode.getColor();
+		
+		retColor = nodeColors.iterator().next();
 		
 		return retColor;
 	}

@@ -1,7 +1,10 @@
 package graph_coloring.structure.weight_graph;
 
+import java.util.Iterator;
+
 import graph_coloring.structure.Bridge;
 import graph_coloring.structure.Graph;
+import graph_coloring.common.Pair;
 
 public class WeightGraph extends Graph implements IWeightGraph{
 
@@ -34,15 +37,11 @@ public class WeightGraph extends Graph implements IWeightGraph{
 		WeightNode node2 = (WeightNode)nodeList.get(this.getNodeIndex(id2));
 		Bridge b = new WeightBridge(node1, node2, weight);
 		this.addBridge(node1, node2, b);
-		node1.addWeight(weight);
-		node2.addWeight(weight);
+		node1.addWeight(weight, node2);
+		node2.addWeight(weight, node1);
 	}
 	
-	@Override
-	public double getNodeNeighbourWeight(int nodeIndex, int neighbourIndex) {
-		return ((WeightNode)this.getNode(nodeIndex)).getWeight(neighbourIndex);
-	}
-
+	
 	@Override
 	public double getNodeError(int index) {
 		return ((WeightNode)this.getNode(index)).getError();
@@ -51,6 +50,11 @@ public class WeightGraph extends Graph implements IWeightGraph{
 	@Override
 	public int getNodeCollision(int index) {
 		return ((WeightNode)this.getNode(index)).getCollision();
+	}
+	
+	@Override
+	public Iterator<Pair<Double, WeightNode>> getNeighbours(int index){
+		return ((WeightNode)this.getNode(index)).getNeighbours();
 	}
 	
 }

@@ -1,6 +1,5 @@
 package graph_coloring.algorithm;
 
-import java.util.Map;
 
 import graph_coloring.structure.Graph;
 
@@ -22,17 +21,10 @@ public class GraphAlgorithmContext {
 	 * @param graph
 	 * @param param
 	 */
-	public void startAlgorithm(Graph graph, Map<String, Object> param)
-	{
-		algorithm.startAlgorithm(graph, param);
-	}
-	
-	/**
-	 * Start algorithm without parameters
-	 * @param graph
-	 */
 	public void startAlgorithm(Graph graph)
 	{
-		algorithm.startAlgorithm(graph, null);
+		algorithm.startAlgorithm(graph);
 	}
+	
+
 }

@@ -1,45 +1,56 @@
 package graph_coloring.algorithmset;
 
-import java.util.List;
+
+import java.util.Iterator;
 import java.util.Random;
-import java.util.Set;
 
 import graph_coloring.algorithm.GraphColoringAlgorithm;
-import graph_coloring.structure.Graph;
-import graph_coloring.structure.Node;
+import graph_coloring.structure.weight_graph.ericsson_graph.EricssonGraph;
 
-public class RandomAlgorithm implements GraphColoringAlgorithm{
+
+public class RandomAlgorithm extends GraphColoringAlgorithm{
+
+	private int getRandomColor(EricssonGraph graph, int index){
+		Random rnd = new Random();
+		int domainName = graph.getNodeDomainName(index);
+		int noColors = graph.getDomainNameSize();
+		Iterator<Integer> it = graph.getDomainNameIterator(domainName);
+		int rndInt = rnd.nextInt(noColors);
+		int cnt = 0;
+		
+		while(it.hasNext()){
+			int color = it.next();
+			if ( rndInt == cnt )
+				return color;
+			cnt += 1;
+		}
+		
+		return graph.getNodeColor(index);
+	}
 	
-	@Override
-	public void startAlgorithm(List<Integer> nodes, Graph graph) {
+	private void startAlgorithm(EricssonGraph graph){
 		
-		EricssonGraph eGraph = (EricssonGraph) graph;
-		Set<Integer> allNodes = graph.getNodeIndices();
+		int numOfNodes = graph.getNodeSize();
 		
-		for(Integer index : allNodes){
-			EricssonNode eNode = (EricssonNode) graph.getNode(index);
-			if ( eNode.getColorable() == false )
+		for(int i = 0 ; i < numOfNodes ; ++i){
+			
+			if ( !this.checkNode(i) ){
 				continue;
-			int colorClass = eNode.getColorClass();
-			int newColor = randomNewColor((EricssonGraph)graph, colorClass);
-			eGraph.setNodeColor(index, newColor);
+			}
+			
+			if ( !graph.getNodeColorable(i) )
+				continue;
+			
+			int randomColor = getRandomColor(graph, i);
+			graph.setNodeColor(i, randomColor);
 		}
 		
 	}
 
-	private int randomNewColor(EricssonGraph graph, int colorClass) {
-		List<Integer> colors = graph.getAllColorsOfClass(colorClass);
-		Random rnd = new Random();
-		int index  = rnd.nextInt(colors.size());
-		int cnt = 0;
-		
-		for(Integer color : colors){
-			if ( cnt == index)
-				return color; 
-			cnt += 1;
-		}
-		
-		return -1;
+	@Override
+	protected void algorithm() {
+		EricssonGraph eGraph = (EricssonGraph) graph;
+		this.startAlgorithm(eGraph);
 	}
 
 }

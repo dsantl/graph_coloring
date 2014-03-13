@@ -29,7 +29,6 @@ public class ColorSelectorMF implements ColorSelector{
 				minColor = currColor;
 			}
 		}
-		
 		eNode.setColor(memColor);
 		
 		return minColor;
