@@ -1,8 +1,11 @@
 package graph_coloring.main;
 
+import java.util.Iterator;
+
 import graph_coloring.algorithm.GraphAlgorithmContext;
 import graph_coloring.algorithmset.RandomAlgorithm;
 import graph_coloring.algorithmset.greedy.Greedy;
+import graph_coloring.common.Pair;
 import graph_coloring.input.FERFileFormat;
 import graph_coloring.input.FileFormat;
 import graph_coloring.input.NodeColorFormat;
@@ -16,6 +19,7 @@ import graph_coloring.order.OrderNodeSTDORD;
 import graph_coloring.stat.ChangeColorGlobal;
 import graph_coloring.stat.CheckValidColoring;
 import graph_coloring.stat.ErrorFunctionEricsson;
+import graph_coloring.structure.weight_graph.WeightNode;
 import graph_coloring.structure.weight_graph.ericsson_graph.EricssonGraph;
 
 
@@ -51,7 +55,7 @@ public class Main {
 		
 		/*
 		try {
-			NodeColorFormat.setColorsFromFileToGraph("/home/dino/Desktop/bojanje_Tokai3.txt", graph);
+			NodeColorFormat.setColorsFromFileToGraph("/home/dino/Desktop/bojanje.txt", graph);
 		}
 		catch(Exception e)
 		{
@@ -61,9 +65,42 @@ public class Main {
 		
 		double oldError = ErrorFunctionEricsson.computeStat(graph);
 		
+		
 		System.out.println("Algorithm...");
-		GraphAlgorithmContext alg = new GraphAlgorithmContext(new Greedy("COL", "MF", 1));
-		alg.startAlgorithm(graph);
+		GraphAlgorithmContext alg;
+		
+		int i = 1000;
+		
+		while(i!=0){
+			
+			i -= 1;
+			
+			double error = ErrorFunctionEricsson.computeStat(graph);
+			System.out.format("Old error: %f\n", error);		
+			System.out.format("Color change: %f\n\n", ChangeColorGlobal.computeStat(graph));
+			
+			if ( error > 2800.0 ){
+				alg = new GraphAlgorithmContext(new Greedy("LDO", "ABW", 1));
+				alg.startAlgorithm(graph);
+			}
+			else
+			{
+				alg = new GraphAlgorithmContext(new Greedy("SDO", "ABW", 1));
+				alg.startAlgorithm(graph);
+			}
+			
+			double newError = ErrorFunctionEricsson.computeStat(graph);
+			
+			if ( error - newError <= 2.0){
+				alg = new GraphAlgorithmContext(new Greedy("SDOLDO", "MF", 1));
+				alg.startAlgorithm(graph);
+			}
+			else if ( error - newError <= 10.0){
+				alg = new GraphAlgorithmContext(new Greedy("FIT", "MF", 1));
+				alg.startAlgorithm(graph);
+			}
+			
+		}
 		
 		System.out.format("Old error: %f\n", oldError);		
 		System.out.format("New error: %f\n", ErrorFunctionEricsson.computeStat(graph));

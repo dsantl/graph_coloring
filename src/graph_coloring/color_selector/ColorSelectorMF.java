@@ -22,14 +22,13 @@ public class ColorSelectorMF implements ColorSelector{
 		
 		while(colors.hasNext()){
 			int currColor = colors.next();
-			eNode.setColor(currColor);
-			double err = eNode.getError();
+			double err = eNode.getError(currColor);
+			
 			if ( err < minError ){
 				minError = err;
 				minColor = currColor;
 			}
 		}
-		eNode.setColor(memColor);
 		
 		return minColor;
 	}

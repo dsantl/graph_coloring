@@ -38,28 +38,51 @@ public class Greedy extends GraphColoringAlgorithm {
 		this.bridgeOrder = false;
 	}
 	
-	private void makeStep(){
-		
+	private void sortElements(){
 		if (bridgeOrder)
 			graph.makeBridgeOrder(orderMethod);
 		else
 			graph.makeNodeOrder(orderMethod);
+	}
+	
+	private void makeNodeStep(){
+		
+		this.sortElements();
 		
 		for(int index = 0 ; index < graph.getNodeSize() ; ++index){
-			
-			if ( !checkNode(index) )
-				continue;
-			int newColor = graph.chooseColor(index, colorSelector);
-			graph.setNodeColor(index, newColor);
+			this.setColorToNode(index);
 		}
+	}
+	
+	private void setColorToNode(int index){
+		if ( !checkNode(index) )
+			return;
+
+		int newColor = graph.chooseColor(index, colorSelector);
+		graph.setNodeColor(index, newColor);
+	}
+	
+	private void makeBridgeStep(){
+		
+		this.sortElements();
+		
+		for(int index = 0 ; index < graph.getBridgeSize() ; ++index){
+			int node1Index = graph.getNodeIndex(graph.getBridge(index).getFirst());
+			int node2Index = graph.getNodeIndex(graph.getBridge(index).getSecond());
+			setColorToNode(node1Index);
+			setColorToNode(node2Index);
+		}
+		
 	}
 	
 	@Override
 	protected void algorithm() {
 		
 		for(int k = 0 ; k < step ; ++k){
-			makeStep();
-		
+			if (this.bridgeOrder)
+				makeBridgeStep();
+			else
+				makeNodeStep();
 		}
 	}
 }

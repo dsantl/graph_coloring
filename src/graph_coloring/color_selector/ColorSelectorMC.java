@@ -12,25 +12,22 @@ public class ColorSelectorMC implements ColorSelector{
 	public int selectColor(Node node, Object param){
 		EricssonNode eNode = (EricssonNode)node;
 		Iterator<Integer> colors = (Iterator<Integer>)param;
-		int memColor = node.getColor();
 		
 		if (eNode.getColorable() == false)
 			return eNode.getColor();
 		
 		int minCollision = Integer.MAX_VALUE;
-		int minColor = memColor;
+		int minColor = -1;
 		
 		while(colors.hasNext()){
 			int currColor = colors.next();
-			eNode.setColor(currColor);
-			int col = eNode.getCollision();
+			int col = eNode.getCollision(currColor);
+			
 			if ( col < minCollision ){
 				minCollision = col;
 				minColor = currColor;
 			}
 		}
-		
-		eNode.setColor(memColor);
 		
 		return minColor;
 	}

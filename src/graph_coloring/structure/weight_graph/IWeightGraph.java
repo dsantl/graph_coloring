@@ -10,4 +10,5 @@ public interface IWeightGraph {
 	public double getNodeError(int index);
 	public int getNodeCollision(int index);
 	public Iterator<Pair<Double, WeightNode>> getNeighbours(int index);
+	public void sortNeighbours(int index);
 }

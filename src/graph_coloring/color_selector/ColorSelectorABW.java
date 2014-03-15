@@ -11,7 +11,6 @@ import graph_coloring.structure.weight_graph.ericsson_graph.EricssonNode;
 
 public class ColorSelectorABW implements ColorSelector{
 	
-	//TODO
 	@SuppressWarnings("unchecked")
 	@Override
 	public int selectColor(Node node, Object param){
@@ -22,6 +21,8 @@ public class ColorSelectorABW implements ColorSelector{
 		
 		if (eNode.getColorable() == false)
 			return eNode.getColor();
+		
+		eNode.sortNeighbours();
 		
 		while(colors.hasNext()){
 			nodeColors.add(colors.next());
@@ -35,8 +36,8 @@ public class ColorSelectorABW implements ColorSelector{
 			nodeColors.remove(it.next().getSecond().getColor());
 		}
 		
-		if (nodeColors.contains(eNode.getColor()))
-			return eNode.getColor();
+		if (nodeColors.contains(eNode.getStartColor()))
+			return eNode.getStartColor();
 		
 		retColor = nodeColors.iterator().next();
 		

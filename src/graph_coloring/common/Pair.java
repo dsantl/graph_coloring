@@ -1,6 +1,6 @@
 package graph_coloring.common;
 
-public class Pair<L,R>{
+public class Pair<L,R> {
 
 	  protected L left;
 	  protected R right;
@@ -14,18 +14,24 @@ public class Pair<L,R>{
 	  public R getSecond() { return right; }
 
 	  @Override
-	  public int hashCode() { return left.hashCode() ^ right.hashCode(); }
+	  public int hashCode() { 
+		  return left.hashCode() ^ right.hashCode(); 
+	  }
 
+	 
 	  @Override
 	  public boolean equals(Object o){
+		  
 		  if (o == null)
 			  return false;
 		
-		@SuppressWarnings("unchecked")
-		Pair<L,R> current = (Pair<L, R>) o;
-		if ( current.left.equals(this.left) && current.right.equals(this.right) )
+		  @SuppressWarnings("unchecked")
+		  Pair<L,R> current = (Pair<L, R>) o;
+		  if ( current.left.equals(this.left) && current.right.equals(this.right) )
 			  return true;
-		return false;
+		
+		  return false;
 	  }
-	  
+
+	
 }

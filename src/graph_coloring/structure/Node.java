@@ -65,11 +65,9 @@ public class Node extends ElementProperty {
 	
 	/**
 	 * Get node color
-	 * @return node color or null if node doesn't have a color
+	 * @return node color or negative int if node doesn't have a color
 	 */
-	public Integer getColor(){
-		if ( color == -1 )
-			return null;
+	public int getColor(){
 		return this.color;
 	}
 	
@@ -77,7 +75,7 @@ public class Node extends ElementProperty {
 	 * Get node id
 	 * @return node id
 	 */
-	public Integer getId(){
+	public int getId(){
 		return this.id;
 	}
 	
@@ -87,5 +85,24 @@ public class Node extends ElementProperty {
 	 */
 	public void setColor(int color){
 		this.color = color;
+	}
+	
+	public int getCollision(){
+		int col = 0;
+		
+		for(int i = 0 ; i < this.getBridgeSize() ; ++i){
+			if ( this.getNeighbour(i).getColor() == this.getColor() )
+				col += 1;
+		}
+		
+		return col;
+	}
+	
+	public int getCollision(int color){
+		int oldColor = this.color;
+		this.setColor(color);
+		int col = this.getCollision();
+		this.setColor(oldColor);
+		return col;
 	}
 }

@@ -37,8 +37,8 @@ public class WeightGraph extends Graph implements IWeightGraph{
 		WeightNode node2 = (WeightNode)nodeList.get(this.getNodeIndex(id2));
 		Bridge b = new WeightBridge(node1, node2, weight);
 		this.addBridge(node1, node2, b);
-		node1.addWeight(weight, node2);
-		node2.addWeight(weight, node1);
+		node1.addWeightToNeighbour(weight, node2);
+		node2.addWeightToNeighbour(weight, node1);
 	}
 	
 	
@@ -55,6 +55,11 @@ public class WeightGraph extends Graph implements IWeightGraph{
 	@Override
 	public Iterator<Pair<Double, WeightNode>> getNeighbours(int index){
 		return ((WeightNode)this.getNode(index)).getNeighbours();
+	}
+
+	@Override
+	public void sortNeighbours(int index) {
+		((WeightNode)this.getNode(index)).sortNeighbours();
 	}
 	
 }
