@@ -4,6 +4,8 @@ import java.util.Iterator;
 
 import graph_coloring.algorithm.GraphAlgorithmContext;
 import graph_coloring.algorithmset.RandomAlgorithm;
+import graph_coloring.algorithmset.agents.AgentAlgorithm;
+import graph_coloring.algorithmset.greedy.CombiGreedy;
 import graph_coloring.algorithmset.greedy.Greedy;
 import graph_coloring.common.Pair;
 import graph_coloring.input.FERFileFormat;
@@ -19,6 +21,8 @@ import graph_coloring.order.OrderNodeSTDORD;
 import graph_coloring.stat.ChangeColorGlobal;
 import graph_coloring.stat.CheckValidColoring;
 import graph_coloring.stat.ErrorFunctionEricsson;
+import graph_coloring.stat.GetColorableGroupNodes;
+import graph_coloring.stat.MakeSubGraph;
 import graph_coloring.structure.weight_graph.WeightNode;
 import graph_coloring.structure.weight_graph.ericsson_graph.EricssonGraph;
 
@@ -62,6 +66,10 @@ public class Main {
 			e.printStackTrace();
 		}
 		*/
+		System.out.println(graph.getNodeSize());
+		int id = GetColorableGroupNodes.getNodeClass(graph, 'C').get(0);
+		EricssonGraph newGraph = MakeSubGraph.createEricssonSubGraphBFS(graph, id, 15000);
+		graph = newGraph;
 		
 		double oldError = ErrorFunctionEricsson.computeStat(graph);
 		
@@ -69,38 +77,18 @@ public class Main {
 		System.out.println("Algorithm...");
 		GraphAlgorithmContext alg;
 		
-		int i = 1000;
 		
-		while(i!=0){
-			
-			i -= 1;
-			
-			double error = ErrorFunctionEricsson.computeStat(graph);
-			System.out.format("Old error: %f\n", error);		
-			System.out.format("Color change: %f\n\n", ChangeColorGlobal.computeStat(graph));
-			
-			if ( error > 2800.0 ){
-				alg = new GraphAlgorithmContext(new Greedy("LDO", "ABW", 1));
-				alg.startAlgorithm(graph);
-			}
-			else
-			{
-				alg = new GraphAlgorithmContext(new Greedy("SDO", "ABW", 1));
-				alg.startAlgorithm(graph);
-			}
-			
-			double newError = ErrorFunctionEricsson.computeStat(graph);
-			
-			if ( error - newError <= 2.0){
-				alg = new GraphAlgorithmContext(new Greedy("SDOLDO", "MF", 1));
-				alg.startAlgorithm(graph);
-			}
-			else if ( error - newError <= 10.0){
-				alg = new GraphAlgorithmContext(new Greedy("FIT", "MF", 1));
-				alg.startAlgorithm(graph);
-			}
-			
-		}
+		alg = new GraphAlgorithmContext(new Greedy("STDORD", "ABW", 1));
+		alg.startAlgorithm(newGraph);
+		
+		/*
+		alg = new GraphAlgorithmContext(new Greedy("SDO", "ABW", 5));
+		alg.startAlgorithm(graph);
+		
+		
+		alg = new GraphAlgorithmContext(new AgentAlgorithm(graph.getNodeSize(), 1000));
+		alg.startAlgorithm(graph);
+		*/
 		
 		System.out.format("Old error: %f\n", oldError);		
 		System.out.format("New error: %f\n", ErrorFunctionEricsson.computeStat(graph));

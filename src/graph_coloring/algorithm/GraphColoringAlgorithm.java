@@ -9,6 +9,10 @@ public abstract class GraphColoringAlgorithm {
 	private Set<Integer> touchableNodes = null;
 	protected Graph graph;
 	
+	protected Set<Integer> getTouchableNodes(){
+		return this.touchableNodes;
+	}
+	
 	/**
 	 * Return true if node can change color (by user definition)
 	 * @param index Node index

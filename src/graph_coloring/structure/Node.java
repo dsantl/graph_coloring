@@ -24,8 +24,12 @@ public class Node extends ElementProperty {
 	 * @param index in neighbour list
 	 * @return node (Node)
 	 */
-	public Node getNeighbour(int index){
+	private Node getNeighbour(int index){
 		return neighbours.get(index);
+	}
+	
+	public int getNeighbourId(int index){
+		return getNeighbour(index).getId();
 	}
 	
 	public int getSaturation(){

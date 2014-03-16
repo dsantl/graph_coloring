@@ -189,4 +189,9 @@ public class Graph implements IGraph{
 	public int chooseColor(int nodeIndex, ColorSelector colorSelector) {
 		return colorSelector.selectColor(this.getNode(nodeIndex), null);
 	}
+
+	@Override
+	public int getNodeNeighburId(int nodeIndex, int neighbourIndex) {
+		return this.getNode(nodeIndex).getNeighbourId(neighbourIndex);
+	}
 }

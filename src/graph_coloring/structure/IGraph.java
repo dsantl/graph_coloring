@@ -8,6 +8,8 @@ public interface IGraph {
 	
 	public void setNodeColor(int index, int color);
 	
+	public int getNodeNeighburId(int nodeIndex, int neighbourIndex);
+	
 	public int getNodeDegree(int index);
 	
 	public int getNodeSaturation(int index);

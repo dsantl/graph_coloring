@@ -1,6 +1,8 @@
 package graph_coloring.algorithm;
 
 
+import java.util.Set;
+
 import graph_coloring.structure.Graph;
 
 public class GraphAlgorithmContext {
@@ -17,14 +19,22 @@ public class GraphAlgorithmContext {
 	}
 	
 	/**
-	 * Start algorithm with parameters
+	 * Start algorithm on graph
 	 * @param graph
-	 * @param param
 	 */
 	public void startAlgorithm(Graph graph)
 	{
 		algorithm.startAlgorithm(graph);
 	}
 	
-
+	/**
+	 * Start algorithm with parameters
+	 * @param graph
+	 * @param touchableNodes
+	 */
+	public void startAlgorithm(Graph graph, Set<Integer> touchableNodes)
+	{
+		algorithm.startAlgorithm(graph, touchableNodes);
+	}
+	
 }
