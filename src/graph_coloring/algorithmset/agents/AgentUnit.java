@@ -43,6 +43,9 @@ public class AgentUnit {
 		double maxError = 0;
 		int nextNode = this.getNodeIndex();
 		
+		if ( rnd.nextDouble() < 0.1 )
+			return;
+		
 		for(int i = 0 ; i < graph.getNodeDegree(this.getNodeIndex()) ; ++i){
 			
 			int neighbourId = graph.getNodeNeighburId(this.getNodeIndex(), i); 

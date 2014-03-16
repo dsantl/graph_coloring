@@ -11,7 +11,7 @@ public class OrderBridgeWeight extends OrderMethod{
 		double prop1 = (Double)elem1.getProperty();
 		double prop2 = (Double)elem2.getProperty();
 		
-		return -Double.compare(prop1, prop2);
+		return Double.compare(prop1, prop2);
 	}
 
 	@Override

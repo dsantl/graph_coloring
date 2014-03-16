@@ -66,27 +66,31 @@ public class Main {
 			e.printStackTrace();
 		}
 		*/
-		System.out.println(graph.getNodeSize());
-		int id = GetColorableGroupNodes.getNodeClass(graph, 'C').get(0);
-		EricssonGraph newGraph = MakeSubGraph.createEricssonSubGraphBFS(graph, id, 15000);
+		
+		int id = GetColorableGroupNodes.getNodeClass(graph, 'A').get(0);
+		EricssonGraph newGraph = MakeSubGraph.createEricssonSubGraphBFS(graph, id, 32000);
 		graph = newGraph;
+		
 		
 		double oldError = ErrorFunctionEricsson.computeStat(graph);
 		
-		
+		System.out.println(graph.getNodeSize());
 		System.out.println("Algorithm...");
 		GraphAlgorithmContext alg;
 		
 		
-		alg = new GraphAlgorithmContext(new Greedy("STDORD", "ABW", 1));
-		alg.startAlgorithm(newGraph);
-		
-		/*
-		alg = new GraphAlgorithmContext(new Greedy("SDO", "ABW", 5));
+		alg = new GraphAlgorithmContext(new Greedy("SDO", "ABW", 1));
+		alg.startAlgorithm(graph);
+				
+		alg = new GraphAlgorithmContext(new Greedy("BRIDGEWEIGHT", "MF", 1, true));
 		alg.startAlgorithm(graph);
 		
 		
-		alg = new GraphAlgorithmContext(new AgentAlgorithm(graph.getNodeSize(), 1000));
+		//alg = new GraphAlgorithmContext(new Greedy("SDO", "ABW", 5));
+		//alg.startAlgorithm(graph);
+		
+		/*
+		alg = new GraphAlgorithmContext(new AgentAlgorithm(3*graph.getNodeSize()/4, 1000));
 		alg.startAlgorithm(graph);
 		*/
 		
