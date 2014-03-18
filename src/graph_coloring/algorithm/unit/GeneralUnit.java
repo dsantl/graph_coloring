@@ -2,44 +2,65 @@ package graph_coloring.algorithm.unit;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
+import graph_coloring.algorithm.GraphAlgorithmContext;
+import graph_coloring.algorithmset.greedy.Greedy;
+import graph_coloring.color_selector.ColorSelector;
 import graph_coloring.stat.ErrorFunctionEricsson;
 import graph_coloring.structure.weight_graph.ericsson_graph.EricssonGraph;
 
 public class GeneralUnit {
 	
 	private EricssonGraph graph;
-	private double error;
 	private Map<Integer,Integer> nodeIdColor = new HashMap<Integer, Integer>();
 	
 	public double getError(){
-		return this.error;
+		this.setColorToGraph();
+		return ErrorFunctionEricsson.computeStat(this.graph);
+	}
+	
+	public int getSize(){
+		return graph.getNodeSize();
 	}
 	
 	public GeneralUnit(EricssonGraph graph){
 		this.graph = graph;
-		this.error = ErrorFunctionEricsson.computeStat(graph);
-		
 		for(int i = 0 ; i < graph.getNodeSize() ; ++i){
 			nodeIdColor.put(graph.getNodeId(i), graph.getNodeColor(i));
 		}
 	}
 	
-	public void changeColor(int nodeId, int color){
-		int nodeIndex = graph.getNodeIndex(nodeId);
-		int oldColor = this.nodeIdColor.get(nodeId);
-		double nodeError = graph.getNodeError(nodeIndex);
+	public void copy(GeneralUnit unit){
+		this.graph = unit.graph;
+		for(Map.Entry<Integer, Integer> nodeColor : unit.nodeIdColor.entrySet()){
+			this.nodeIdColor.put(nodeColor.getKey(), nodeColor.getValue());
+		}
+	}
+	
+	public void changeColor(Set<Integer> nodesForChange, ColorSelector colorSelector){
+		this.setColorToGraph();
 		
-		this.error -= nodeError;
-		graph.setNodeColor(nodeIndex, color);
-		this.error += graph.getNodeError(nodeIndex);
-		graph.setNodeColor(nodeIndex, oldColor);
+		/*
+		GraphAlgorithmContext alg = new GraphAlgorithmContext(new Greedy("RND", "MF", 1));
+		alg.startAlgorithm(graph);
+		
+		for(int i = 0 ; i < graph.getNodeSize() ; ++i){
+			nodeIdColor.put(graph.getNodeId(i), graph.getNodeColor(i));
+		}
+		*/
+		
+		for(Integer nodeId : nodesForChange){
+			int nodeIndex = this.graph.getNodeIndex(nodeId);
+			int newColor = ((EricssonGraph)this.graph).chooseColor(nodeIndex, colorSelector);
+			nodeIdColor.put(nodeId, newColor);
+		}
 	}
 	
 	public void setColorToGraph(){
-		for(int i = 0 ; i < graph.getNodeSize() ; ++i){
-			int nodeId = graph.getNodeId(i);
-			graph.setNodeColor(i, this.nodeIdColor.get(nodeId));
+		for(Integer nodeId : this.nodeIdColor.keySet()){
+			int nodeIndex = graph.getNodeIndex(nodeId);
+			graph.setNodeColor(nodeIndex, this.nodeIdColor.get(nodeId));
 		}
 	}
 }

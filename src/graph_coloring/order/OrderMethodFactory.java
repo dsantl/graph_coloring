@@ -16,6 +16,8 @@ public class OrderMethodFactory {
 			return new OrderNodeSDOLDO();
 		else if ( name.equals("STDORD") )
 			return new OrderNodeSTDORD();
+		else if ( name.equals("RND") )
+			return new OrderNodeRND();
 		else if ( name.equals("BRIDGEWEIGHT") )
 			return new OrderBridgeWeight();
 		else

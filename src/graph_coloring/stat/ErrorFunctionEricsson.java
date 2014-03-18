@@ -35,7 +35,7 @@ public class ErrorFunctionEricsson {
 			
 			if ( graph.getNodeColorable(i) == true){
 				if (!graph.colorClassContain(colorClassId, color)){
-						ret += 10000000.0;
+					ret += 10000000.0;
 				}
 			}
 		}
