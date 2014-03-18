@@ -83,15 +83,16 @@ public class Main {
 		//Zanimljivo:
 		//alg = new GraphAlgorithmContext(new RandomAlgorithm());
 		
-		alg = new GraphAlgorithmContext(new Greedy("LDO", "MF", 1));
+		
+		alg = new GraphAlgorithmContext(new Greedy("SDO", "ABW", 1));
 		alg.startAlgorithm(graph);
 		
-		alg = new GraphAlgorithmContext(new Greedy("SDO", "ABW", 5));
-		alg.startAlgorithm(graph);
 		
-		System.out.format("New error: %f\n", ErrorFunctionEricsson.computeStat(graph));
+		//alg = new GraphAlgorithmContext(new Greedy("RND", "ABW", 1, false , 0.2));
+		//alg.startAlgorithm(graph);
 		
-		alg = new GraphAlgorithmContext(new SimulatedAnneling(100, 100, 2, 0.02, "MF"));
+		
+		alg = new GraphAlgorithmContext(new SimulatedAnneling(100, 100, 2, 0.2, "ABW"));
 		alg.startAlgorithm(graph); 
 		
 		/*
