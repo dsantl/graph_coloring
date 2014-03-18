@@ -27,12 +27,12 @@ public class CombiGreedy extends GraphColoringAlgorithm {
 			System.out.format("Old error: %f\n", error);		
 			System.out.format("Color change: %f\n\n", ChangeColorGlobal.computeStat((EricssonGraph) graph));
 			
-			algSDO.startAlgorithm(graph);
+			algSDO.startAlgorithm(graph, this.getTouchableNodes());
 			
 			double newError = ErrorFunctionEricsson.computeStat((EricssonGraph) graph);
 			
 			if ( error - newError <= 2.0){
-				algFIT.startAlgorithm(graph);
+				algFIT.startAlgorithm(graph, this.getTouchableNodes());
 			}
 		}
 	}

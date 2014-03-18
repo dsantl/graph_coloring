@@ -27,7 +27,9 @@ public class ColorSelectorRND implements ColorSelector{
 			listColor.add(colors.next());
 		}
 		
-		return listColor.get(rnd.nextInt(listColor.size()));
+		int rndColor = rnd.nextInt(listColor.size());
+		
+		return listColor.get(rndColor);
 	}
 
 }

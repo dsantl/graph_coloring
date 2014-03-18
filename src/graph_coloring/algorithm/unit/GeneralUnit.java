@@ -6,7 +6,6 @@ import java.util.Set;
 
 import graph_coloring.algorithm.GraphAlgorithmContext;
 import graph_coloring.algorithmset.greedy.Greedy;
-import graph_coloring.color_selector.ColorSelector;
 import graph_coloring.stat.ErrorFunctionEricsson;
 import graph_coloring.structure.weight_graph.ericsson_graph.EricssonGraph;
 
@@ -38,22 +37,14 @@ public class GeneralUnit {
 		}
 	}
 	
-	public void changeColor(Set<Integer> nodesForChange, ColorSelector colorSelector){
+	public void changeColor(double changeRate, String colorSelector, Set<Integer> touchableNodes){
 		this.setColorToGraph();
 		
-		/*
-		GraphAlgorithmContext alg = new GraphAlgorithmContext(new Greedy("RND", "MF", 1));
-		alg.startAlgorithm(graph);
+		GraphAlgorithmContext alg = new GraphAlgorithmContext(new Greedy("RND", colorSelector, 1, false, changeRate));
+		alg.startAlgorithm(this.graph, touchableNodes);
 		
 		for(int i = 0 ; i < graph.getNodeSize() ; ++i){
 			nodeIdColor.put(graph.getNodeId(i), graph.getNodeColor(i));
-		}
-		*/
-		
-		for(Integer nodeId : nodesForChange){
-			int nodeIndex = this.graph.getNodeIndex(nodeId);
-			int newColor = ((EricssonGraph)this.graph).chooseColor(nodeIndex, colorSelector);
-			nodeIdColor.put(nodeId, newColor);
 		}
 	}
 	

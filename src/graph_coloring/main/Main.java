@@ -1,6 +1,8 @@
 package graph_coloring.main;
 
+import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Set;
 
 import graph_coloring.algorithm.GraphAlgorithmContext;
 import graph_coloring.algorithmset.RandomAlgorithm;
@@ -80,20 +82,29 @@ public class Main {
 		System.out.println("Algorithm...");
 		GraphAlgorithmContext alg;
 		
-		//Zanimljivo:
-		//alg = new GraphAlgorithmContext(new RandomAlgorithm());
-		
 		
 		alg = new GraphAlgorithmContext(new Greedy("SDO", "ABW", 1));
 		alg.startAlgorithm(graph);
 		
+		alg = new GraphAlgorithmContext(new CombiGreedy(5));
+		alg.startAlgorithm(graph);
+				
 		
-		//alg = new GraphAlgorithmContext(new Greedy("RND", "ABW", 1, false , 0.2));
-		//alg.startAlgorithm(graph);
+		Set<Integer> touchableNodes = new HashSet<Integer>();
+		for(int i = 0 ; i < graph.getNodeSize() ; ++i){
+			if ( graph.getNodeError(i) > 5 )
+				touchableNodes.add(graph.getNodeId(i));
+		}		
 		
 		
-		alg = new GraphAlgorithmContext(new SimulatedAnneling(100, 100, 2, 0.2, "ABW"));
+		//alg = new GraphAlgorithmContext(new AgentAlgorithm(graph.getNodeSize()/2, 20, "SDO", "ABW"));
+		//alg.startAlgorithm(graph, touchableNodes);
+		
+		
+		alg = new GraphAlgorithmContext(new SimulatedAnneling(10000, 10000, 2, 0.5, "MF"));
 		alg.startAlgorithm(graph); 
+		
+		
 		
 		/*
 		alg = new GraphAlgorithmContext(new Greedy("BRIDGEWEIGHT", "MF", 1, true));

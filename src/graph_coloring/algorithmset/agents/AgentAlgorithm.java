@@ -18,6 +18,8 @@ public class AgentAlgorithm extends GraphColoringAlgorithm{
 	private int numberOfUnits;
 	private int iterations;
 	private List<AgentUnit> units = new ArrayList<AgentUnit>();
+	private String order;
+	private String colorSelector; 
 	
 	private class AgentCmp implements Comparator<AgentUnit>{
 
@@ -28,9 +30,11 @@ public class AgentAlgorithm extends GraphColoringAlgorithm{
 		
 	}
 	
-	public AgentAlgorithm(int numberOfUnits, int iterations){
+	public AgentAlgorithm(int numberOfUnits, int iterations, String order, String colorSelector){
 		this.numberOfUnits = numberOfUnits;
 		this.iterations = iterations;
+		this.order = order;
+		this.colorSelector = colorSelector;
 	}
 	
 	@Override
@@ -49,19 +53,20 @@ public class AgentAlgorithm extends GraphColoringAlgorithm{
 	
 	private void startAlgorithm(){
 		
-		GraphAlgorithmContext alg = new GraphAlgorithmContext(new Greedy("SDO", "ABW", 1));
+		GraphAlgorithmContext alg = new GraphAlgorithmContext(new Greedy(order, colorSelector, 1));
 		double oldError = 0;
 		
 		for(int i = 0 ; i < this.iterations ; ++i){
 			for(int j = 0 ; j < this.numberOfUnits ; ++j){
-				units.get(j).setColor();
+				if ( this.checkNode(units.get(j).getNodeIndex()) )
+					units.get(j).setColor();
 				units.get(j).move();
 			}
 			Collections.sort(units, new AgentCmp());
 			
 			double error = ErrorFunctionEricsson.computeStat((EricssonGraph) graph);
 			if ( i != 0 && oldError == error)
-				alg.startAlgorithm(graph);
+				alg.startAlgorithm(graph, this.getTouchableNodes());
 			
 			oldError = error;
 			System.out.format("Error: %f\n", error);	

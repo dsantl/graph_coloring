@@ -15,7 +15,11 @@ public class AgentUnit {
 	private int previousNodeId = -1;
 	private EricssonGraph graph;
 	
-	private int getNodeIndex(){
+	public int getNodeId(){
+		return currentNodeId;
+	}
+	
+	public int getNodeIndex(){
 		return graph.getNodeIndex(currentNodeId);
 	}
 	
