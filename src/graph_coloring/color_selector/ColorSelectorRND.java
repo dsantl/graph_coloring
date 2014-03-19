@@ -12,15 +12,13 @@ public class ColorSelectorRND implements ColorSelector{
 
 	Random rnd = new Random();
 	
-	@SuppressWarnings("unchecked")
 	@Override
-	public int selectColor(Node node, Object param) {
+	public int selectColor(Node node, Iterator<Integer> colors) {
 		EricssonNode eNode = (EricssonNode)node;
 		
 		if (eNode.getColorable() == false)
 			return eNode.getColor();
 		
-		Iterator<Integer> colors = (Iterator<Integer>)param;
 		List<Integer> listColor = new ArrayList<Integer>();
 		
 		while(colors.hasNext()){
@@ -30,6 +28,12 @@ public class ColorSelectorRND implements ColorSelector{
 		int rndColor = rnd.nextInt(listColor.size());
 		
 		return listColor.get(rndColor);
+	}
+
+
+	@Override
+	public int setParam(Object param) {
+		return 0;
 	}
 
 }

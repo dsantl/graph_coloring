@@ -7,12 +7,18 @@ import java.util.Set;
 import graph_coloring.algorithm.GraphAlgorithmContext;
 import graph_coloring.algorithmset.greedy.Greedy;
 import graph_coloring.stat.ErrorFunctionEricsson;
+import graph_coloring.stat.ErrorLogFunctionEricsson;
 import graph_coloring.structure.weight_graph.ericsson_graph.EricssonGraph;
 
 public class GeneralUnit {
 	
 	private EricssonGraph graph;
 	private Map<Integer,Integer> nodeIdColor = new HashMap<Integer, Integer>();
+	
+	public double getLogError(){
+		this.setColorToGraph();
+		return ErrorLogFunctionEricsson.computeStat(this.graph);
+	}
 	
 	public double getError(){
 		this.setColorToGraph();

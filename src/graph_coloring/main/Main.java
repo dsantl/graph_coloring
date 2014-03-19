@@ -11,6 +11,7 @@ import graph_coloring.algorithmset.greedy.CombiGreedy;
 import graph_coloring.algorithmset.greedy.Greedy;
 import graph_coloring.algorithmset.simulated_anneling.SimulatedAnneling;
 import graph_coloring.color_selector.ColorSelector;
+import graph_coloring.color_selector.ColorSelectorTRG;
 import graph_coloring.common.Pair;
 import graph_coloring.input.FERFileFormat;
 import graph_coloring.input.FileFormat;
@@ -82,29 +83,28 @@ public class Main {
 		System.out.println("Algorithm...");
 		GraphAlgorithmContext alg;
 		
-		
-		alg = new GraphAlgorithmContext(new Greedy("SDO", "ABW", 1));
+		alg = new GraphAlgorithmContext(new CombiGreedy(100));
 		alg.startAlgorithm(graph);
 		
-		alg = new GraphAlgorithmContext(new CombiGreedy(5));
-		alg.startAlgorithm(graph);
+		
+		//alg = new GraphAlgorithmContext(new Greedy("SDO", "ABW", 2));
+		//alg.startAlgorithm(graph);
+		
 				
-		
+		/*
 		Set<Integer> touchableNodes = new HashSet<Integer>();
 		for(int i = 0 ; i < graph.getNodeSize() ; ++i){
-			if ( graph.getNodeError(i) > 5 )
+			if ( graph.getNodeError(i) > 0 )
 				touchableNodes.add(graph.getNodeId(i));
 		}		
-		
+		*/
 		
 		//alg = new GraphAlgorithmContext(new AgentAlgorithm(graph.getNodeSize()/2, 20, "SDO", "ABW"));
 		//alg.startAlgorithm(graph, touchableNodes);
 		
 		
-		alg = new GraphAlgorithmContext(new SimulatedAnneling(10000, 10000, 2, 0.5, "MF"));
-		alg.startAlgorithm(graph); 
-		
-		
+		//alg = new GraphAlgorithmContext(new SimulatedAnneling(3, 1000, 2, 0.1, "MF"));
+		//alg.startAlgorithm(graph, touchableNodes); 
 		
 		/*
 		alg = new GraphAlgorithmContext(new Greedy("BRIDGEWEIGHT", "MF", 1, true));

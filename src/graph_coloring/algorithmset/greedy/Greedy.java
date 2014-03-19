@@ -15,6 +15,10 @@ public class Greedy extends GraphColoringAlgorithm {
 	private double percentOfNodes;
 	private int firstBest;
 	
+	public void setColorSelectorParam(Object param){
+		this.colorSelector.setParam(param);
+	}
+	
 	public Greedy(String orderMethod, String colorSelector, int step, boolean bridgeOrder, double percentOfNodes){
 		try{
 			this.orderMethod = OrderMethodFactory.factory(orderMethod);
@@ -77,8 +81,7 @@ public class Greedy extends GraphColoringAlgorithm {
 			int node2Index = graph.getNodeIndex(graph.getBridge(index).getSecond());
 			setColorToNode(node1Index);
 			setColorToNode(node2Index);
-		}
-		
+		}	
 	}
 	
 	@Override

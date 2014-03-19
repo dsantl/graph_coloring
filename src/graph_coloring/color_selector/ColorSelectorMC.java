@@ -7,11 +7,9 @@ import graph_coloring.structure.weight_graph.ericsson_graph.EricssonNode;
 
 public class ColorSelectorMC implements ColorSelector{
 
-	@SuppressWarnings("unchecked")
 	@Override
-	public int selectColor(Node node, Object param){
+	public int selectColor(Node node, Iterator<Integer> colors){
 		EricssonNode eNode = (EricssonNode)node;
-		Iterator<Integer> colors = (Iterator<Integer>)param;
 		
 		if (eNode.getColorable() == false)
 			return eNode.getColor();
@@ -30,5 +28,10 @@ public class ColorSelectorMC implements ColorSelector{
 		}
 		
 		return minColor;
+	}
+
+	@Override
+	public int setParam(Object param) {
+		return 0;
 	}
 }
