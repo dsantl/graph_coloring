@@ -13,6 +13,7 @@ import graph_coloring.algorithmset.simulated_anneling.SimulatedAnneling;
 import graph_coloring.color_selector.ColorSelector;
 import graph_coloring.color_selector.ColorSelectorTRG;
 import graph_coloring.common.Pair;
+import graph_coloring.input.EricssonFileFormat;
 import graph_coloring.input.FERFileFormat;
 import graph_coloring.input.FileFormat;
 import graph_coloring.input.NodeColorFormat;
@@ -36,14 +37,14 @@ public class Main {
 
 	public static void main(String[] args) {
 		
-		//FileFormat fileFormat = new EricssonFileFormat();
-		FileFormat fileFormat = new FERFileFormat();
+		FileFormat fileFormat = new EricssonFileFormat();
+		//FileFormat fileFormat = new FERFileFormat();
 		long start = System.currentTimeMillis();
 		
 		EricssonGraph graph = null;
 		
 		try {
-			//graph = fileFormat.getGraphFromFile("/home/dino/Desktop/diplomski/FER-Tokai.txt");
+			graph = (EricssonGraph) fileFormat.getGraphFromFile("/home/dino/Desktop/FER/9. SEM/PROJEKT/diplomski/FER-Tokai.txt");
 			//graph = fileFormat.getGraphFromFile("/home/dino/Desktop/FER-Tokai_coloring.txt");
 			
 			//graph = fileFormat.getGraphFromFile("Tokai-new.out");

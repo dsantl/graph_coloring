@@ -48,7 +48,10 @@ public class EricssonFileFormat implements FileFormat {
 			colorable = Boolean.parseBoolean(splitLine[4]);
 			nodeGroup = splitLine[1].charAt(0);
 			startColor = Integer.parseInt(splitLine[3]);
-			nodeDomain = Integer.parseInt(splitLine[2]);
+			if (colorable)
+				nodeDomain = Integer.parseInt(splitLine[2]);
+			else
+				nodeDomain = -1;
 			
 			graph.addEricssonNode(id, nodeGroup, nodeDomain, startColor, colorable); 
 		}
