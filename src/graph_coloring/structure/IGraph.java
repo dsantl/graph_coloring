@@ -14,6 +14,8 @@ public interface IGraph {
 	
 	public int getNodeSaturation(int index);
 	
+	public int getNodeCollision(int index);
+	
 	public int getNodeColor(int index);
 	
 	public int getNodeIndex(int id);

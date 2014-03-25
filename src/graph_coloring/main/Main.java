@@ -37,17 +37,17 @@ public class Main {
 
 	public static void main(String[] args) {
 		
-		FileFormat fileFormat = new EricssonFileFormat();
-		//FileFormat fileFormat = new FERFileFormat();
+		//FileFormat fileFormat = new EricssonFileFormat();
+		FileFormat fileFormat = new FERFileFormat();
 		long start = System.currentTimeMillis();
 		
 		EricssonGraph graph = null;
 		
 		try {
-			graph = (EricssonGraph) fileFormat.getGraphFromFile("/home/dino/Desktop/FER/9. SEM/PROJEKT/diplomski/FER-Tokai.txt");
+			//graph = (EricssonGraph) fileFormat.getGraphFromFile("/home/dino/Desktop/FER/9. SEM/PROJEKT/diplomski/FER-Tokai.txt");
 			//graph = fileFormat.getGraphFromFile("/home/dino/Desktop/FER-Tokai_coloring.txt");
 			
-			//graph = fileFormat.getGraphFromFile("Tokai-new.out");
+			//graph = (EricssonGraph) fileFormat.getGraphFromFile("Tokai-new.out");
 			graph = (EricssonGraph) fileFormat.getGraphFromFile("Tokai.out");
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -84,12 +84,12 @@ public class Main {
 		System.out.println("Algorithm...");
 		GraphAlgorithmContext alg;
 		
-		alg = new GraphAlgorithmContext(new CombiGreedy(100));
-		alg.startAlgorithm(graph);
-		
-		
-		//alg = new GraphAlgorithmContext(new Greedy("SDO", "ABW", 2));
+		//alg = new GraphAlgorithmContext(new CombiGreedy(5));
 		//alg.startAlgorithm(graph);
+		
+		
+		alg = new GraphAlgorithmContext(new Greedy("SDO", "ABW", 5));
+		alg.startAlgorithm(graph);
 		
 				
 		/*
@@ -104,8 +104,8 @@ public class Main {
 		//alg.startAlgorithm(graph, touchableNodes);
 		
 		
-		//alg = new GraphAlgorithmContext(new SimulatedAnneling(3, 1000, 2, 0.1, "MF"));
-		//alg.startAlgorithm(graph, touchableNodes); 
+		alg = new GraphAlgorithmContext(new SimulatedAnneling(3, 1000, 2, 0.1, "MF"));
+		alg.startAlgorithm(graph); 
 		
 		/*
 		alg = new GraphAlgorithmContext(new Greedy("BRIDGEWEIGHT", "MF", 1, true));
@@ -115,10 +115,10 @@ public class Main {
 		//alg = new GraphAlgorithmContext(new Greedy("SDO", "ABW", 5));
 		//alg.startAlgorithm(graph);
 		
-		/*
-		alg = new GraphAlgorithmContext(new AgentAlgorithm(3*graph.getNodeSize()/4, 1000));
-		alg.startAlgorithm(graph);
-		*/
+		
+		//alg = new GraphAlgorithmContext(new AgentAlgorithm(3*graph.getNodeSize()/4, 1000, "SDO", "ABW"));
+		//alg.startAlgorithm(graph);
+		
 		
 		System.out.format("Old error: %f\n", oldError);		
 		System.out.format("New error: %f\n", ErrorFunctionEricsson.computeStat(graph));

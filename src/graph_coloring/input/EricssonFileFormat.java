@@ -1,7 +1,12 @@
 package graph_coloring.input;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 
+import graph_coloring.common.OrderPair;
 import graph_coloring.structure.Graph;
 import graph_coloring.structure.weight_graph.ericsson_graph.EricssonGraph;
 
@@ -61,9 +66,11 @@ public class EricssonFileFormat implements FileFormat {
 	private void loadBridges(InputFile file, EricssonGraph graph) throws IOException {
 		
 		int numberOfBridges = 0;
-
+		
 		file.getNextLine();
-
+		
+		Set<OrderPair> bridgeFlag = new HashSet<OrderPair>();
+		
 		numberOfBridges = Integer.parseInt(file.getNextLine());
 
 		for (int i = 0; i < numberOfBridges; ++i) {
@@ -75,6 +82,15 @@ public class EricssonFileFormat implements FileFormat {
 			node1 = Integer.parseInt(splitLine[0]);
 			node2 = Integer.parseInt(splitLine[1]);
 			weight = Double.parseDouble(splitLine[2]);
+			
+			if ( bridgeFlag.contains(new OrderPair(node1, node2)) )
+			{
+				bridgeFlag.remove(new OrderPair(node1, node2));
+				continue;
+			}
+			
+			bridgeFlag.add(new OrderPair(node1, node2));
+			
 			graph.addWeightBridge(node1, node2, weight);
 		}
 

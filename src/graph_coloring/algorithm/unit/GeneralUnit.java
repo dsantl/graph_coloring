@@ -6,6 +6,7 @@ import java.util.Set;
 
 import graph_coloring.algorithm.GraphAlgorithmContext;
 import graph_coloring.algorithmset.greedy.Greedy;
+import graph_coloring.stat.CollisionCounter;
 import graph_coloring.stat.ErrorFunctionEricsson;
 import graph_coloring.stat.ErrorLogFunctionEricsson;
 import graph_coloring.structure.weight_graph.ericsson_graph.EricssonGraph;
@@ -46,7 +47,11 @@ public class GeneralUnit {
 	public void changeColor(double changeRate, String colorSelector, Set<Integer> touchableNodes){
 		this.setColorToGraph();
 		
-		GraphAlgorithmContext alg = new GraphAlgorithmContext(new Greedy("RND", colorSelector, 1, false, changeRate));
+		Greedy greedy = new Greedy("RND", "TRG", 1, false, changeRate);
+		greedy.setColorSelectorParam(1.0);
+		GraphAlgorithmContext alg = new GraphAlgorithmContext(greedy);//new Greedy("RND", colorSelector, 1, false, changeRate));
+		
+		
 		alg.startAlgorithm(this.graph, touchableNodes);
 		
 		for(int i = 0 ; i < graph.getNodeSize() ; ++i){
@@ -59,5 +64,9 @@ public class GeneralUnit {
 			int nodeIndex = graph.getNodeIndex(nodeId);
 			graph.setNodeColor(nodeIndex, this.nodeIdColor.get(nodeId));
 		}
+	}
+
+	public int getCollision() {
+		return CollisionCounter.computeStat(graph); 
 	}
 }

@@ -194,4 +194,9 @@ public class Graph implements IGraph{
 	public int getNodeNeighburId(int nodeIndex, int neighbourIndex) {
 		return this.getNode(nodeIndex).getNeighbourId(neighbourIndex);
 	}
+
+	@Override
+	public int getNodeCollision(int index) {
+		return this.getNode(index).getCollision();
+	}
 }

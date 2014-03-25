@@ -50,11 +50,13 @@ public class SimulatedAnneling extends GraphColoringAlgorithm{
 				
 				GeneralUnit currUnit = this.similarSolution(bestUnit);
 				
+				/*
 				if (convergenceCount == 3){
 					currUnit.changeColor(0.3, "RND", this.getTouchableNodes());
 					currUnit.changeColor(1, "ABW", this.getTouchableNodes());
 					convergenceCount = 0;
 				}
+				*/
 				
 				double bestError = bestUnit.getError();
 				double currError = currUnit.getError();
