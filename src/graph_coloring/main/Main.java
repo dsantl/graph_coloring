@@ -88,7 +88,7 @@ public class Main {
 		//alg.startAlgorithm(graph);
 		
 		
-		alg = new GraphAlgorithmContext(new Greedy("SDO", "ABW", 2));
+		alg = new GraphAlgorithmContext(new Greedy("SDO", "ABW", 5));
 		alg.startAlgorithm(graph);
 		
 				
