@@ -1,2 +1,5 @@
 /bin
-!*.java
+*.out
+*.in
+*.log
+*.jar
