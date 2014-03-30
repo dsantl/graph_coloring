@@ -10,7 +10,6 @@ import graph_coloring.algorithmset.agents.AgentAlgorithm;
 import graph_coloring.algorithmset.genetic.GeneticAlgorithm;
 import graph_coloring.algorithmset.greedy.CombiGreedy;
 import graph_coloring.algorithmset.greedy.Greedy;
-import graph_coloring.algorithmset.simulated_anneling.SimpleAnneling;
 import graph_coloring.algorithmset.simulated_anneling.SimulatedAnneling;
 import graph_coloring.color_selector.ColorSelector;
 import graph_coloring.color_selector.ColorSelectorTRG;
@@ -26,6 +25,7 @@ import graph_coloring.order.OrderNodeLDO;
 import graph_coloring.order.OrderNodeSDO;
 import graph_coloring.order.OrderNodeSDOLDO;
 import graph_coloring.order.OrderNodeSTDORD;
+import graph_coloring.output.FERoutput;
 import graph_coloring.stat.ChangeColorGlobal;
 import graph_coloring.stat.CheckValidColoring;
 import graph_coloring.stat.ErrorFunctionEricsson;
@@ -46,11 +46,12 @@ public class Main {
 		EricssonGraph graph = null;
 		
 		try {
-			//graph = (EricssonGraph) fileFormat.getGraphFromFile("/home/dino/Desktop/FER/9. SEM/PROJEKT/diplomski/FER-Tokai.txt");
+			//graph = (EricssonGraph) fileFormat.getGraphFromFile("/home/dino/Desktop/FER/9. SEM/PROJEKT/diplomski/FER-Kansai.txt");
 			//graph = fileFormat.getGraphFromFile("/home/dino/Desktop/FER-Tokai_coloring.txt");
 			
 			//graph = (EricssonGraph) fileFormat.getGraphFromFile("Tokai-new.out");
 			graph = (EricssonGraph) fileFormat.getGraphFromFile("Tokai.out");
+			//graph = (EricssonGraph) fileFormat.getGraphFromFile("Kansai.out");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -58,7 +59,7 @@ public class Main {
 		/*
 		FERoutput out = new FERoutput();
 		try {
-			out.convertGraphToFile(graph, "Tokai-new.out");
+			out.convertGraphToFile(graph, "Kansai.out");
 		}
 		catch(Exception e){
 			e.printStackTrace();
@@ -83,6 +84,7 @@ public class Main {
 		double oldError = ErrorFunctionEricsson.computeStat(graph);
 		
 		System.out.println(graph.getNodeSize());
+		System.out.println(graph.getBridgeSize());
 		System.out.println("Algorithm...");
 		GraphAlgorithmContext alg;
 		
@@ -90,15 +92,15 @@ public class Main {
 		//alg = new GraphAlgorithmContext(new Greedy("SDO", "ABW", 15));
 		//alg.startAlgorithm(graph);
 			
-		alg = new GraphAlgorithmContext(new CombiGreedy(15));
+		alg = new GraphAlgorithmContext(new CombiGreedy(10));
 		alg.startAlgorithm(graph);
 		
-		alg = new GraphAlgorithmContext(new SimpleAnneling(0.5, 3100000, 10));
-		alg.startAlgorithm(graph); 
+		//alg = new GraphAlgorithmContext(new SimulatedAnneling(0.5, 310000, 10));
+		//alg.startAlgorithm(graph); 
 				
 		
-		//alg = new GraphAlgorithmContext(new GeneticAlgorithm(5, 10, 10000));
-		//alg.startAlgorithm(graph);
+		alg = new GraphAlgorithmContext(new GeneticAlgorithm(5, 10, 10000, 100));
+		alg.startAlgorithm(graph);
 		
 		//alg = new GraphAlgorithmContext(new Greedy("SDO", "ABW", 5));
 		//alg.startAlgorithm(graph);

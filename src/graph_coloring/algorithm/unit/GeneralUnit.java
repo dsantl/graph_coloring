@@ -6,6 +6,7 @@ import java.util.Set;
 
 import graph_coloring.algorithm.GraphAlgorithmContext;
 import graph_coloring.algorithmset.greedy.Greedy;
+import graph_coloring.color_selector.ColorSelector;
 import graph_coloring.stat.CollisionCounter;
 import graph_coloring.stat.ErrorFunctionEricsson;
 import graph_coloring.stat.ErrorLogFunctionEricsson;
@@ -16,26 +17,9 @@ public class GeneralUnit {
 	private EricssonGraph graph;
 	private Map<Integer,Integer> nodeIdColor = new HashMap<Integer, Integer>();
 	private double error;
-	private boolean changed = true;
-	
-	private boolean isErrorChanged(){
-		return this.changed;
-	}
-	
-	public double getLogError(){
-		this.setColorToGraph();
-		return ErrorLogFunctionEricsson.computeStat(this.graph);
-	}
 	
 	public double getError(){
-		if (this.isErrorChanged()){
-			this.setColorToGraph();
-			this.error = ErrorFunctionEricsson.computeStat(this.graph); 
-			this.changed = false;
-			return this.error;
-		}
-		else
-			return this.error;
+		return error;
 	}
 	
 	public int getSize(){
@@ -47,52 +31,39 @@ public class GeneralUnit {
 		for(int i = 0 ; i < graph.getNodeSize() ; ++i){
 			nodeIdColor.put(graph.getNodeId(i), graph.getNodeColor(i));
 		}
+		this.error = ErrorFunctionEricsson.computeStat(graph);
 	}
 	
-	public void copy(GeneralUnit unit){
-		this.graph = unit.graph;
-		for(Map.Entry<Integer, Integer> nodeColor : unit.nodeIdColor.entrySet()){
-			this.nodeIdColor.put(nodeColor.getKey(), nodeColor.getValue());
-		}
-	}
-	
-	public void setColor(double changeRate, String orderMethod, String colorSelector, Object colorSelectorParam ,Set<Integer> touchableNodes){
-		this.setColorToGraph();
-		this.changed = true;
-		
-		Greedy greedy = new Greedy(orderMethod, colorSelector, 1, false, changeRate);
-		greedy.setColorSelectorParam(colorSelectorParam);
-		
-		GraphAlgorithmContext alg = new GraphAlgorithmContext(greedy);
-		
-		alg.startAlgorithm(this.graph, touchableNodes);
-		
+	public GeneralUnit(EricssonGraph graph, GeneralUnit unit){
+		this.graph = graph;
 		for(int i = 0 ; i < graph.getNodeSize() ; ++i){
-			nodeIdColor.put(graph.getNodeId(i), graph.getNodeColor(i));
+			int nodeId = graph.getNodeId(i);
+			nodeIdColor.put(nodeId, unit.nodeIdColor.get(nodeId));
+		}
+		this.error = unit.error;
+	}
+	
+	public void setColor(int id, ColorSelector colorSelector){
+		int index = graph.getNodeIndex(id);
+		graph.setNodeColor(index, this.nodeIdColor.get(id));
+		for(int i = 0 ; i < graph.getNodeDegree(index) ; ++i){
+			int neighbourId = graph.getNodeNeighburId(index, i);
+			int neighbourIndex = graph.getNodeIndex(neighbourId);
+			graph.setNodeColor(neighbourIndex, this.nodeIdColor.get(neighbourId));
+		}
+		
+		double oldError = graph.getNodeError(index);
+		int color = this.graph.chooseColor(index, colorSelector);
+		this.nodeIdColor.put(id, color);
+		graph.setNodeColor(index, color);
+		double newError = graph.getNodeError(index);
+		this.error = this.error - 2*oldError + 2*newError;
+	}
+	
+	public void updateGraph(){
+		for(Map.Entry<Integer, Integer> nodeColor : this.nodeIdColor.entrySet()){
+			graph.setNodeColor(graph.getNodeIndex(nodeColor.getKey()), nodeColor.getValue());
 		}
 	}
 	
-	public void setRNDColor(double changeRate, Set<Integer> touchableNodes){
-		this.setColorToGraph();
-		this.changed = true;
-		
-		GraphAlgorithmContext alg = new GraphAlgorithmContext(new Greedy("STDORD", "RND", 1, false, changeRate));
-		
-		alg.startAlgorithm(this.graph, touchableNodes);
-		
-		for(int i = 0 ; i < graph.getNodeSize() ; ++i){
-			nodeIdColor.put(graph.getNodeId(i), graph.getNodeColor(i));
-		}
-	}
-	
-	public void setColorToGraph(){
-		for(Integer nodeId : this.nodeIdColor.keySet()){
-			int nodeIndex = graph.getNodeIndex(nodeId);
-			graph.setNodeColor(nodeIndex, this.nodeIdColor.get(nodeId));
-		}
-	}
-
-	public int getCollision() {
-		return CollisionCounter.computeStat(graph); 
-	}
 }

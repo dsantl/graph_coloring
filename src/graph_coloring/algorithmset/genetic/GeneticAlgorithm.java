@@ -8,6 +8,9 @@ import java.util.Random;
 
 import graph_coloring.algorithm.GraphColoringAlgorithm;
 import graph_coloring.algorithm.unit.GeneralUnit;
+import graph_coloring.color_selector.ColorSelector;
+import graph_coloring.color_selector.ColorSelectorFactory;
+import graph_coloring.stat.GetColorableNodes;
 import graph_coloring.structure.weight_graph.ericsson_graph.EricssonGraph;
 
 public class GeneticAlgorithm extends GraphColoringAlgorithm{
@@ -15,37 +18,57 @@ public class GeneticAlgorithm extends GraphColoringAlgorithm{
 	private int miSize;
 	private int lambdaSize;
 	private int iterations;
+	private int mutationIteration;
 	private Random rnd = new Random();
+	private List<Integer> nodesForColoring;
+	private ColorSelector colorABW;
+	private ColorSelector colorMF;
+	private ColorSelector colorRND;
 	
-	public GeneticAlgorithm(int miSize, int lambdaSize, int iterations){
+	public GeneticAlgorithm(int miSize, int lambdaSize, int iterations, int mutationIteration){
 		this.miSize = miSize;
 		this.lambdaSize = lambdaSize;
 		this.iterations = iterations;
+		this.mutationIteration = mutationIteration;
+		try {
+			colorABW = ColorSelectorFactory.factory("ABW");
+			colorMF = ColorSelectorFactory.factory("MF");
+			colorRND = ColorSelectorFactory.factory("RND");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 	
 	private void initMiSet(List<GeneralUnit> miSet){
+		nodesForColoring = GetColorableNodes.getNodeIdsFilter((EricssonGraph) graph, this.getTouchableNodes());
 		for(int i = 0 ; i < miSize ; ++i){
 			GeneralUnit unit = new GeneralUnit((EricssonGraph) graph);
-			//unit.setRNDColor(0.01, this.getTouchableNodes());
 			miSet.add(unit);
 		}
 	}
 	
 	private GeneralUnit select(List<GeneralUnit> miSet){
-		GeneralUnit newUnit = new GeneralUnit((EricssonGraph)graph);
-		newUnit.copy(miSet.get(rnd.nextInt(miSet.size())));
+		GeneralUnit oldUnit = miSet.get(rnd.nextInt(miSet.size()));
+		GeneralUnit newUnit = new GeneralUnit((EricssonGraph)graph, oldUnit);
 		return newUnit;
 	}
 	
 	private void pertubation(GeneralUnit unit){
-		if ( rnd.nextDouble() < 0.5 ){
-			unit.setColor(1, "SDO", "ABW", null, this.getTouchableNodes());
-		}
-		else if ( rnd.nextDouble() < 0.8 ){
-			unit.setColor(1, "RND", "MF", null, this.getTouchableNodes());
-		}
-		else{
-			unit.setColor(0.001, "RND", "RND", null, this.getTouchableNodes());
+		
+		double choice = rnd.nextDouble();
+		
+		for(int i = 0; i < this.mutationIteration ; ++i)
+		{
+			int nodeId = this.nodesForColoring.get(rnd.nextInt(nodesForColoring.size()));
+			if ( choice < 0.5 ){
+				unit.setColor(nodeId, colorABW);
+			}
+			else if ( choice < 0.8 ){
+				unit.setColor(nodeId, colorMF);
+			}
+			else{
+				unit.setColor(nodeId, colorRND);
+			}
 		}
 	}
 	
@@ -80,6 +103,7 @@ public class GeneticAlgorithm extends GraphColoringAlgorithm{
 				GeneralUnit individual = this.select(miSet);
 				this.pertubation(individual);
 				lambdaSet.add(individual);
+				//System.out.format("Error: %f\n", individual.getError());
 			}
 			Collections.sort(miSet, new GeneticUnitComp());
 			elit = miSet.get(0);
