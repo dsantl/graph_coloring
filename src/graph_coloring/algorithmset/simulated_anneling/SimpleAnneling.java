@@ -38,7 +38,6 @@ public class SimpleAnneling extends GraphColoringAlgorithm{
 		try {
 			rndColorSelector = ColorSelectorFactory.factory("RND");
 		} catch (Exception e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
 		try {
