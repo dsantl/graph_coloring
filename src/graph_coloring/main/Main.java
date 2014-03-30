@@ -97,8 +97,6 @@ public class Main {
 		alg.startAlgorithm(graph); 
 				
 		
-		
-	
 		//alg = new GraphAlgorithmContext(new GeneticAlgorithm(5, 10, 10000));
 		//alg.startAlgorithm(graph);
 		
