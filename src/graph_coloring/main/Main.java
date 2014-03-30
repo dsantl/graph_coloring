@@ -5,10 +5,12 @@ import java.util.Iterator;
 import java.util.Set;
 
 import graph_coloring.algorithm.GraphAlgorithmContext;
+import graph_coloring.algorithm.genetic.GeneticAlgorithm;
 import graph_coloring.algorithmset.RandomAlgorithm;
 import graph_coloring.algorithmset.agents.AgentAlgorithm;
 import graph_coloring.algorithmset.greedy.CombiGreedy;
 import graph_coloring.algorithmset.greedy.Greedy;
+import graph_coloring.algorithmset.simulated_anneling.SimpleAnneling;
 import graph_coloring.algorithmset.simulated_anneling.SimulatedAnneling;
 import graph_coloring.color_selector.ColorSelector;
 import graph_coloring.color_selector.ColorSelectorTRG;
@@ -74,7 +76,7 @@ public class Main {
 		*/
 		
 		int id = GetColorableGroupNodes.getNodeClass(graph, 'A').get(0);
-		EricssonGraph newGraph = MakeSubGraph.createEricssonSubGraphBFS(graph, id, 32000);
+		EricssonGraph newGraph = MakeSubGraph.createEricssonSubGraphBFS(graph, id, 31000);
 		graph = newGraph;
 		
 		
@@ -84,12 +86,22 @@ public class Main {
 		System.out.println("Algorithm...");
 		GraphAlgorithmContext alg;
 		
-		//alg = new GraphAlgorithmContext(new CombiGreedy(5));
-		//alg.startAlgorithm(graph);
-		
 		
 		alg = new GraphAlgorithmContext(new Greedy("SDO", "ABW", 5));
 		alg.startAlgorithm(graph);
+				
+		alg = new GraphAlgorithmContext(new SimpleAnneling(0.1, 100000, 100));
+		alg.startAlgorithm(graph); 
+				
+		
+		//alg = new GraphAlgorithmContext(new CombiGreedy(50));
+		//alg.startAlgorithm(graph);
+	
+		//alg = new GraphAlgorithmContext(new GeneticAlgorithm(5, 10, 10000));
+		//alg.startAlgorithm(graph);
+		
+		//alg = new GraphAlgorithmContext(new Greedy("SDO", "ABW", 5));
+		//alg.startAlgorithm(graph);
 		
 				
 		/*
@@ -100,12 +112,12 @@ public class Main {
 		}		
 		*/
 		
-		//alg = new GraphAlgorithmContext(new AgentAlgorithm(graph.getNodeSize()/2, 20, "SDO", "ABW"));
-		//alg.startAlgorithm(graph, touchableNodes);
+		//alg = new GraphAlgorithmContext(new AgentAlgorithm(3*graph.getNodeSize()/2, 20, "SDO", "ABW"));
+		//alg.startAlgorithm(graph);
 		
 		
-		alg = new GraphAlgorithmContext(new SimulatedAnneling(3, 1000, 2, 0.1, "MF"));
-		alg.startAlgorithm(graph); 
+		//alg = new GraphAlgorithmContext(new SimulatedAnneling(3, 1000, 2, 0.1, "MF"));
+		//alg.startAlgorithm(graph); 
 		
 		/*
 		alg = new GraphAlgorithmContext(new Greedy("BRIDGEWEIGHT", "MF", 1, true));

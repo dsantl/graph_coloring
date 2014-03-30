@@ -48,6 +48,11 @@ public class WeightGraph extends Graph implements IWeightGraph{
 	}
 
 	@Override
+	public double getNodeColorError(int index, int color) {
+		return ((WeightNode)this.getNode(index)).getError(color);
+	}
+	
+	@Override
 	public int getNodeCollision(int index) {
 		return ((WeightNode)this.getNode(index)).getCollision();
 	}
@@ -61,5 +66,7 @@ public class WeightGraph extends Graph implements IWeightGraph{
 	public void sortNeighbours(int index) {
 		((WeightNode)this.getNode(index)).sortNeighbours();
 	}
+
+	
 	
 }

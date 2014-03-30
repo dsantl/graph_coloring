@@ -30,7 +30,7 @@ public class SimulatedAnneling extends GraphColoringAlgorithm{
 		
 		GeneralUnit newUnit = new GeneralUnit((EricssonGraph) this.graph);
 		newUnit.copy(bestUnit);
-		newUnit.changeColor(changeRate, colorSelector, this.getTouchableNodes());
+		newUnit.setColor(changeRate, "RND", colorSelector, null, this.getTouchableNodes());
 		return newUnit;
 	}
 	

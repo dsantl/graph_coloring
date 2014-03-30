@@ -20,10 +20,10 @@ public class CombiGreedy extends GraphColoringAlgorithm {
 		GraphAlgorithmContext algSDO = new GraphAlgorithmContext(new Greedy("SDO", "ABW", 1));
 		GraphAlgorithmContext algFIT = new GraphAlgorithmContext(new Greedy("FIT", "MF", 1));
 		
+		double error = ErrorFunctionEricsson.computeStat((EricssonGraph) graph);
 		
 		for(int i = 0 ; i < step ; ++i){
 			
-			double error = ErrorFunctionEricsson.computeStat((EricssonGraph) graph);
 			System.out.format("Old error: %f\n", error);		
 			System.out.format("Color change: %f\n\n", ChangeColorGlobal.computeStat((EricssonGraph) graph));
 			
@@ -34,6 +34,7 @@ public class CombiGreedy extends GraphColoringAlgorithm {
 			if ( error - newError <= 2.0){
 				algFIT.startAlgorithm(graph, this.getTouchableNodes());
 			}
+			error = newError;
 		}
 	}
 

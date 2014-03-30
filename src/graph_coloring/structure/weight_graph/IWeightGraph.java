@@ -8,6 +8,7 @@ public interface IWeightGraph {
 	public double getBridgeWeight(int index);
 	public void addWeightBridge(int id1, int id2, double weight);
 	public double getNodeError(int index);
+	public double getNodeColorError(int index, int color);
 	public int getNodeCollision(int index);
 	public Iterator<Pair<Double, WeightNode>> getNeighbours(int index);
 	public void sortNeighbours(int index);
