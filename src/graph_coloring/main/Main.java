@@ -87,15 +87,17 @@ public class Main {
 		GraphAlgorithmContext alg;
 		
 		
-		alg = new GraphAlgorithmContext(new Greedy("SDO", "ABW", 5));
+		//alg = new GraphAlgorithmContext(new Greedy("SDO", "ABW", 15));
+		//alg.startAlgorithm(graph);
+			
+		alg = new GraphAlgorithmContext(new CombiGreedy(15));
 		alg.startAlgorithm(graph);
-				
-		alg = new GraphAlgorithmContext(new SimpleAnneling(0.1, 100000, 100));
+		
+		alg = new GraphAlgorithmContext(new SimpleAnneling(0.5, 3100000, 10));
 		alg.startAlgorithm(graph); 
 				
 		
-		//alg = new GraphAlgorithmContext(new CombiGreedy(50));
-		//alg.startAlgorithm(graph);
+		
 	
 		//alg = new GraphAlgorithmContext(new GeneticAlgorithm(5, 10, 10000));
 		//alg.startAlgorithm(graph);
