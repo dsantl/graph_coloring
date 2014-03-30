@@ -1,11 +1,14 @@
 package graph_coloring.algorithmset.simulated_anneling;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
 import graph_coloring.algorithm.GraphColoringAlgorithm;
+import graph_coloring.algorithm.unit.GeneralUnit;
 import graph_coloring.color_selector.ColorSelector;
 import graph_coloring.color_selector.ColorSelectorFactory;
+import graph_coloring.stat.CheckValidColoring;
 import graph_coloring.stat.ErrorFunctionEricsson;
 import graph_coloring.stat.GetColorableNodes;
 import graph_coloring.structure.weight_graph.ericsson_graph.EricssonGraph;
@@ -34,15 +37,8 @@ public class SimpleAnneling extends GraphColoringAlgorithm{
 		double currError = 0;
 		
 		ColorSelector colorSelector = null;
-		ColorSelector rndColorSelector = null;
 		try {
-			rndColorSelector = ColorSelectorFactory.factory("RND");
-		} catch (Exception e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-		try {
-			colorSelector = ColorSelectorFactory.factory("ABW");
+			colorSelector = ColorSelectorFactory.factory("RND");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -52,21 +48,16 @@ public class SimpleAnneling extends GraphColoringAlgorithm{
 		for(int i = 0 ; i < temperatureChangeSteps ; ++i){
 			for(int j = 0 ; j < thermalEquilibrium ; ++j){
 				
-				ColorSelector colorSel;
-				if ( rnd.nextDouble() < 0.8 )
-					colorSel = colorSelector;
-				else
-					colorSel = rndColorSelector;
-				
 				int nodeId = colorableNodes.get(rnd.nextInt(colorableNodes.size()));
 				int nodeIndex = ericssonGraph.getNodeIndex(nodeId);
-				int color = ericssonGraph.chooseColor(nodeIndex, colorSel);
+				int color = ericssonGraph.chooseColor(nodeIndex, colorSelector);
 				
-				currError = bestError - 2*ericssonGraph.getNodeError(nodeIndex);
-				currError += 2*ericssonGraph.getNodeColorError(nodeIndex, color);
+				currError = bestError - ericssonGraph.getNodeError(nodeIndex);
+				currError += ericssonGraph.getNodeColorError(nodeIndex, color);
 				
 				dError = currError - bestError;
 				
+				System.out.format("%f %f %f %f\n", bestError, currError, dError,  Math.exp(-dError/T));
 				
 				if ( dError < 0 || rnd.nextDouble() < Math.exp(-dError/T) ){
 					graph.setNodeColor(nodeIndex, color);
@@ -74,8 +65,6 @@ public class SimpleAnneling extends GraphColoringAlgorithm{
 				}
 			}
 			T -= this.startTemperature/temperatureChangeSteps;
-			if ( i%1000 == 0)
-				System.out.format("%f %f\n", bestError, currError);
 		}
 	}
 }
