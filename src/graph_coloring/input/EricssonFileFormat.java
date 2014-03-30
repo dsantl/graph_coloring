@@ -1,9 +1,7 @@
 package graph_coloring.input;
 
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Map;
 import java.util.Set;
 
 import graph_coloring.common.OrderPair;

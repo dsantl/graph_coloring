@@ -1,4 +1,4 @@
-package graph_coloring.algorithm.genetic;
+package graph_coloring.algorithmset.genetic;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -8,7 +8,6 @@ import java.util.Random;
 
 import graph_coloring.algorithm.GraphColoringAlgorithm;
 import graph_coloring.algorithm.unit.GeneralUnit;
-import graph_coloring.structure.ElementProperty;
 import graph_coloring.structure.weight_graph.ericsson_graph.EricssonGraph;
 
 public class GeneticAlgorithm extends GraphColoringAlgorithm{

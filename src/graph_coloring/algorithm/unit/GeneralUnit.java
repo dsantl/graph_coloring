@@ -6,8 +6,6 @@ import java.util.Set;
 
 import graph_coloring.algorithm.GraphAlgorithmContext;
 import graph_coloring.algorithmset.greedy.Greedy;
-import graph_coloring.color_selector.ColorSelector;
-import graph_coloring.order.OrderMethod;
 import graph_coloring.stat.CollisionCounter;
 import graph_coloring.stat.ErrorFunctionEricsson;
 import graph_coloring.stat.ErrorLogFunctionEricsson;

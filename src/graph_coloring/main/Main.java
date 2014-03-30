@@ -5,9 +5,9 @@ import java.util.Iterator;
 import java.util.Set;
 
 import graph_coloring.algorithm.GraphAlgorithmContext;
-import graph_coloring.algorithm.genetic.GeneticAlgorithm;
 import graph_coloring.algorithmset.RandomAlgorithm;
 import graph_coloring.algorithmset.agents.AgentAlgorithm;
+import graph_coloring.algorithmset.genetic.GeneticAlgorithm;
 import graph_coloring.algorithmset.greedy.CombiGreedy;
 import graph_coloring.algorithmset.greedy.Greedy;
 import graph_coloring.algorithmset.simulated_anneling.SimpleAnneling;
