@@ -6,6 +6,7 @@ import java.util.Random;
 import graph_coloring.algorithm.GraphColoringAlgorithm;
 import graph_coloring.color_selector.ColorSelector;
 import graph_coloring.color_selector.ColorSelectorFactory;
+import graph_coloring.stat.ChangeColorGlobal;
 import graph_coloring.stat.ErrorFunctionEricsson;
 import graph_coloring.stat.GetColorableNodes;
 import graph_coloring.structure.weight_graph.ericsson_graph.EricssonGraph;
@@ -32,6 +33,9 @@ public class SimulatedAnneling extends GraphColoringAlgorithm{
 		double dError;
 		double bestError = ErrorFunctionEricsson.computeStat(ericssonGraph);
 		double currError = 0;
+		int NC = GetColorableNodes.getNumberOfColorableNodes(ericssonGraph);
+		int bestChange = (int)(NC*ChangeColorGlobal.computeStat(ericssonGraph));
+		int currChange;
 		
 		ColorSelector abwColorSelector = null;
 		ColorSelector rndColorSelector = null;
@@ -65,17 +69,37 @@ public class SimulatedAnneling extends GraphColoringAlgorithm{
 				currError = bestError - 2*ericssonGraph.getNodeError(nodeIndex);
 				currError += 2*ericssonGraph.getNodeColorError(nodeIndex, color);
 				
-				dError = currError - bestError;
+				int changeTmp = 0;
+				boolean colorIsStart = color == ericssonGraph.getNodeStartColor(nodeIndex);
+				boolean oldColorIsStart = ericssonGraph.getNodeColor(nodeIndex) == ericssonGraph.getNodeStartColor(nodeIndex);
 				
+				if ( colorIsStart == oldColorIsStart )
+					changeTmp = 0;
+				else if (oldColorIsStart == true)
+					changeTmp = 1;
+				else
+					changeTmp = -1;
+				
+				currChange = bestChange + changeTmp;
+				double pos = (double)(currChange)/NC; 
+				
+				//if ( pos < 0.65 )
+				//	pos = 0;
+				
+				dError = currError - bestError;
+				dError += 5*pos;
 				
 				if ( dError < 0 || rnd.nextDouble() < Math.exp(-dError/T) ){
 					graph.setNodeColor(nodeIndex, color);
 					bestError = currError;
+					bestChange = currChange;
 				}
 			}
 			T -= this.startTemperature/temperatureChangeSteps;
-			if ( i%1000 == 0)
+			if (i%1000 == 0){
 				System.out.format("%f %f\n", bestError, currError);
+				System.out.println((double)bestChange/NC);
+			}
 		}
 	}
 }

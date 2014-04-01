@@ -50,7 +50,9 @@ public class Main {
 			//graph = fileFormat.getGraphFromFile("/home/dino/Desktop/FER-Tokai_coloring.txt");
 			
 			//graph = (EricssonGraph) fileFormat.getGraphFromFile("Tokai-new.out");
-			graph = (EricssonGraph) fileFormat.getGraphFromFile("Tokai.out");
+			String fileName = args[0];
+			graph = (EricssonGraph) fileFormat.getGraphFromFile(fileName);
+			//graph = (EricssonGraph) fileFormat.getGraphFromFile("Tokai.out");
 			//graph = (EricssonGraph) fileFormat.getGraphFromFile("Kansai.out");
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -83,24 +85,24 @@ public class Main {
 		
 		double oldError = ErrorFunctionEricsson.computeStat(graph);
 		
-		System.out.println(graph.getNodeSize());
-		System.out.println(graph.getBridgeSize());
+		//System.out.println(graph.getNodeSize());
+		//System.out.println(graph.getBridgeSize());
 		System.out.println("Algorithm...");
 		GraphAlgorithmContext alg;
 		
 		
-		//alg = new GraphAlgorithmContext(new Greedy("SDO", "ABW", 15));
-		//alg.startAlgorithm(graph);
-			
-		alg = new GraphAlgorithmContext(new CombiGreedy(10));
+		alg = new GraphAlgorithmContext(new Greedy("SDO", "ABW", 5));
 		alg.startAlgorithm(graph);
+			
+		//alg = new GraphAlgorithmContext(new CombiGreedy(15));
+		//alg.startAlgorithm(graph);
 		
-		//alg = new GraphAlgorithmContext(new SimulatedAnneling(0.5, 310000, 10));
-		//alg.startAlgorithm(graph); 
+		alg = new GraphAlgorithmContext(new SimulatedAnneling(0.5, 3100000, 100));
+		alg.startAlgorithm(graph); 
 				
 		
-		alg = new GraphAlgorithmContext(new GeneticAlgorithm(5, 10, 10000, 100));
-		alg.startAlgorithm(graph);
+		//alg = new GraphAlgorithmContext(new GeneticAlgorithm(4, 7, 310000, 10));
+		//alg.startAlgorithm(graph);
 		
 		//alg = new GraphAlgorithmContext(new Greedy("SDO", "ABW", 5));
 		//alg.startAlgorithm(graph);

@@ -45,4 +45,13 @@ public class GetColorableNodes {
 		return ret;
 	}
 	
+	public static int getNumberOfColorableNodes(EricssonGraph graph){
+		int ret = 0;
+		for(int i = 0 ; i < graph.getNodeSize() ; ++i){
+			if ( graph.getNodeColorable(i) )
+				ret += 1;
+		}
+		return ret;
+	}
+	
 }
