@@ -108,10 +108,12 @@ public class MakeSubGraph {
 		for(Integer id : nodeIds){
 			int nodeIndex = graph.getNodeIndex(id);
 			int color = graph.getNodeColor(nodeIndex);
+			int startColor = graph.getNodeStartColor(nodeIndex);
 			char nodeGroup = graph.getNodeGroup(nodeIndex);
 			int domainName = graph.getNodeDomainName(nodeIndex);
 			boolean colorable = graph.getNodeColorable(nodeIndex);
-			ret.addEricssonNode(id, nodeGroup, domainName, color, colorable);
+			ret.addEricssonNode(id, nodeGroup, domainName, startColor, colorable);
+			ret.setNodeColor(ret.getNodeIndex(id), color);
 		}
 		
 		for(int i = 0 ; i < graph.getBridgeSize() ; ++i){

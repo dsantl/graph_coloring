@@ -22,8 +22,8 @@ public class GeneticAlgorithm extends GraphColoringAlgorithm{
 	private Random rnd = new Random();
 	private List<Integer> nodesForColoring;
 	private ColorSelector colorABW;
-	private ColorSelector colorMF;
 	private ColorSelector colorRND;
+	private ColorSelector colorTRG;
 	
 	public GeneticAlgorithm(int miSize, int lambdaSize, int iterations, int mutationIteration){
 		this.miSize = miSize;
@@ -31,8 +31,9 @@ public class GeneticAlgorithm extends GraphColoringAlgorithm{
 		this.iterations = iterations;
 		this.mutationIteration = mutationIteration;
 		try {
+			colorTRG = ColorSelectorFactory.factory("TRG");
+			colorTRG.setParam(0.5);
 			colorABW = ColorSelectorFactory.factory("ABW");
-			colorMF = ColorSelectorFactory.factory("MF");
 			colorRND = ColorSelectorFactory.factory("RND");
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -63,11 +64,11 @@ public class GeneticAlgorithm extends GraphColoringAlgorithm{
 			if ( choice < 0.5 ){
 				unit.setColor(nodeId, colorABW);
 			}
-			else if ( choice < 0.8 ){
-				unit.setColor(nodeId, colorMF);
+			else if ( choice < 0.7){
+				unit.setColor(nodeId, colorRND);
 			}
 			else{
-				unit.setColor(nodeId, colorRND);
+				unit.setColor(nodeId, colorTRG);
 			}
 		}
 	}
@@ -107,7 +108,8 @@ public class GeneticAlgorithm extends GraphColoringAlgorithm{
 			}
 			Collections.sort(miSet, new GeneticUnitComp());
 			elit = miSet.get(0);
-			System.out.format("Error: %f\n", elit.getError());
+			if ( i % 100 == 0)
+				System.out.format("Error: %f\n", elit.getError());
 			collectBestUnits(miSet, lambdaSet);
 			miSet.add(elit);
 		}

@@ -44,6 +44,9 @@ public class ColorSelectorTRG implements ColorSelector{
 		if ( trgColors.size() == 0 )
 			return memColor;
 		
+		if ( trgColors.contains(eNode.getStartColor()) )
+			return eNode.getStartColor();
+		
 		return trgColors.get(rnd.nextInt(trgColors.size()));
 	}
 

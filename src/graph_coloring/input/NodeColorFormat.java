@@ -7,8 +7,7 @@ import java.io.IOException;
 
 public class NodeColorFormat {
 	
-	static public void setColorsFromFileToGraph(String fileName, Graph graph)
-			throws FileNotFoundException, NumberFormatException, IOException {
+	static public void setColorsFromFileToGraph(String fileName, Graph graph) throws FileNotFoundException, NumberFormatException, IOException {
 		
 		InputFile file = new InputFile(fileName);
 		

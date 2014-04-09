@@ -39,28 +39,32 @@ public class SimulatedAnneling extends GraphColoringAlgorithm{
 		
 		ColorSelector abwColorSelector = null;
 		ColorSelector rndColorSelector = null;
+		ColorSelector trgColorSelector = null;
 		try {
 			rndColorSelector = ColorSelectorFactory.factory("RND");
+			abwColorSelector = ColorSelectorFactory.factory("ABW");
+			trgColorSelector = ColorSelectorFactory.factory("TRG");
+			trgColorSelector.setParam(0.01);
 		} catch (Exception e1) {
 			e1.printStackTrace();
 		}
-		try {
-			abwColorSelector = ColorSelectorFactory.factory("ABW");
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+		
 		
 		List<Integer> colorableNodes = GetColorableNodes.getNodeIdsFilter(ericssonGraph, this.getTouchableNodes());
 		
+		double alpha = 0;
 		
 		for(int i = 0 ; i < temperatureChangeSteps ; ++i){
 			for(int j = 0 ; j < thermalEquilibrium ; ++j){
 				
 				ColorSelector colorSelector;
-				if ( rnd.nextDouble() < 0.8 )
+				double choice = rnd.nextDouble();
+				if ( choice < 0.8 )
 					colorSelector = abwColorSelector;
-				else
+				else if ( choice < 0.9)
 					colorSelector = rndColorSelector;
+				else
+					colorSelector = trgColorSelector;
 				
 				int nodeId = colorableNodes.get(rnd.nextInt(colorableNodes.size()));
 				int nodeIndex = ericssonGraph.getNodeIndex(nodeId);
@@ -83,11 +87,9 @@ public class SimulatedAnneling extends GraphColoringAlgorithm{
 				currChange = bestChange + changeTmp;
 				double pos = (double)(currChange)/NC; 
 				
-				//if ( pos < 0.65 )
-				//	pos = 0;
 				
 				dError = currError - bestError;
-				dError += 5*pos;
+				//dError += alpha*pos*dError/bestError;
 				
 				if ( dError < 0 || rnd.nextDouble() < Math.exp(-dError/T) ){
 					graph.setNodeColor(nodeIndex, color);
@@ -96,10 +98,14 @@ public class SimulatedAnneling extends GraphColoringAlgorithm{
 				}
 			}
 			T -= this.startTemperature/temperatureChangeSteps;
+			alpha += 0.001;
+			
 			if (i%1000 == 0){
 				System.out.format("%f %f\n", bestError, currError);
 				System.out.println((double)bestChange/NC);
 			}
+			//if ( bestError < 75.0 )
+			//	break;
 		}
 	}
 }

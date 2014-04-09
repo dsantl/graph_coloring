@@ -24,6 +24,7 @@ public class ChangeColorGlobal {
 				counter += 1;
 			}
 		}
+		
 		return ((double)counter)/total;
 	}
 }
