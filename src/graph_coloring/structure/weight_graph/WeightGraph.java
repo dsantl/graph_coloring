@@ -18,6 +18,7 @@ public class WeightGraph extends Graph implements IWeightGraph{
 		WeightNode node2 = (WeightNode)nodeList.get(this.getNodeIndex(id2));
 		node1.addWeightToNeighbour(weight, node2);
 		node2.addWeightToNeighbour(weight, node1);
+		this.addBridge(node1, node2);
 	}
 	
 	
