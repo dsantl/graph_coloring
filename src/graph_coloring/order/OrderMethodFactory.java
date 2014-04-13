@@ -18,10 +18,7 @@ public class OrderMethodFactory {
 			return new OrderNodeSTDORD();
 		else if ( name.equals("RND") )
 			return new OrderNodeRND();
-		else if ( name.equals("BRIDGEWEIGHT") )
-			return new OrderBridgeWeight();
-		else
-			throw new Exception("Wrong OrderMethod name!");
+		throw new Exception("Wrong OrderMethod name!");
 		
 	}
 	

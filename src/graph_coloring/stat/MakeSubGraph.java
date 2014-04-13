@@ -7,8 +7,10 @@ import java.util.Queue;
 import java.util.Set;
 
 import graph_coloring.common.OrderPair;
+import graph_coloring.common.Pair;
 import graph_coloring.structure.Graph;
 import graph_coloring.structure.weight_graph.WeightGraph;
+import graph_coloring.structure.weight_graph.WeightNode;
 import graph_coloring.structure.weight_graph.ericsson_graph.EricssonGraph;
 
 public class MakeSubGraph {
@@ -49,15 +51,26 @@ public class MakeSubGraph {
 			int nodeIndex = graph.getNodeIndex(id);
 			int color = graph.getNodeColor(nodeIndex);
 			ret.addNode(id, color);
-		}
-		
-		for(int i = 0 ; i < graph.getBridgeSize() ; ++i){
-			OrderPair bridge = graph.getBridge(i);
-			int node1 = bridge.getFirst();
-			int node2 = bridge.getSecond();
 			
-			if ( nodeIds.contains(node1) && nodeIds.contains(node2) ){
-				ret.addBridge(node1, node2);
+			Set<OrderPair> bridgeFlag = new HashSet<OrderPair>();
+			
+			for(int i = 0 ; i < graph.getNodeDegree(nodeIndex) ; ++i){	
+				int node1 = id;
+				int node2 = graph.getNodeNeighburId(nodeIndex, i);
+				
+				OrderPair orderPair = new OrderPair(node1, node2);
+				
+				if ( !bridgeFlag.contains(orderPair) ){
+					bridgeFlag.add(orderPair);
+				}
+				else{
+					bridgeFlag.remove(orderPair);
+					continue;
+				}
+				
+				if ( nodeIds.contains(node1) && nodeIds.contains(node2) ){
+					ret.addBridge(node1, node2);
+				}
 			}
 		}
 		
@@ -65,6 +78,7 @@ public class MakeSubGraph {
 	}
 	
 	public static WeightGraph createWeightSubGraphBFS(WeightGraph graph, int nodeId, int nodeSize){
+		
 		WeightGraph ret = new WeightGraph();
 		
 		Set<Integer> nodeIds = getNodes(graph, nodeId, nodeSize);
@@ -73,19 +87,34 @@ public class MakeSubGraph {
 			int nodeIndex = graph.getNodeIndex(id);
 			int color = graph.getNodeColor(nodeIndex);
 			ret.addNode(id, color);
-		}
 		
-		for(int i = 0 ; i < graph.getBridgeSize() ; ++i){
-			OrderPair bridge = graph.getBridge(i);
-			int node1 = bridge.getFirst();
-			int node2 = bridge.getSecond();
-			double weight = graph.getBridgeWeight(i);
+		
+			Set<OrderPair> bridgeFlag = new HashSet<OrderPair>();
+			Iterator<Pair<Double, WeightNode>> neighbourIterator = graph.getNeighbours(nodeIndex);
 			
-			if ( nodeIds.contains(node1) && nodeIds.contains(node2) ){
-				ret.addWeightBridge(node1, node2, weight);
+			while(neighbourIterator.hasNext()){
+				Pair<Double, WeightNode> doubleNode = neighbourIterator.next();
+				double weight = doubleNode.getFirst();
+				WeightNode neighbourNode = doubleNode.getSecond();
+				
+				int node1 = id;
+				int node2 = neighbourNode.getId();
+				
+				OrderPair orderPair = new OrderPair(node1, node2);
+				
+				if ( !bridgeFlag.contains(orderPair) ){
+					bridgeFlag.add(orderPair);
+				}
+				else{
+					bridgeFlag.remove(orderPair);
+					continue;
+				}
+				
+				if ( nodeIds.contains(node1) && nodeIds.contains(node2) ){
+					ret.addWeightBridge(node1, node2, weight);
+				}
 			}
 		}
-		
 		
 		return ret;
 	}
@@ -114,17 +143,32 @@ public class MakeSubGraph {
 			boolean colorable = graph.getNodeColorable(nodeIndex);
 			ret.addEricssonNode(id, nodeGroup, domainName, startColor, colorable);
 			ret.setNodeColor(ret.getNodeIndex(id), color);
-		}
-		
-		for(int i = 0 ; i < graph.getBridgeSize() ; ++i){
-			OrderPair bridge = graph.getBridge(i);
-			int node1 = bridge.getFirst();
-			int node2 = bridge.getSecond();
-			double weight = graph.getBridgeWeight(i);
 			
-			if ( nodeIds.contains(node1) && nodeIds.contains(node2) ){
-				ret.addWeightBridge(node1, node2, weight);
-			}
+			Set<OrderPair> bridgeFlag = new HashSet<OrderPair>();
+			Iterator<Pair<Double, WeightNode>> neighbourIterator = graph.getNeighbours(nodeIndex);
+			
+			while(neighbourIterator.hasNext()){
+				Pair<Double, WeightNode> doubleNode = neighbourIterator.next();
+				double weight = doubleNode.getFirst();
+				WeightNode neighbourNode = doubleNode.getSecond();
+				
+				int node1 = id;
+				int node2 = neighbourNode.getId();
+				
+				OrderPair orderPair = new OrderPair(node1, node2);
+				
+				if ( !bridgeFlag.contains(orderPair) ){
+					bridgeFlag.add(orderPair);
+				}
+				else{
+					bridgeFlag.remove(orderPair);
+					continue;
+				}
+				
+				if ( nodeIds.contains(node1) && nodeIds.contains(node2) ){
+					ret.addWeightBridge(node1, node2, weight);
+				}
+			}	
 		}
 		
 		return ret;

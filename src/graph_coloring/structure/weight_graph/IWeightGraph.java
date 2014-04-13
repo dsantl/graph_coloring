@@ -5,7 +5,6 @@ import java.util.Iterator;
 
 public interface IWeightGraph {
 
-	public double getBridgeWeight(int index);
 	public void addWeightBridge(int id1, int id2, double weight);
 	public double getNodeError(int index);
 	public double getNodeColorError(int index, int color);

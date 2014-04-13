@@ -1,13 +1,17 @@
 package graph_coloring.output;
 
 import graph_coloring.common.OrderPair;
+import graph_coloring.common.Pair;
 import graph_coloring.structure.Graph;
+import graph_coloring.structure.weight_graph.WeightNode;
 import graph_coloring.structure.weight_graph.ericsson_graph.EricssonGraph;
 
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
+import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Set;
 
 public class FERoutput implements Converter{
 
@@ -44,11 +48,36 @@ public class FERoutput implements Converter{
 		int bridgeSize = graph.getBridgeSize();
 		
 		outFile.println(bridgeSize); //number of bridges
-		for(int i = 0 ; i < bridgeSize ; ++i){
-			OrderPair bridge = graph.getBridge(i);
-			outFile.println(bridge.getFirst()); //first node
-			outFile.println(bridge.getSecond()); //second node
-			outFile.println(graph.getBridgeWeight(i)); //weight of bridge
+		
+		for(int nodeIndex = 0 ; nodeIndex < graph.getNodeSize() ; ++nodeIndex){
+			
+			int id = graph.getNodeId(nodeIndex);
+			Set<OrderPair> bridgeFlag = new HashSet<OrderPair>();
+			Iterator<Pair<Double, WeightNode>> neighbourIterator = graph.getNeighbours(nodeIndex);
+			
+			while(neighbourIterator.hasNext()){
+				
+				Pair<Double, WeightNode> doubleNode = neighbourIterator.next();
+				double weight = doubleNode.getFirst();
+				WeightNode neighbourNode = doubleNode.getSecond();
+				
+				int node1 = id;
+				int node2 = neighbourNode.getId();
+				
+				OrderPair orderPair = new OrderPair(node1, node2);
+				
+				if ( !bridgeFlag.contains(orderPair) ){
+					bridgeFlag.add(orderPair);
+				}
+				else{
+					bridgeFlag.remove(orderPair);
+					continue;
+				}
+				
+				outFile.println(orderPair.getFirst()); //first node
+				outFile.println(orderPair.getSecond()); //second node
+				outFile.println(weight); //weight of bridge
+			}
 		}
 		
 		outFile.close();

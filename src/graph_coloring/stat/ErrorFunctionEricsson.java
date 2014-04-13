@@ -1,6 +1,9 @@
 package graph_coloring.stat;
 
-import graph_coloring.common.OrderPair;
+import java.util.Iterator;
+
+import graph_coloring.common.Pair;
+import graph_coloring.structure.weight_graph.WeightNode;
 import graph_coloring.structure.weight_graph.ericsson_graph.EricssonGraph;
 
 
@@ -14,20 +17,26 @@ public class ErrorFunctionEricsson {
 	public static double computeStat(EricssonGraph graph) {
 		
 		double ret = 0;
-		
-		for(int i = 0 ; i < graph.getBridgeSize() ; ++i){
-			OrderPair eBridge = graph.getBridge(i);
-			int leftNode = graph.getNodeIndex(eBridge.getFirst());
-			int rightNode = graph.getNodeIndex(eBridge.getSecond());
+			
+		for(int nodeIndex = 0 ; nodeIndex < graph.getNodeSize() ; ++nodeIndex){
+			
+			Iterator<Pair<Double, WeightNode>> neighbourIterator = graph.getNeighbours(nodeIndex);
+			
+			while(neighbourIterator.hasNext()){
+				Pair<Double, WeightNode> doubleNode = neighbourIterator.next();
+				double weight = doubleNode.getFirst();
+				WeightNode neighbourNode = doubleNode.getSecond();
 				
-			if ( (graph.getNodeGroup(leftNode) == graph.getNodeGroup(rightNode)) && 
-				 (graph.getNodeColor(leftNode) == graph.getNodeColor(rightNode)) &&
-				 (graph.getNodeColorable(leftNode) == true || graph.getNodeColorable(rightNode) == true)){	
-					ret += graph.getBridgeWeight(i);
-				}
+				int leftNode = nodeIndex;
+				int rightNode = neighbourNode.getId();
+					
+				if ( (graph.getNodeGroup(leftNode) == graph.getNodeGroup(rightNode)) && 
+					 (graph.getNodeColor(leftNode) == graph.getNodeColor(rightNode)) &&
+					 (graph.getNodeColorable(leftNode) == true || graph.getNodeColorable(rightNode) == true)){	
+						ret += weight;
+					}
+			}
 		}
-		
-		ret *= 2;
 		
 		for(int i = 0 ; i < graph.getNodeSize() ; ++i){
 			int colorClassId = graph.getNodeDomainName(i);

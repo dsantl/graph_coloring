@@ -1,7 +1,6 @@
 package graph_coloring.structure;
 
 import graph_coloring.color_selector.ColorSelector;
-import graph_coloring.common.OrderPair;
 import graph_coloring.order.OrderMethod;
 
 import java.util.ArrayList;
@@ -12,8 +11,6 @@ import java.util.Map;
 
 public class Graph implements IGraph{
 
-	//list of bridges
-	protected List<Bridge> bridgeList = new ArrayList<Bridge>();
 	
 	//list of nodes
 	protected List<Node> nodeList = new ArrayList<Node>();
@@ -21,6 +18,7 @@ public class Graph implements IGraph{
 	//map id-index in list
 	private Map<Integer, Integer> nodeMap = new HashMap<Integer, Integer>();
 	
+	private int bridgeSize = 0;
 	
 	
 	/**
@@ -29,18 +27,9 @@ public class Graph implements IGraph{
 	 */
 	@Override
 	public int getBridgeSize(){
-		return bridgeList.size();
+		return bridgeSize;
 	}
 	
-	/**
-	 * Get OrderPair objects with nodes
-	 * @param index of bridge (indices from 0)
-	 * @return OrderPair object (nodes)
-	 */
-	@Override
-	public OrderPair getBridge(int index){
-		return bridgeList.get(index).getNodes();
-	}
 	
 	/**
 	 * Get node from map
@@ -98,10 +87,10 @@ public class Graph implements IGraph{
 	 */
 	@Override
 	public void addBridge(int id1, int id2){
-		Node node1 = nodeList.get(this.getNodeIndex(id1));
-		Node node2 = nodeList.get(this.getNodeIndex(id2));
-		Bridge b = new Bridge(node1, node2);
-		this.addBridge(node1, node2, b);
+		Node node1 = this.getNode(this.getNodeIndex(id1));
+		Node node2 = this.getNode(this.getNodeIndex(id2));
+		bridgeSize += 1;
+		this.addBridge(node1, node2);
 	}
 
 	/**
@@ -147,8 +136,7 @@ public class Graph implements IGraph{
 	 * @param node2
 	 * @param b bridge
 	 */
-	protected void addBridge(Node node1, Node node2, Bridge b){
-		bridgeList.add(b);
+	protected void addBridge(Node node1, Node node2){
 		node1.addNeighbour(node2);
 		node2.addNeighbour(node1);
 	}
@@ -168,11 +156,6 @@ public class Graph implements IGraph{
 		List<? extends ElementProperty> nodeProp = nodeList;
 		ord.makeOrder(nodeProp);
 		refreshNodeMap();
-	}
-
-	@Override
-	public void makeBridgeOrder(OrderMethod ord) {
-		ord.makeOrder(bridgeList);	
 	}
 	
 	@Override
