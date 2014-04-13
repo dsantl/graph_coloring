@@ -17,6 +17,7 @@ public class ColorSelectorTRG implements ColorSelector{
 	@Override
 	public int selectColor(Node node, Iterator<Integer> colors) {
 		
+		/*
 		if (paramSet == false){
 			try {
 				throw new Exception("Param for TRG is not set!");
@@ -24,9 +25,10 @@ public class ColorSelectorTRG implements ColorSelector{
 				e.printStackTrace();
 			}
 		}
-		
+		*/
 		EricssonNode eNode = (EricssonNode)node;
 		int memColor = node.getColor();
+		double nodeError = eNode.getError();
 		
 		if (eNode.getColorable() == false)
 			return eNode.getColor();
@@ -35,8 +37,12 @@ public class ColorSelectorTRG implements ColorSelector{
 		while(colors.hasNext()){
 			int currColor = colors.next();
 			double err = eNode.getError(currColor);
-			
+			/*
 			if ( err <= this.targetError ){
+				trgColors.add(currColor);
+			}
+			*/
+			if ( Math.abs(err-nodeError)/nodeError < 0.1 ){
 				trgColors.add(currColor);
 			}
 		}

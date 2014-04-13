@@ -39,12 +39,12 @@ public class SimulatedAnneling extends GraphColoringAlgorithm{
 		
 		ColorSelector abwColorSelector = null;
 		ColorSelector rndColorSelector = null;
-		ColorSelector trgColorSelector = null;
+		ColorSelector startColorSelector = null;
+		
 		try {
 			rndColorSelector = ColorSelectorFactory.factory("RND");
 			abwColorSelector = ColorSelectorFactory.factory("ABW");
-			trgColorSelector = ColorSelectorFactory.factory("TRG");
-			trgColorSelector.setParam(0.01);
+			startColorSelector = ColorSelectorFactory.factory("START");
 		} catch (Exception e1) {
 			e1.printStackTrace();
 		}
@@ -53,18 +53,23 @@ public class SimulatedAnneling extends GraphColoringAlgorithm{
 		List<Integer> colorableNodes = GetColorableNodes.getNodeIdsFilter(ericssonGraph, this.getTouchableNodes());
 		
 		double alpha = 0;
+		boolean start = false;
 		
 		for(int i = 0 ; i < temperatureChangeSteps ; ++i){
 			for(int j = 0 ; j < thermalEquilibrium ; ++j){
 				
 				ColorSelector colorSelector;
 				double choice = rnd.nextDouble();
+				
 				if ( choice < 0.8 )
 					colorSelector = abwColorSelector;
-				else if ( choice < 0.9)
-					colorSelector = rndColorSelector;
 				else
-					colorSelector = trgColorSelector;
+					colorSelector = rndColorSelector;
+				
+				if (start)
+					colorSelector = startColorSelector;
+				
+				start = false;
 				
 				int nodeId = colorableNodes.get(rnd.nextInt(colorableNodes.size()));
 				int nodeIndex = ericssonGraph.getNodeIndex(nodeId);
@@ -89,7 +94,10 @@ public class SimulatedAnneling extends GraphColoringAlgorithm{
 				
 				
 				dError = currError - bestError;
-				//dError += alpha*pos*dError/bestError;
+				//dError *= pos;
+				
+				//if ( pos > 0.64 )
+				//	start = rnd.nextBoolean();
 				
 				if ( dError < 0 || rnd.nextDouble() < Math.exp(-dError/T) ){
 					graph.setNodeColor(nodeIndex, color);
@@ -97,15 +105,16 @@ public class SimulatedAnneling extends GraphColoringAlgorithm{
 					bestChange = currChange;
 				}
 			}
-			T -= this.startTemperature/temperatureChangeSteps;
+			T = this.startTemperature - this.startTemperature*(double)i/this.temperatureChangeSteps;
 			alpha += 0.001;
 			
 			if (i%1000 == 0){
 				System.out.format("%f %f\n", bestError, currError);
 				System.out.println((double)bestChange/NC);
 			}
-			//if ( bestError < 75.0 )
-			//	break;
+			
+			if ( bestError < 1.0 )
+				break;
 		}
 	}
 }

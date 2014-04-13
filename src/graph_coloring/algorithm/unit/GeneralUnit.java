@@ -40,11 +40,8 @@ public class GeneralUnit {
 	public void setColor(int id, ColorSelector colorSelector){
 		int index = graph.getNodeIndex(id);
 		graph.setNodeColor(index, this.nodeIndexColor.get(index));
-		for(int i = 0 ; i < graph.getNodeDegree(index) ; ++i){
-			int neighbourId = graph.getNodeNeighburId(index, i);
-			int neighbourIndex = graph.getNodeIndex(neighbourId);
-			graph.setNodeColor(neighbourIndex, this.nodeIndexColor.get(neighbourIndex));
-		}
+		
+		this.updateGraph();
 		
 		double oldError = graph.getNodeError(index);
 		int color = this.graph.chooseColor(index, colorSelector);

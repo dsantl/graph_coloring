@@ -2,6 +2,8 @@ package graph_coloring.main;
 
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
+import java.util.Random;
 import java.util.Set;
 
 import graph_coloring.algorithm.GraphAlgorithmContext;
@@ -10,8 +12,10 @@ import graph_coloring.algorithmset.agents.AgentAlgorithm;
 import graph_coloring.algorithmset.genetic.GeneticAlgorithm;
 import graph_coloring.algorithmset.greedy.CombiGreedy;
 import graph_coloring.algorithmset.greedy.Greedy;
+import graph_coloring.algorithmset.simulated_anneling.GeneticAnneling;
 import graph_coloring.algorithmset.simulated_anneling.SimulatedAnneling;
 import graph_coloring.color_selector.ColorSelector;
+import graph_coloring.color_selector.ColorSelectorFactory;
 import graph_coloring.color_selector.ColorSelectorTRG;
 import graph_coloring.common.Pair;
 import graph_coloring.input.EricssonFileFormat;
@@ -30,6 +34,7 @@ import graph_coloring.stat.ChangeColorGlobal;
 import graph_coloring.stat.CheckValidColoring;
 import graph_coloring.stat.ErrorFunctionEricsson;
 import graph_coloring.stat.GetColorableGroupNodes;
+import graph_coloring.stat.GetColorableNodes;
 import graph_coloring.stat.MakeSubGraph;
 import graph_coloring.structure.weight_graph.WeightNode;
 import graph_coloring.structure.weight_graph.ericsson_graph.EricssonGraph;
@@ -78,7 +83,7 @@ public class Main {
 		}
 		*/
 		
-		int id = GetColorableGroupNodes.getNodeClass(graph, 'A').get(0);
+		int id = GetColorableGroupNodes.getNodeClass(graph, 'C').get(0);
 		EricssonGraph newGraph = MakeSubGraph.createEricssonSubGraphBFS(graph, id, 31000);
 		graph = newGraph;
 		
@@ -90,15 +95,19 @@ public class Main {
 		System.out.println("Algorithm...");
 		GraphAlgorithmContext alg;
 		
-		
-			
-		alg = new GraphAlgorithmContext(new CombiGreedy(15)); //5
+		//alg = new GraphAlgorithmContext(new Greedy("RND", "RND", 1));
+		//alg.startAlgorithm(graph);
+				
+		alg = new GraphAlgorithmContext(new CombiGreedy(5)); //15
 		alg.startAlgorithm(graph);
 		
-		alg = new GraphAlgorithmContext(new SimulatedAnneling(0.5, 3100000, 100));
+		
+		//alg = new GraphAlgorithmContext(new GeneticAnneling(10000000, 5, 1.0, 0.7));
+		//alg.startAlgorithm(graph); 
+				
+		alg = new GraphAlgorithmContext(new SimulatedAnneling(0.5, 10000, 100));
 		alg.startAlgorithm(graph); 
-		
-		
+			
 		//Greedy greedy = new Greedy("LDO", "TRG", 15);
 		//greedy.setColorSelectorParam(0.5);
 		//alg = new GraphAlgorithmContext(greedy);
