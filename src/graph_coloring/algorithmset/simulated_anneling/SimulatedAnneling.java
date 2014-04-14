@@ -39,12 +39,9 @@ public class SimulatedAnneling extends GraphColoringAlgorithm{
 		
 		ColorSelector abwColorSelector = null;
 		ColorSelector rndColorSelector = null;
-		ColorSelector trgColorSelector = null;
 		try {
 			rndColorSelector = ColorSelectorFactory.factory("RND");
 			abwColorSelector = ColorSelectorFactory.factory("ABW");
-			trgColorSelector = ColorSelectorFactory.factory("TRG");
-			trgColorSelector.setParam(0.01);
 		} catch (Exception e1) {
 			e1.printStackTrace();
 		}
@@ -52,7 +49,7 @@ public class SimulatedAnneling extends GraphColoringAlgorithm{
 		
 		List<Integer> colorableNodes = GetColorableNodes.getNodeIdsFilter(ericssonGraph, this.getTouchableNodes());
 		
-		double alpha = 0;
+		//double alpha = 0;
 		
 		for(int i = 0 ; i < temperatureChangeSteps ; ++i){
 			for(int j = 0 ; j < thermalEquilibrium ; ++j){
@@ -61,10 +58,8 @@ public class SimulatedAnneling extends GraphColoringAlgorithm{
 				double choice = rnd.nextDouble();
 				if ( choice < 0.8 )
 					colorSelector = abwColorSelector;
-				else if ( choice < 0.9)
-					colorSelector = rndColorSelector;
 				else
-					colorSelector = trgColorSelector;
+					colorSelector = rndColorSelector;
 				
 				int nodeId = colorableNodes.get(rnd.nextInt(colorableNodes.size()));
 				int nodeIndex = ericssonGraph.getNodeIndex(nodeId);
@@ -85,7 +80,7 @@ public class SimulatedAnneling extends GraphColoringAlgorithm{
 					changeTmp = -1;
 				
 				currChange = bestChange + changeTmp;
-				double pos = (double)(currChange)/NC; 
+				//double pos = (double)(currChange)/NC; 
 				
 				
 				dError = currError - bestError;
@@ -98,7 +93,7 @@ public class SimulatedAnneling extends GraphColoringAlgorithm{
 				}
 			}
 			T -= this.startTemperature/temperatureChangeSteps;
-			alpha += 0.001;
+			//alpha += 0.001;
 			
 			if (i%1000 == 0){
 				System.out.format("%f %f\n", bestError, currError);
