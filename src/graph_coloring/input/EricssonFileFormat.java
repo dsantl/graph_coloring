@@ -70,7 +70,7 @@ public class EricssonFileFormat implements FileFormat {
 		Set<OrderPair> bridgeFlag = new HashSet<OrderPair>();
 		
 		numberOfBridges = Integer.parseInt(file.getNextLine());
-
+		
 		for (int i = 0; i < numberOfBridges; ++i) {
 			String line = file.getNextLine();
 			String[] splitLine = line.split("\\s+");

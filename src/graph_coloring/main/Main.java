@@ -59,9 +59,9 @@ public class Main {
 		*/
 		
 		
-		int id = GetColorableGroupNodes.getNodeClass(graph, 'A').get(0);
-		EricssonGraph newGraph = MakeSubGraph.createEricssonSubGraphBFS(graph, id, 31000);
-		graph = newGraph;
+		//int id = GetColorableGroupNodes.getNodeClass(graph, 'A').get(0);
+		//EricssonGraph newGraph = MakeSubGraph.createEricssonSubGraphBFS(graph, id, 31000);
+		//graph = newGraph;
 		
 		
 		double oldError = ErrorFunctionEricsson.computeStat(graph);

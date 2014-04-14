@@ -89,7 +89,6 @@ public class Graph implements IGraph{
 	public void addBridge(int id1, int id2){
 		Node node1 = this.getNode(this.getNodeIndex(id1));
 		Node node2 = this.getNode(this.getNodeIndex(id2));
-		bridgeSize += 1;
 		this.addBridge(node1, node2);
 	}
 
@@ -139,6 +138,7 @@ public class Graph implements IGraph{
 	protected void addBridge(Node node1, Node node2){
 		node1.addNeighbour(node2);
 		node2.addNeighbour(node1);
+		this.bridgeSize += 1;
 	}
 
 	/**

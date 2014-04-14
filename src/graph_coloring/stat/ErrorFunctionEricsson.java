@@ -17,7 +17,9 @@ public class ErrorFunctionEricsson {
 	public static double computeStat(EricssonGraph graph) {
 		
 		double ret = 0;
-			
+		
+		int cnt = 0;
+		
 		for(int nodeIndex = 0 ; nodeIndex < graph.getNodeSize() ; ++nodeIndex){
 			
 			Iterator<Pair<Double, WeightNode>> neighbourIterator = graph.getNeighbours(nodeIndex);
@@ -27,9 +29,11 @@ public class ErrorFunctionEricsson {
 				double weight = doubleNode.getFirst();
 				WeightNode neighbourNode = doubleNode.getSecond();
 				
+				cnt += 1;
+				
 				int leftNode = nodeIndex;
 				int rightNode = graph.getNodeIndex(neighbourNode.getId());
-					
+				
 				if ( (graph.getNodeGroup(leftNode) == graph.getNodeGroup(rightNode)) && 
 					 (graph.getNodeColor(leftNode) == graph.getNodeColor(rightNode)) &&
 					 (graph.getNodeColorable(leftNode) == true || graph.getNodeColorable(rightNode) == true)){	
@@ -37,6 +41,8 @@ public class ErrorFunctionEricsson {
 					}
 			}
 		}
+		
+		System.out.println(cnt);
 		
 		ret /= 2;
 		

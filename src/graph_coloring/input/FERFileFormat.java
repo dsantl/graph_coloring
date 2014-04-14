@@ -41,6 +41,8 @@ public class FERFileFormat implements FileFormat{
 		
 		int numberOfBridges = Integer.parseInt(file.getNextLine());
 		
+		System.out.println(numberOfBridges);
+		
 		for(int i = 0 ; i < numberOfBridges ; ++i){
 			int node1 = Integer.parseInt(file.getNextLine());
 			int node2 = Integer.parseInt(file.getNextLine());
