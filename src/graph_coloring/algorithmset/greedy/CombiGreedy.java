@@ -10,6 +10,10 @@ public class CombiGreedy extends GraphColoringAlgorithm {
 	
 	private int step;
 	
+	/**
+	 * Constructor
+	 * @param numberOfIterations Total number of iterations
+	 */
 	public CombiGreedy(int numberOfIterations){
 		this.step = numberOfIterations;
 	}
@@ -17,6 +21,8 @@ public class CombiGreedy extends GraphColoringAlgorithm {
 	@Override
 	protected void algorithm() {
 		
+		//Comby SDO-ABW and FIT-MF
+		//FIT-MF is for move from local optima
 		GraphAlgorithmContext algSDO = new GraphAlgorithmContext(new Greedy("SDO", "ABW", 1));
 		GraphAlgorithmContext algFIT = new GraphAlgorithmContext(new Greedy("FIT", "MF", 1));
 		

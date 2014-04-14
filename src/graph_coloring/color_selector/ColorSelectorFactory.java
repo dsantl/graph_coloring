@@ -12,6 +12,10 @@ public class ColorSelectorFactory {
 			return new ColorSelectorMF();
 		else if ( name.equals("TRG") )
 			return new ColorSelectorTRG();
+		else if ( name.equals("START") )
+			return new ColorSelectorSTART();
+		else if ( name.equals("SWAP") )
+			return new ColorSelectorSWAP();
 		else if ( name.equals("RND") )
 			return new ColorSelectorRND();
 		else

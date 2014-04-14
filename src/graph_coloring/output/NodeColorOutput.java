@@ -8,6 +8,7 @@ import java.io.UnsupportedEncodingException;
 
 public class NodeColorOutput implements Converter{
 	
+	@Override
 	public void convertGraphToFile(Graph g, String fileName) throws FileNotFoundException, UnsupportedEncodingException{
 		
 		PrintWriter outFile = new PrintWriter(fileName, "UTF-8");

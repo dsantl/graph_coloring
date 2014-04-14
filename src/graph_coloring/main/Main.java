@@ -1,10 +1,16 @@
 package graph_coloring.main;
 
+import java.io.FileNotFoundException;
+import java.io.UnsupportedEncodingException;
+
 import graph_coloring.algorithm.GraphAlgorithmContext;
+import graph_coloring.algorithmset.agents.AgentAlgorithm;
 import graph_coloring.algorithmset.greedy.CombiGreedy;
+import graph_coloring.algorithmset.simulated_anneling.GeneticAnneling;
 import graph_coloring.algorithmset.simulated_anneling.SimulatedAnneling;
 import graph_coloring.input.FERFileFormat;
 import graph_coloring.input.FileFormat;
+import graph_coloring.output.NodeColorOutput;
 import graph_coloring.stat.ChangeColorGlobal;
 import graph_coloring.stat.CheckValidColoring;
 import graph_coloring.stat.ErrorFunctionEricsson;
@@ -78,8 +84,9 @@ public class Main {
 		//alg = new GraphAlgorithmContext(new GeneticAnneling(10000000, 5, 1.0, 0.7));
 		//alg.startAlgorithm(graph); 
 		
-		alg = new GraphAlgorithmContext(new SimulatedAnneling(0.5, 10000, 100));
-		alg.startAlgorithm(graph);
+		
+		//alg = new GraphAlgorithmContext(new SimulatedAnneling(0.5, 10000, 100));
+		//alg.startAlgorithm(graph);
 			
 		
 		//Greedy greedy = new Greedy("LDO", "TRG", 15);
@@ -106,6 +113,18 @@ public class Main {
 		
 		//alg = new GraphAlgorithmContext(new AgentAlgorithm(3*graph.getNodeSize()/2, 20, "SDO", "ABW"));
 		//alg.startAlgorithm(graph);
+
+		/*
+		NodeColorOutput out = new NodeColorOutput(); 
+		try {
+			out.convertGraphToFile(graph, "/home/dino/Desktop/bojanje_dino.txt");
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (UnsupportedEncodingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 		
 		//alg = new GraphAlgorithmContext(new SimulatedAnneling(3, 1000, 2, 0.1, "MF"));

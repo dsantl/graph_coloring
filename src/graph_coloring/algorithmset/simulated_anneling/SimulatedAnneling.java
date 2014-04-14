@@ -18,6 +18,12 @@ public class SimulatedAnneling extends GraphColoringAlgorithm{
 	private int temperatureChangeSteps;
 	private Random rnd = new Random();
 	
+	/**
+	 * Constructor
+	 * @param startTemperature Start temperature
+	 * @param temperatureChangeSteps Number of global iterations
+	 * @param thermalEquilibrium Number of thermal equilibrium steps (inner loop)
+	 */
 	public SimulatedAnneling(double startTemperature, int temperatureChangeSteps, int thermalEquilibrium){
 		this.startTemperature = startTemperature;
 		this.thermalEquilibrium = thermalEquilibrium;

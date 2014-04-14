@@ -13,14 +13,26 @@ public class GeneralUnit {
 	private List<Integer> nodeIndexColor = new ArrayList<Integer>();
 	private double error;
 	
+	/**
+	 * Get error of unit
+	 * @return Total error of graph who have colors defined by unit
+	 */
 	public double getError(){
 		return error;
 	}
 	
+	/**
+	 * Get node size of unit - same as number of nodes in graph
+	 * @return Number of nodes
+	 */
 	public int getSize(){
 		return graph.getNodeSize();
 	}
 	
+	/**
+	 * Constructor
+	 * @param graph Unit is connect to this graph
+	 */
 	public GeneralUnit(EricssonGraph graph){
 		this.graph = graph;
 		for(int i = 0 ; i < graph.getNodeSize() ; ++i){
@@ -29,6 +41,11 @@ public class GeneralUnit {
 		this.error = ErrorFunctionEricsson.computeStat(graph);
 	}
 	
+	/**
+	 * Constructor for copy GeneralUnit into new one
+	 * @param graph Unit is connect to this graph
+	 * @param unit Clone this unit into new one
+	 */
 	public GeneralUnit(EricssonGraph graph, GeneralUnit unit){
 		this.graph = graph;
 		for(int i = 0 ; i < graph.getNodeSize() ; ++i){
@@ -37,6 +54,11 @@ public class GeneralUnit {
 		this.error = unit.error;
 	}
 	
+	/**
+	 * Change color and compute new error
+	 * @param id Id of node
+	 * @param colorSelector Selector who can change color of node
+	 */
 	public void setColor(int id, ColorSelector colorSelector){
 		int index = graph.getNodeIndex(id);
 		graph.setNodeColor(index, this.nodeIndexColor.get(index));
@@ -54,6 +76,9 @@ public class GeneralUnit {
 		this.error = this.error - 2*oldError + 2*newError;
 	}
 	
+	/**
+	 * Set unit colors to graph
+	 */
 	public void updateGraph(){
 		for(int i = 0 ; i < graph.getNodeSize() ; ++i){
 			graph.setNodeColor(i, this.nodeIndexColor.get(i));

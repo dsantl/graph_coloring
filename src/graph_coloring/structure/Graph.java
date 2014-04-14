@@ -151,12 +151,14 @@ public class Graph implements IGraph{
 		}
 	}
 	
+	
 	@Override
 	public void makeNodeOrder(OrderMethod ord) {
 		List<? extends ElementProperty> nodeProp = nodeList;
 		ord.makeOrder(nodeProp);
 		refreshNodeMap();
 	}
+	
 	
 	@Override
 	public int getNodeDegree(int index) {

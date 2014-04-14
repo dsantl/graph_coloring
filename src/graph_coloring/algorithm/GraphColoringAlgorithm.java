@@ -9,6 +9,10 @@ public abstract class GraphColoringAlgorithm {
 	private Set<Integer> touchableNodes = null;
 	protected Graph graph;
 	
+	/**
+	 * Get nodes for change. User define nodes who can change. 
+	 * @return Set<Integer> node ids
+	 */
 	protected Set<Integer> getTouchableNodes(){
 		return this.touchableNodes;
 	}

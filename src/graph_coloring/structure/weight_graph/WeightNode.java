@@ -25,6 +25,9 @@ public class WeightNode extends Node{
 	
 	private boolean sortedNeighbours = false;
 	
+	/**
+	 * Sort neighbours of node by weight
+	 */
 	public void sortNeighbours(){
 		if ( this.sortedNeighbours == true )
 			return;
@@ -32,6 +35,10 @@ public class WeightNode extends Node{
 		sortedNeighbours = true;
 	}
 	
+	/**
+	 * Get neighbours of node
+	 * @return Iterator to neighbours
+	 */
 	public Iterator<Pair<Double, WeightNode>> getNeighbours(){
 		return weights.iterator();
 	}
@@ -42,11 +49,20 @@ public class WeightNode extends Node{
 		return node.getId() == this.getId();
 	}
 	
+	/**
+	 * Add Weight neighbour to node
+	 * @param weight Bridge weight
+	 * @param node Neighbour node
+	 */
 	public void addWeightToNeighbour(double weight, WeightNode node){
 		Pair<Double, WeightNode> newPair = new Pair<Double, WeightNode>(weight, node);
 		weights.add(newPair);
 	}
 	
+	/**
+	 * Get total weight error of node
+	 * @return Error
+	 */
 	public double getError(){
 		double error = 0;
 		
@@ -62,6 +78,11 @@ public class WeightNode extends Node{
 		return error;
 	}
 	
+	/** 
+	 * Get total weight error when current color is set to "color"
+	 * @param color Current color
+	 * @return Weight error of node
+	 */
 	public double getError(int color){
 		int oldColor = this.getColor();
 		this.setColor(color);

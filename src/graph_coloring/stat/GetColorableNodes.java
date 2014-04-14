@@ -45,6 +45,11 @@ public class GetColorableNodes {
 		return ret;
 	}
 	
+	/**
+	 * Get total number of colorable nodes
+	 * @param graph EricssonGraph
+	 * @return Total number of colorable nodes
+	 */
 	public static int getNumberOfColorableNodes(EricssonGraph graph){
 		int ret = 0;
 		for(int i = 0 ; i < graph.getNodeSize() ; ++i){

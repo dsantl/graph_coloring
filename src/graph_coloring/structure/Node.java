@@ -91,6 +91,10 @@ public class Node extends ElementProperty {
 		this.color = color;
 	}
 	
+	/**
+	 * Get collision of node
+	 * @return Number of collisions of node
+	 */
 	public int getCollision(){
 		int col = 0;
 		
@@ -102,6 +106,11 @@ public class Node extends ElementProperty {
 		return col;
 	}
 	
+	/**
+	 * Get collision of node when current color is "color"
+	 * @param color Current color
+	 * @return Number of collisions of node
+	 */
 	public int getCollision(int color){
 		int oldColor = this.color;
 		this.setColor(color);

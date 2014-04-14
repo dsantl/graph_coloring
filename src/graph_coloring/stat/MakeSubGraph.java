@@ -14,7 +14,14 @@ import graph_coloring.structure.weight_graph.WeightNode;
 import graph_coloring.structure.weight_graph.ericsson_graph.EricssonGraph;
 
 public class MakeSubGraph {
-
+	
+	/**
+	 * Use BFS to collect nodeSize nodes starting in nodeId
+	 * @param graph Graph
+	 * @param nodeId First node (nodeId)
+	 * @param nodeSize Maximum number of nodes in return set
+	 * @return set of selected nodes
+	 */
 	private static Set<Integer> getNodes(Graph graph, int nodeId, int nodeSize){
 		Queue<Integer> nodeIdQ = new LinkedList<Integer>();
 		Set<Integer> nodeIds = new HashSet<Integer>();
@@ -42,6 +49,13 @@ public class MakeSubGraph {
 		return nodeIds;
 	}
 	
+	/**
+	 * Create sub graph
+	 * @param graph Graph
+	 * @param nodeId First node (nodeId)
+	 * @param nodeSize Maximum number of nodes in return set
+	 * @return new Graph (subgraph)
+	 */
 	public static Graph createSubGraphBFS(Graph graph, int nodeId, int nodeSize){
 		Graph ret = new Graph();
 		
@@ -81,6 +95,14 @@ public class MakeSubGraph {
 		return ret;
 	}
 	
+
+	/**
+	 * Create sub graph (WeightGraph)
+	 * @param graph WeightGraph
+	 * @param nodeId First node (nodeId)
+	 * @param nodeSize Maximum number of nodes in return set
+	 * @return new WeightGraph (subgraph)
+	 */
 	public static WeightGraph createWeightSubGraphBFS(WeightGraph graph, int nodeId, int nodeSize){
 		
 		WeightGraph ret = new WeightGraph();
@@ -128,7 +150,14 @@ public class MakeSubGraph {
 	}
 	
 	
-	
+
+	/**
+	 * Create sub graph (EricssonGraph)
+	 * @param graph EricssonGraph
+	 * @param nodeId First node (nodeId)
+	 * @param nodeSize Maximum number of nodes in return set
+	 * @return new EricssonGraph (subgraph)
+	 */
 	public static EricssonGraph createEricssonSubGraphBFS(EricssonGraph graph, int nodeId, int nodeSize){
 		EricssonGraph ret = new EricssonGraph();
 		

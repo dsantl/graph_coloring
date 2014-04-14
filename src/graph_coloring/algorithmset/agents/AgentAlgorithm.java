@@ -30,6 +30,13 @@ public class AgentAlgorithm extends GraphColoringAlgorithm{
 		
 	}
 	
+	/**
+	 * Constructor for agent algorithm
+	 * @param numberOfUnits number of agents, one agent is connected to one node
+	 * @param iterations total number of iterations (one iteration for all agents)
+	 * @param order When algorithm have zero error change
+	 * @param colorSelector When algorithm have zero error change
+	 */
 	public AgentAlgorithm(int numberOfUnits, int iterations, String order, String colorSelector){
 		this.numberOfUnits = numberOfUnits;
 		this.iterations = iterations;
