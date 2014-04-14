@@ -83,7 +83,7 @@ public class Main {
 		}
 		*/
 		
-		int id = GetColorableGroupNodes.getNodeClass(graph, 'C').get(0);
+		int id = GetColorableGroupNodes.getNodeClass(graph, 'A').get(0);
 		EricssonGraph newGraph = MakeSubGraph.createEricssonSubGraphBFS(graph, id, 31000);
 		graph = newGraph;
 		
