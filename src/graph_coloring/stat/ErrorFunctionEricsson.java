@@ -28,7 +28,7 @@ public class ErrorFunctionEricsson {
 				WeightNode neighbourNode = doubleNode.getSecond();
 				
 				int leftNode = nodeIndex;
-				int rightNode = neighbourNode.getId();
+				int rightNode = graph.getNodeIndex(neighbourNode.getId());
 					
 				if ( (graph.getNodeGroup(leftNode) == graph.getNodeGroup(rightNode)) && 
 					 (graph.getNodeColor(leftNode) == graph.getNodeColor(rightNode)) &&
@@ -37,6 +37,8 @@ public class ErrorFunctionEricsson {
 					}
 			}
 		}
+		
+		ret /= 2;
 		
 		for(int i = 0 ; i < graph.getNodeSize() ; ++i){
 			int colorClassId = graph.getNodeDomainName(i);

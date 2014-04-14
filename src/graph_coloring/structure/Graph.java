@@ -139,7 +139,6 @@ public class Graph implements IGraph{
 	protected void addBridge(Node node1, Node node2){
 		node1.addNeighbour(node2);
 		node2.addNeighbour(node1);
-		System.out.format("%d %d \n", node1.getId(), node2.getId());
 	}
 
 	/**

@@ -51,7 +51,11 @@ public class MakeSubGraph {
 			int nodeIndex = graph.getNodeIndex(id);
 			int color = graph.getNodeColor(nodeIndex);
 			ret.addNode(id, color);
+		}
+		
+		for(Integer id : nodeIds){
 			
+			int nodeIndex = graph.getNodeIndex(id);
 			Set<OrderPair> bridgeFlag = new HashSet<OrderPair>();
 			
 			for(int i = 0 ; i < graph.getNodeDegree(nodeIndex) ; ++i){	
@@ -87,8 +91,11 @@ public class MakeSubGraph {
 			int nodeIndex = graph.getNodeIndex(id);
 			int color = graph.getNodeColor(nodeIndex);
 			ret.addNode(id, color);
+		}
 		
-		
+		for(Integer id : nodeIds){
+			
+			int nodeIndex = graph.getNodeIndex(id);
 			Set<OrderPair> bridgeFlag = new HashSet<OrderPair>();
 			Iterator<Pair<Double, WeightNode>> neighbourIterator = graph.getNeighbours(nodeIndex);
 			
@@ -116,6 +123,7 @@ public class MakeSubGraph {
 			}
 		}
 		
+		
 		return ret;
 	}
 	
@@ -142,7 +150,11 @@ public class MakeSubGraph {
 			int domainName = graph.getNodeDomainName(nodeIndex);
 			boolean colorable = graph.getNodeColorable(nodeIndex);
 			ret.addEricssonNode(id, nodeGroup, domainName, startColor, colorable);
-			ret.setNodeColor(ret.getNodeIndex(id), color);
+			ret.setNodeColor(ret.getNodeIndex(id), color);	
+		}
+		
+		for(Integer id : nodeIds){
+			int nodeIndex = graph.getNodeIndex(id);
 			
 			Set<OrderPair> bridgeFlag = new HashSet<OrderPair>();
 			Iterator<Pair<Double, WeightNode>> neighbourIterator = graph.getNeighbours(nodeIndex);

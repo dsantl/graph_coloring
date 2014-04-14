@@ -37,11 +37,6 @@ public class Main {
 			e.printStackTrace();
 		}
 		
-		System.out.println(graph.getNodeSize());
-		
-		for(int i = 0 ; i < graph.getNodeSize() ; ++i){
-			System.out.println(graph.getNodeDegree(i));
-		}
 		
 		/*
 		FERoutput out = new FERoutput();
@@ -63,7 +58,7 @@ public class Main {
 		}
 		*/
 		
-		/*
+		
 		int id = GetColorableGroupNodes.getNodeClass(graph, 'A').get(0);
 		EricssonGraph newGraph = MakeSubGraph.createEricssonSubGraphBFS(graph, id, 31000);
 		graph = newGraph;
@@ -83,7 +78,7 @@ public class Main {
 		
 		alg = new GraphAlgorithmContext(new SimulatedAnneling(0.5, 3100000, 100));
 		alg.startAlgorithm(graph); 
-		*/
+		
 		
 		//Greedy greedy = new Greedy("LDO", "TRG", 15);
 		//greedy.setColorSelectorParam(0.5);
@@ -126,7 +121,7 @@ public class Main {
 		//alg = new GraphAlgorithmContext(new AgentAlgorithm(3*graph.getNodeSize()/4, 1000, "SDO", "ABW"));
 		//alg.startAlgorithm(graph);
 		
-		/*
+		
 		System.out.format("Old error: %f\n", oldError);		
 		System.out.format("New error: %f\n", ErrorFunctionEricsson.computeStat(graph));
 		
@@ -135,6 +130,5 @@ public class Main {
 		
 		long end = System.currentTimeMillis();
 		System.out.println(end-start);
-		*/
 	}
 }
