@@ -63,9 +63,9 @@ public class Main {
 		}
 		*/
 		
-		int id = GetColorableGroupNodes.getNodeClass(graph, 'A').get(0);
-		EricssonGraph newGraph = MakeSubGraph.createEricssonSubGraphBFS(graph, id, 310000);
-		graph = newGraph;
+		//int id = GetColorableGroupNodes.getNodeClass(graph, 'A').get(0);
+		//EricssonGraph newGraph = MakeSubGraph.createEricssonSubGraphBFS(graph, id, 310000);
+		//graph = newGraph;
 		
 		
 		double oldError = ErrorFunctionEricsson.computeStat(graph);
@@ -75,19 +75,22 @@ public class Main {
 		System.out.println("Algorithm...");
 		GraphAlgorithmContext alg;
 		
-		//alg = new GraphAlgorithmContext(new Greedy("LDO", "MF", 1));
-		//alg.startAlgorithm(graph);
-				
-		alg = new GraphAlgorithmContext(new CombiGreedy(15)); //15
+		System.out.println(graph.getNodeSize());
+		System.out.println(graph.getBridgeSize());
+		
+		alg = new GraphAlgorithmContext(new Greedy("SDO", "MF", 1));
 		alg.startAlgorithm(graph);
+				
+		//alg = new GraphAlgorithmContext(new CombiGreedy(15)); //15
+		//alg.startAlgorithm(graph);
 		
 		
 		//alg = new GraphAlgorithmContext(new GeneticAnneling(10000000, 5, 1.0, 0.7));
 		//alg.startAlgorithm(graph); 
 		
 		
-		alg = new GraphAlgorithmContext(new SimulatedAnneling(0.5, 10000, 100));
-		alg.startAlgorithm(graph);
+		//alg = new GraphAlgorithmContext(new SimulatedAnneling(0.5, 10000, 100));
+		//alg.startAlgorithm(graph);
 			
 		
 		//Greedy greedy = new Greedy("LDO", "TRG", 15);
