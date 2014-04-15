@@ -39,12 +39,10 @@ public class SimulatedAnneling extends GraphColoringAlgorithm{
 		
 		ColorSelector abwColorSelector = null;
 		ColorSelector rndColorSelector = null;
-		ColorSelector startColorSelector = null;
 		
 		try {
 			rndColorSelector = ColorSelectorFactory.factory("RND");
 			abwColorSelector = ColorSelectorFactory.factory("ABW");
-			startColorSelector = ColorSelectorFactory.factory("START");
 		} catch (Exception e1) {
 			e1.printStackTrace();
 		}
@@ -53,7 +51,6 @@ public class SimulatedAnneling extends GraphColoringAlgorithm{
 		List<Integer> colorableNodes = GetColorableNodes.getNodeIdsFilter(ericssonGraph, this.getTouchableNodes());
 		
 		double alpha = 0;
-		boolean start = false;
 		
 		for(int i = 0 ; i < temperatureChangeSteps ; ++i){
 			for(int j = 0 ; j < thermalEquilibrium ; ++j){
@@ -66,10 +63,6 @@ public class SimulatedAnneling extends GraphColoringAlgorithm{
 				else
 					colorSelector = rndColorSelector;
 				
-				if (start)
-					colorSelector = startColorSelector;
-				
-				start = false;
 				
 				int nodeId = colorableNodes.get(rnd.nextInt(colorableNodes.size()));
 				int nodeIndex = ericssonGraph.getNodeIndex(nodeId);
