@@ -1,7 +1,11 @@
 package graph_coloring.stat;
 
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Map;
 
+import graph_coloring.common.OrderPair;
 import graph_coloring.common.Pair;
 import graph_coloring.structure.weight_graph.WeightNode;
 import graph_coloring.structure.weight_graph.ericsson_graph.EricssonGraph;

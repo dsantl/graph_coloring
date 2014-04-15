@@ -6,7 +6,6 @@ import java.util.LinkedList;
 import java.util.Queue;
 import java.util.Set;
 
-import graph_coloring.common.OrderPair;
 import graph_coloring.common.Pair;
 import graph_coloring.structure.Graph;
 import graph_coloring.structure.weight_graph.WeightGraph;
@@ -70,21 +69,14 @@ public class MakeSubGraph {
 		for(Integer id : nodeIds){
 			
 			int nodeIndex = graph.getNodeIndex(id);
-			Set<OrderPair> bridgeFlag = new HashSet<OrderPair>();
 			
 			for(int i = 0 ; i < graph.getNodeDegree(nodeIndex) ; ++i){	
 				int node1 = id;
 				int node2 = graph.getNodeNeighburId(nodeIndex, i);
 				
-				OrderPair orderPair = new OrderPair(node1, node2);
-				
-				if ( !bridgeFlag.contains(orderPair) ){
-					bridgeFlag.add(orderPair);
-				}
-				else{
-					bridgeFlag.remove(orderPair);
+				if ( node2 < node1 )
 					continue;
-				}
+				
 				
 				if ( nodeIds.contains(node1) && nodeIds.contains(node2) ){
 					ret.addBridge(node1, node2);
@@ -118,7 +110,6 @@ public class MakeSubGraph {
 		for(Integer id : nodeIds){
 			
 			int nodeIndex = graph.getNodeIndex(id);
-			Set<OrderPair> bridgeFlag = new HashSet<OrderPair>();
 			Iterator<Pair<Double, WeightNode>> neighbourIterator = graph.getNeighbours(nodeIndex);
 			
 			while(neighbourIterator.hasNext()){
@@ -129,15 +120,9 @@ public class MakeSubGraph {
 				int node1 = id;
 				int node2 = neighbourNode.getId();
 				
-				OrderPair orderPair = new OrderPair(node1, node2);
-				
-				if ( !bridgeFlag.contains(orderPair) ){
-					bridgeFlag.add(orderPair);
-				}
-				else{
-					bridgeFlag.remove(orderPair);
+				if ( node2 < node1 )
 					continue;
-				}
+				
 				
 				if ( nodeIds.contains(node1) && nodeIds.contains(node2) ){
 					ret.addWeightBridge(node1, node2, weight);
@@ -185,7 +170,6 @@ public class MakeSubGraph {
 		for(Integer id : nodeIds){
 			int nodeIndex = graph.getNodeIndex(id);
 			
-			Set<OrderPair> bridgeFlag = new HashSet<OrderPair>();
 			Iterator<Pair<Double, WeightNode>> neighbourIterator = graph.getNeighbours(nodeIndex);
 			
 			while(neighbourIterator.hasNext()){
@@ -196,15 +180,8 @@ public class MakeSubGraph {
 				int node1 = id;
 				int node2 = neighbourNode.getId();
 				
-				OrderPair orderPair = new OrderPair(node1, node2);
-				
-				if ( !bridgeFlag.contains(orderPair) ){
-					bridgeFlag.add(orderPair);
-				}
-				else{
-					bridgeFlag.remove(orderPair);
+				if ( node2 < node1 )
 					continue;
-				}
 				
 				if ( nodeIds.contains(node1) && nodeIds.contains(node2) ){
 					ret.addWeightBridge(node1, node2, weight);
