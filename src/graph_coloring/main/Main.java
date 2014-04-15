@@ -1,42 +1,22 @@
 package graph_coloring.main;
 
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Random;
-import java.util.Set;
+import java.io.FileNotFoundException;
+import java.io.UnsupportedEncodingException;
 
 import graph_coloring.algorithm.GraphAlgorithmContext;
-import graph_coloring.algorithmset.RandomAlgorithm;
 import graph_coloring.algorithmset.agents.AgentAlgorithm;
-import graph_coloring.algorithmset.genetic.GeneticAlgorithm;
 import graph_coloring.algorithmset.greedy.CombiGreedy;
 import graph_coloring.algorithmset.greedy.Greedy;
 import graph_coloring.algorithmset.simulated_anneling.GeneticAnneling;
 import graph_coloring.algorithmset.simulated_anneling.SimulatedAnneling;
-import graph_coloring.color_selector.ColorSelector;
-import graph_coloring.color_selector.ColorSelectorFactory;
-import graph_coloring.color_selector.ColorSelectorTRG;
-import graph_coloring.common.Pair;
-import graph_coloring.input.EricssonFileFormat;
 import graph_coloring.input.FERFileFormat;
 import graph_coloring.input.FileFormat;
-import graph_coloring.input.NodeColorFormat;
-import graph_coloring.order.OrderBridgeWeight;
-import graph_coloring.order.OrderNodeCOL;
-import graph_coloring.order.OrderNodeFIT;
-import graph_coloring.order.OrderNodeLDO;
-import graph_coloring.order.OrderNodeSDO;
-import graph_coloring.order.OrderNodeSDOLDO;
-import graph_coloring.order.OrderNodeSTDORD;
-import graph_coloring.output.FERoutput;
+import graph_coloring.output.NodeColorOutput;
 import graph_coloring.stat.ChangeColorGlobal;
 import graph_coloring.stat.CheckValidColoring;
 import graph_coloring.stat.ErrorFunctionEricsson;
 import graph_coloring.stat.GetColorableGroupNodes;
-import graph_coloring.stat.GetColorableNodes;
 import graph_coloring.stat.MakeSubGraph;
-import graph_coloring.structure.weight_graph.WeightNode;
 import graph_coloring.structure.weight_graph.ericsson_graph.EricssonGraph;
 
 
@@ -83,9 +63,9 @@ public class Main {
 		}
 		*/
 		
-		int id = GetColorableGroupNodes.getNodeClass(graph, 'A').get(0);
-		EricssonGraph newGraph = MakeSubGraph.createEricssonSubGraphBFS(graph, id, 31000);
-		graph = newGraph;
+		//int id = GetColorableGroupNodes.getNodeClass(graph, 'A').get(0);
+		//EricssonGraph newGraph = MakeSubGraph.createEricssonSubGraphBFS(graph, id, 310000);
+		//graph = newGraph;
 		
 		
 		double oldError = ErrorFunctionEricsson.computeStat(graph);
@@ -95,19 +75,23 @@ public class Main {
 		System.out.println("Algorithm...");
 		GraphAlgorithmContext alg;
 		
-		//alg = new GraphAlgorithmContext(new Greedy("RND", "RND", 1));
-		//alg.startAlgorithm(graph);
-				
-		alg = new GraphAlgorithmContext(new CombiGreedy(5)); //15
+		System.out.println(graph.getNodeSize());
+		System.out.println(graph.getBridgeSize());
+		alg = new GraphAlgorithmContext(new Greedy("SDO", "ABW", 1));
 		alg.startAlgorithm(graph);
+				
+		//alg = new GraphAlgorithmContext(new CombiGreedy(15)); //15
+		//alg.startAlgorithm(graph);
 		
 		
 		//alg = new GraphAlgorithmContext(new GeneticAnneling(10000000, 5, 1.0, 0.7));
 		//alg.startAlgorithm(graph); 
-				
-		alg = new GraphAlgorithmContext(new SimulatedAnneling(0.5, 10000, 100));
-		alg.startAlgorithm(graph); 
+		
+		
+		//alg = new GraphAlgorithmContext(new SimulatedAnneling(0.5, 10000, 100));
+		//alg.startAlgorithm(graph);
 			
+		
 		//Greedy greedy = new Greedy("LDO", "TRG", 15);
 		//greedy.setColorSelectorParam(0.5);
 		//alg = new GraphAlgorithmContext(greedy);
@@ -132,6 +116,18 @@ public class Main {
 		
 		//alg = new GraphAlgorithmContext(new AgentAlgorithm(3*graph.getNodeSize()/2, 20, "SDO", "ABW"));
 		//alg.startAlgorithm(graph);
+
+		/*
+		NodeColorOutput out = new NodeColorOutput(); 
+		try {
+			out.convertGraphToFile(graph, "/home/dino/Desktop/bojanje_dino.txt");
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (UnsupportedEncodingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 		
 		//alg = new GraphAlgorithmContext(new SimulatedAnneling(3, 1000, 2, 0.1, "MF"));
