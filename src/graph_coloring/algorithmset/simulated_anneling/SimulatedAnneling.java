@@ -18,12 +18,6 @@ public class SimulatedAnneling extends GraphColoringAlgorithm{
 	private int temperatureChangeSteps;
 	private Random rnd = new Random();
 	
-	/**
-	 * Constructor
-	 * @param startTemperature Start temperature
-	 * @param temperatureChangeSteps Number of global iterations
-	 * @param thermalEquilibrium Number of thermal equilibrium steps (inner loop)
-	 */
 	public SimulatedAnneling(double startTemperature, int temperatureChangeSteps, int thermalEquilibrium){
 		this.startTemperature = startTemperature;
 		this.thermalEquilibrium = thermalEquilibrium;
@@ -45,6 +39,7 @@ public class SimulatedAnneling extends GraphColoringAlgorithm{
 		
 		ColorSelector abwColorSelector = null;
 		ColorSelector rndColorSelector = null;
+		
 		try {
 			rndColorSelector = ColorSelectorFactory.factory("RND");
 			abwColorSelector = ColorSelectorFactory.factory("ABW");
@@ -55,17 +50,19 @@ public class SimulatedAnneling extends GraphColoringAlgorithm{
 		
 		List<Integer> colorableNodes = GetColorableNodes.getNodeIdsFilter(ericssonGraph, this.getTouchableNodes());
 		
-		//double alpha = 0;
+		double alpha = 0;
 		
 		for(int i = 0 ; i < temperatureChangeSteps ; ++i){
 			for(int j = 0 ; j < thermalEquilibrium ; ++j){
 				
 				ColorSelector colorSelector;
 				double choice = rnd.nextDouble();
+				
 				if ( choice < 0.8 )
 					colorSelector = abwColorSelector;
 				else
 					colorSelector = rndColorSelector;
+				
 				
 				int nodeId = colorableNodes.get(rnd.nextInt(colorableNodes.size()));
 				int nodeIndex = ericssonGraph.getNodeIndex(nodeId);
@@ -86,11 +83,14 @@ public class SimulatedAnneling extends GraphColoringAlgorithm{
 					changeTmp = -1;
 				
 				currChange = bestChange + changeTmp;
-				//double pos = (double)(currChange)/NC; 
+				double pos = (double)(currChange)/NC; 
 				
 				
 				dError = currError - bestError;
-				//dError += alpha*pos*dError/bestError;
+				//dError *= pos;
+				
+				//if ( pos > 0.64 )
+				//	start = rnd.nextBoolean();
 				
 				if ( dError < 0 || rnd.nextDouble() < Math.exp(-dError/T) ){
 					graph.setNodeColor(nodeIndex, color);
@@ -98,15 +98,16 @@ public class SimulatedAnneling extends GraphColoringAlgorithm{
 					bestChange = currChange;
 				}
 			}
-			T -= this.startTemperature/temperatureChangeSteps;
-			//alpha += 0.001;
+			T = this.startTemperature - this.startTemperature*(double)i/this.temperatureChangeSteps;
+			alpha += 0.001;
 			
 			if (i%1000 == 0){
 				System.out.format("%f %f\n", bestError, currError);
 				System.out.println((double)bestChange/NC);
 			}
-			//if ( bestError < 75.0 )
-			//	break;
+			
+			if ( bestError < 1.0 )
+				break;
 		}
 	}
 }

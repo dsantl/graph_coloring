@@ -81,7 +81,7 @@ public class Main {
 		//alg = new GraphAlgorithmContext(new Greedy("SDO", "ABW", 1));
 		//alg.startAlgorithm(graph);
 				
-		alg = new GraphAlgorithmContext(new CombiGreedy(15)); //5
+		alg = new GraphAlgorithmContext(new CombiGreedy(20)); //5
 		alg.startAlgorithm(graph);
 		
 		
@@ -91,11 +91,11 @@ public class Main {
 		int a = 5;
 		while(a==5){
 		
-		alg = new GraphAlgorithmContext(new SimulatedAnneling(0.5, 1000, 100));
-		alg.startAlgorithm(graph);
+			alg = new GraphAlgorithmContext(new SimulatedAnneling(0.5, 10000, 100));
+			alg.startAlgorithm(graph);
 		
-		alg = new GraphAlgorithmContext(new Greedy("RND", "SWAP", 1, 0.1));
-		alg.startAlgorithm(graph);
+			alg = new GraphAlgorithmContext(new Greedy("RND", "SWAP", 1, 0.1));
+			alg.startAlgorithm(graph);
 				
 		}
 		//Greedy greedy = new Greedy("LDO", "TRG", 15);
