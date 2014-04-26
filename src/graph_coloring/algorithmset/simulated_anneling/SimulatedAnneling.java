@@ -62,7 +62,7 @@ public class SimulatedAnneling extends GraphColoringAlgorithm{
 				
 				ColorSelector colorSelector;
 				double choice = rnd.nextDouble();
-				if ( choice < 0.7 )
+				if ( choice < 0.8 )
 					colorSelector = abwColorSelector;
 				else
 					colorSelector = rndColorSelector;
