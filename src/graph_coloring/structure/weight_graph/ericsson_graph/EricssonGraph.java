@@ -7,6 +7,7 @@ import java.util.Set;
 
 import graph_coloring.color_selector.ColorSelector;
 import graph_coloring.structure.weight_graph.WeightGraph;
+import graph_coloring.structure.weight_graph.WeightNode;
 
 public class EricssonGraph extends WeightGraph implements IEricssonGraph{
 	

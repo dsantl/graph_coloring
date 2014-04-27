@@ -97,6 +97,7 @@ public class SimulatedAnneling extends GraphColoringAlgorithm{
 					bestError = currError;
 					bestChange = currChange;
 				}
+
 			}
 			T = this.startTemperature - this.startTemperature*(double)i/this.temperatureChangeSteps;
 			alpha += 0.001;
@@ -106,7 +107,7 @@ public class SimulatedAnneling extends GraphColoringAlgorithm{
 				System.out.println((double)bestChange/NC);
 			}
 			
-			if ( bestError < 1.0 )
+			if ( bestError < 1430.0 )
 				break;
 		}
 	}

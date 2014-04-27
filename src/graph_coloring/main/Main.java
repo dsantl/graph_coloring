@@ -2,6 +2,8 @@ package graph_coloring.main;
 
 import java.io.FileNotFoundException;
 import java.io.UnsupportedEncodingException;
+import java.util.HashSet;
+import java.util.Set;
 
 import graph_coloring.algorithm.GraphAlgorithmContext;
 import graph_coloring.algorithmset.agents.AgentAlgorithm;
@@ -63,10 +65,8 @@ public class Main {
 		}
 		*/
 		
-		int id = GetColorableGroupNodes.getNodeClass(graph, 'A').get(0);
-		EricssonGraph newGraph = MakeSubGraph.createEricssonSubGraphBFS(graph, id, 310000);
+		EricssonGraph newGraph = MakeSubGraph.filterByNodeGroup(graph, 'A');
 		graph = newGraph;
-		
 		
 		double oldError = ErrorFunctionEricsson.computeStat(graph);
 		
@@ -81,23 +81,24 @@ public class Main {
 		//alg = new GraphAlgorithmContext(new Greedy("SDO", "ABW", 1));
 		//alg.startAlgorithm(graph);
 				
-		alg = new GraphAlgorithmContext(new CombiGreedy(20)); //5
+		alg = new GraphAlgorithmContext(new CombiGreedy(5)); //5
 		alg.startAlgorithm(graph);
 		
 		
 		//alg = new GraphAlgorithmContext(new GeneticAnneling(10000000, 5, 1.0, 0.7));
 		//alg.startAlgorithm(graph); 
 		
-		int a = 5;
-		while(a==5){
+		//int a = 5;
+		//while(a==5){
 		
-			alg = new GraphAlgorithmContext(new SimulatedAnneling(0.5, 10000, 100));
-			alg.startAlgorithm(graph);
+		alg = new GraphAlgorithmContext(new SimulatedAnneling(0.1, 3100000, 100));
+		alg.startAlgorithm(graph);
 		
-			alg = new GraphAlgorithmContext(new Greedy("RND", "SWAP", 1, 0.1));
-			alg.startAlgorithm(graph);
+			//alg = new GraphAlgorithmContext(new Greedy("RND", "SWAP", 1, 0.1));
+			//alg.startAlgorithm(graph);
 				
-		}
+		//}
+		
 		//Greedy greedy = new Greedy("LDO", "TRG", 15);
 		//greedy.setColorSelectorParam(0.5);
 		//alg = new GraphAlgorithmContext(greedy);

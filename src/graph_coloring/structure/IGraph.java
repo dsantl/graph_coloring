@@ -9,7 +9,7 @@ public interface IGraph {
 	
 	public int getNodeNeighburId(int nodeIndex, int neighbourIndex);
 	
-	public int getNodeDegree(int index);
+	public int getNodeDegre(int index);
 	
 	public int getNodeSaturation(int index);
 	

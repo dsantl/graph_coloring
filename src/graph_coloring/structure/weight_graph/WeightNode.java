@@ -15,7 +15,10 @@ public class WeightNode extends Node{
 		
 		@Override
 		public int compare(Pair<Double, WeightNode> arg0, Pair<Double, WeightNode> arg1) {
-			return Double.compare(arg1.getFirst(), arg0.getFirst());
+			int ret = Double.compare(arg1.getFirst(), arg0.getFirst()); 
+			if ( ret != 0 )
+				return ret;
+			return arg1.getSecond().getId() - arg0.getSecond().getId();
 		}
 		
 	}

@@ -21,7 +21,7 @@ public class MakeSubGraph {
 	 * @param nodeSize Maximum number of nodes in return set
 	 * @return set of selected nodes
 	 */
-	private static Set<Integer> getNodes(Graph graph, int nodeId, int nodeSize){
+	public static Set<Integer> getNodes(Graph graph, int nodeId, int nodeSize){
 		Queue<Integer> nodeIdQ = new LinkedList<Integer>();
 		Set<Integer> nodeIds = new HashSet<Integer>();
 		
@@ -38,7 +38,7 @@ public class MakeSubGraph {
 			
 			int nodeIndex = graph.getNodeIndex(currNode);
 			
-			for(int i = 0 ; i < graph.getNodeDegree(nodeIndex) ; ++i ){
+			for(int i = 0 ; i < graph.getNodeDegre(nodeIndex) ; ++i ){
 				int neighbour = graph.getNodeNeighburId(nodeIndex, i);
 				nodeIdQ.add(neighbour);
 			}
@@ -70,7 +70,7 @@ public class MakeSubGraph {
 			
 			int nodeIndex = graph.getNodeIndex(id);
 			
-			for(int i = 0 ; i < graph.getNodeDegree(nodeIndex) ; ++i){	
+			for(int i = 0 ; i < graph.getNodeDegre(nodeIndex) ; ++i){	
 				int node1 = id;
 				int node2 = graph.getNodeNeighburId(nodeIndex, i);
 				
@@ -180,7 +180,62 @@ public class MakeSubGraph {
 				int node1 = id;
 				int node2 = neighbourNode.getId();
 				
-				if ( node2 < node1 )
+				if ( node1 > node2 )
+					continue;
+				
+				if ( nodeIds.contains(node1) && nodeIds.contains(node2) ){
+					ret.addWeightBridge(node1, node2, weight);
+				}
+			}	
+		}
+		
+		return ret;
+	}
+
+	public static EricssonGraph filterByNodeGroup(EricssonGraph graph, char group) {
+		EricssonGraph ret = new EricssonGraph();
+		
+		for(Integer name : graph.getDomainNames()){
+			ret.addColorClass(name);
+			Iterator<Integer> colors = graph.getDomainNameIterator(name);
+			while(colors.hasNext()){
+				ret.addColorToColorClass(name, colors.next());
+			}
+		}
+		
+		Set<Integer> nodeIds = new HashSet<Integer>();
+		
+		for(int i = 0 ; i < graph.getNodeSize() ; ++i){
+			if ( graph.getNodeGroup(i) == group ){
+				nodeIds.add(graph.getNodeId(i));
+			}
+		}
+		
+		for(Integer id : nodeIds){
+			int nodeIndex = graph.getNodeIndex(id);
+			int color = graph.getNodeColor(nodeIndex);
+			int startColor = graph.getNodeStartColor(nodeIndex);
+			char nodeGroup = graph.getNodeGroup(nodeIndex);
+			int domainName = graph.getNodeDomainName(nodeIndex);
+			boolean colorable = graph.getNodeColorable(nodeIndex);
+			ret.addEricssonNode(id, nodeGroup, domainName, startColor, colorable);
+			ret.setNodeColor(ret.getNodeIndex(id), color);	
+		}
+		
+		for(Integer id : nodeIds){
+			int nodeIndex = graph.getNodeIndex(id);
+			
+			Iterator<Pair<Double, WeightNode>> neighbourIterator = graph.getNeighbours(nodeIndex);
+			
+			while(neighbourIterator.hasNext()){
+				Pair<Double, WeightNode> doubleNode = neighbourIterator.next();
+				double weight = doubleNode.getFirst();
+				WeightNode neighbourNode = doubleNode.getSecond();
+				
+				int node1 = id;
+				int node2 = neighbourNode.getId();
+				
+				if ( node1 > node2 )
 					continue;
 				
 				if ( nodeIds.contains(node1) && nodeIds.contains(node2) ){

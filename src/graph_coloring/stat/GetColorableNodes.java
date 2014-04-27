@@ -22,7 +22,7 @@ public class GetColorableNodes {
 		
 		List<Integer> ret = new ArrayList<Integer>();
 		for(int i = 0 ; i < graph.getNodeSize() ; ++i){
-			if ( graph.getNodeColorable(i) && nodeIds.contains(graph.getNodeId(i)));
+			if (graph.getNodeColorable(i) && nodeIds.contains(graph.getNodeId(i)));
 				ret.add( graph.getNodeId(i) );
 		}
 		

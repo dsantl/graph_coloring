@@ -72,7 +72,7 @@ public class AgentUnit {
 		if ( rnd.nextDouble() < 0.1 )
 			return;
 		
-		for(int i = 0 ; i < graph.getNodeDegree(this.getNodeIndex()) ; ++i){
+		for(int i = 0 ; i < graph.getNodeDegre(this.getNodeIndex()) ; ++i){
 			
 			int neighbourId = graph.getNodeNeighburId(this.getNodeIndex(), i); 
 			

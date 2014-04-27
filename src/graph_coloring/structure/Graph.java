@@ -1,10 +1,14 @@
 package graph_coloring.structure;
 
 import graph_coloring.color_selector.ColorSelector;
+import graph_coloring.common.Pair;
 import graph_coloring.order.OrderMethod;
+import graph_coloring.structure.weight_graph.WeightNode;
+import graph_coloring.structure.weight_graph.ericsson_graph.EricssonGraph;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -20,6 +24,9 @@ public class Graph implements IGraph{
 	
 	private int bridgeSize = 0;
 	
+	public boolean isId(int id) {
+		return nodeMap.containsKey(id);
+	}
 	
 	/**
 	 * Get number of bridges
@@ -161,7 +168,7 @@ public class Graph implements IGraph{
 	
 	
 	@Override
-	public int getNodeDegree(int index) {
+	public int getNodeDegre(int index) {
 		return this.getNode(index).getBridgeSize();
 	}
 	

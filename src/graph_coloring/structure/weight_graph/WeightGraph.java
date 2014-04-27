@@ -3,6 +3,7 @@ package graph_coloring.structure.weight_graph;
 import java.util.Iterator;
 
 import graph_coloring.structure.Graph;
+import graph_coloring.structure.weight_graph.ericsson_graph.EricssonGraph;
 import graph_coloring.common.Pair;
 
 public class WeightGraph extends Graph implements IWeightGraph{
@@ -46,7 +47,5 @@ public class WeightGraph extends Graph implements IWeightGraph{
 	public void sortNeighbours(int index) {
 		((WeightNode)this.getNode(index)).sortNeighbours();
 	}
-
-	
-	
+		
 }
