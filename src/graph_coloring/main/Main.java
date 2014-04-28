@@ -3,6 +3,8 @@ package graph_coloring.main;
 import java.io.FileNotFoundException;
 import java.io.UnsupportedEncodingException;
 import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Set;
 
 import graph_coloring.algorithm.GraphAlgorithmContext;
@@ -11,14 +13,19 @@ import graph_coloring.algorithmset.greedy.CombiGreedy;
 import graph_coloring.algorithmset.greedy.Greedy;
 import graph_coloring.algorithmset.simulated_anneling.GeneticAnneling;
 import graph_coloring.algorithmset.simulated_anneling.SimulatedAnneling;
+import graph_coloring.common.Pair;
 import graph_coloring.input.FERFileFormat;
 import graph_coloring.input.FileFormat;
+import graph_coloring.output.GreedyStatOutput;
 import graph_coloring.output.NodeColorOutput;
 import graph_coloring.stat.ChangeColorGlobal;
 import graph_coloring.stat.CheckValidColoring;
 import graph_coloring.stat.ErrorFunctionEricsson;
 import graph_coloring.stat.GetColorableGroupNodes;
 import graph_coloring.stat.MakeSubGraph;
+import graph_coloring.stat.machine_learning.GreedyDataNode;
+import graph_coloring.stat.machine_learning.NodeOrder;
+import graph_coloring.structure.weight_graph.WeightNode;
 import graph_coloring.structure.weight_graph.ericsson_graph.EricssonGraph;
 
 
@@ -78,11 +85,28 @@ public class Main {
 		System.out.println(graph.getNodeSize());
 		System.out.println(graph.getBridgeSize());
 		
+		
+		List<Pair<Double, GreedyDataNode>> list = NodeOrder.generateData(graph, 2000, 0.1);
+		
+		GreedyStatOutput out = new GreedyStatOutput();
+		
+		
+		try {
+			out.saveStatistics(list, "/home/dino/Desktop/stat.txt");
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (UnsupportedEncodingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
 		//alg = new GraphAlgorithmContext(new Greedy("SDO", "ABW", 1));
 		//alg.startAlgorithm(graph);
 				
-		alg = new GraphAlgorithmContext(new CombiGreedy(5)); //5
-		alg.startAlgorithm(graph);
+		//alg = new GraphAlgorithmContext(new CombiGreedy(5)); //5
+		//alg.startAlgorithm(graph);
 		
 		
 		//alg = new GraphAlgorithmContext(new GeneticAnneling(10000000, 5, 1.0, 0.7));
@@ -91,8 +115,8 @@ public class Main {
 		//int a = 5;
 		//while(a==5){
 		
-		alg = new GraphAlgorithmContext(new SimulatedAnneling(0.1, 3100000, 100));
-		alg.startAlgorithm(graph);
+		//alg = new GraphAlgorithmContext(new SimulatedAnneling(1.0, 3100000, 100));
+		//alg.startAlgorithm(graph);
 		
 			//alg = new GraphAlgorithmContext(new Greedy("RND", "SWAP", 1, 0.1));
 			//alg.startAlgorithm(graph);

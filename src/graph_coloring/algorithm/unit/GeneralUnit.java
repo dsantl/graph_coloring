@@ -1,7 +1,9 @@
 package graph_coloring.algorithm.unit;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import graph_coloring.color_selector.ColorSelector;
 import graph_coloring.stat.ErrorFunctionEricsson;
@@ -10,7 +12,7 @@ import graph_coloring.structure.weight_graph.ericsson_graph.EricssonGraph;
 public class GeneralUnit {
 	
 	private EricssonGraph graph;
-	private List<Integer> nodeIndexColor = new ArrayList<Integer>();
+	private Map<Integer, Integer> nodeIdColor = new HashMap<Integer, Integer>();
 	private double error;
 	
 	/**
@@ -36,7 +38,7 @@ public class GeneralUnit {
 	public GeneralUnit(EricssonGraph graph){
 		this.graph = graph;
 		for(int i = 0 ; i < graph.getNodeSize() ; ++i){
-			nodeIndexColor.add(graph.getNodeColor(i));
+			nodeIdColor.put(graph.getNodeId(i), graph.getNodeColor(i));
 		}
 		this.error = ErrorFunctionEricsson.computeStat(graph);
 	}
@@ -49,7 +51,8 @@ public class GeneralUnit {
 	public GeneralUnit(EricssonGraph graph, GeneralUnit unit){
 		this.graph = graph;
 		for(int i = 0 ; i < graph.getNodeSize() ; ++i){
-			nodeIndexColor.add(unit.nodeIndexColor.get(i));
+			int nodeId = graph.getNodeId(i);
+			nodeIdColor.put(nodeId, unit.nodeIdColor.get(nodeId));
 		}
 		this.error = unit.error;
 	}
@@ -61,16 +64,16 @@ public class GeneralUnit {
 	 */
 	public void setColor(int id, ColorSelector colorSelector){
 		int index = graph.getNodeIndex(id);
-		graph.setNodeColor(index, this.nodeIndexColor.get(index));
+		graph.setNodeColor(index, this.nodeIdColor.get(id));
 		for(int i = 0 ; i < graph.getNodeDegre(index) ; ++i){
 			int neighbourId = graph.getNodeNeighburId(index, i);
 			int neighbourIndex = graph.getNodeIndex(neighbourId);
-			graph.setNodeColor(neighbourIndex, this.nodeIndexColor.get(neighbourIndex));
+			graph.setNodeColor(neighbourIndex, this.nodeIdColor.get(neighbourId));
 		}
 		
 		double oldError = graph.getNodeError(index);
 		int color = this.graph.chooseColor(index, colorSelector);
-		this.nodeIndexColor.set(index, color);
+		this.nodeIdColor.put(id, color);
 		graph.setNodeColor(index, color);
 		double newError = graph.getNodeError(index);
 		this.error = this.error - 2*oldError + 2*newError;
@@ -81,7 +84,7 @@ public class GeneralUnit {
 	 */
 	public void updateGraph(){
 		for(int i = 0 ; i < graph.getNodeSize() ; ++i){
-			graph.setNodeColor(i, this.nodeIndexColor.get(i));
+			graph.setNodeColor(i, this.nodeIdColor.get(graph.getNodeId(i)));
 		}
 	}
 	

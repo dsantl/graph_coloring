@@ -103,7 +103,7 @@ public class SimulatedAnneling extends GraphColoringAlgorithm{
 			alpha += 0.001;
 			
 			if (i%1000 == 0){
-				System.out.format("%f %f\n", bestError, currError);
+				System.out.format("%f %f %f\n", bestError, currError, T);
 				System.out.println((double)bestChange/NC);
 			}
 			
