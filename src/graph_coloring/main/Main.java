@@ -9,6 +9,7 @@ import java.util.Set;
 
 import graph_coloring.algorithm.GraphAlgorithmContext;
 import graph_coloring.algorithmset.agents.AgentAlgorithm;
+import graph_coloring.algorithmset.genetic.GeneticAlgorithm;
 import graph_coloring.algorithmset.greedy.CombiGreedy;
 import graph_coloring.algorithmset.greedy.Greedy;
 import graph_coloring.algorithmset.simulated_anneling.GeneticAnneling;
@@ -72,7 +73,7 @@ public class Main {
 		}
 		*/
 		
-		EricssonGraph newGraph = MakeSubGraph.filterByNodeGroup(graph, 'A');
+		EricssonGraph newGraph = MakeSubGraph.filterByNodeGroup(graph, 'C');
 		graph = newGraph;
 		
 		double oldError = ErrorFunctionEricsson.computeStat(graph);
@@ -85,7 +86,7 @@ public class Main {
 		System.out.println(graph.getNodeSize());
 		System.out.println(graph.getBridgeSize());
 		
-		
+		/*
 		List<Pair<Double, GreedyDataNode>> list = NodeOrder.generateData(graph, 2000, 0.1);
 		
 		GreedyStatOutput out = new GreedyStatOutput();
@@ -100,14 +101,21 @@ public class Main {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+		*/
 		
 		//alg = new GraphAlgorithmContext(new Greedy("SDO", "ABW", 1));
 		//alg.startAlgorithm(graph);
 				
-		//alg = new GraphAlgorithmContext(new CombiGreedy(5)); //5
-		//alg.startAlgorithm(graph);
+		alg = new GraphAlgorithmContext(new CombiGreedy(20)); //5
+		alg.startAlgorithm(graph);
 		
+		alg = new GraphAlgorithmContext(new GeneticAlgorithm(3, 3, 31000, 100, 0.8,  "MF", "SWAP"));
+		alg.startAlgorithm(graph);
+				
+		
+		//alg = new GraphAlgorithmContext(new AgentAlgorithm(2*graph.getNodeSize(), 1000, "MF"));
+		//alg.startAlgorithm(graph);
+
 		
 		//alg = new GraphAlgorithmContext(new GeneticAnneling(10000000, 5, 1.0, 0.7));
 		//alg.startAlgorithm(graph); 
@@ -145,9 +153,7 @@ public class Main {
 		}		
 		*/
 		
-		//alg = new GraphAlgorithmContext(new AgentAlgorithm(3*graph.getNodeSize()/2, 20, "SDO", "ABW"));
-		//alg.startAlgorithm(graph);
-
+		
 		/*
 		NodeColorOutput out = new NodeColorOutput(); 
 		try {

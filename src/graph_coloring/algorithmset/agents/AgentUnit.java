@@ -14,6 +14,8 @@ public class AgentUnit {
 	private int currentNodeId;
 	private int previousNodeId = -1;
 	private EricssonGraph graph;
+	private double noMove;
+	private double rndMove;
 	
 	/**
 	 * Get node id where is agent
@@ -39,65 +41,69 @@ public class AgentUnit {
 		return score;
 	}
 	
-	public AgentUnit(int id, EricssonGraph graph){
+	public AgentUnit(int id, EricssonGraph graph, String colorSelector, double noMove, double rndMove){
+		
 		try {
-			colorSelector = ColorSelectorFactory.factory("MF");
+			this.colorSelector = ColorSelectorFactory.factory(colorSelector); 
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		
+		this.noMove = noMove;
+		this.rndMove = rndMove;
 		this.currentNodeId = id;
 		this.graph = graph;
 	}
 	
 	/**
-	 * Set color to node, by definition color selector is MF
+	 * Set color to node
 	 */
 	public void setColor(){
+		
 		int color = graph.chooseColor(this.getNodeIndex(), colorSelector);
 		graph.setNodeColor(this.getNodeIndex(), color);
 	}
 	
 	/**
 	 * Move agent to neighbour node
-	 * 10% chance for no move
-	 * Last node is forbidden
 	 * 
 	 */
 	public void move(){
 		double error = 0;
 		double maxError = 0;
-		int nextNode = this.getNodeIndex();
+		int nextNode = this.getNodeId();
 		
-		//10% chance for no move
-		if ( rnd.nextDouble() < 0.1 )
+		//chance for no move
+		if ( rnd.nextDouble() < noMove )
 			return;
 		
-		for(int i = 0 ; i < graph.getNodeDegre(this.getNodeIndex()) ; ++i){
-			
-			int neighbourId = graph.getNodeNeighburId(this.getNodeIndex(), i); 
-			
-			if ( neighbourId == this.previousNodeId )
-				continue;
-			
-			//20% chance for move to this node
-			if ( rnd.nextDouble() < 0.2 )
-			{
-				maxError = 0;
-				nextNode = neighbourId;
-				break;
-			}
-			
-			error = graph.getNodeError(graph.getNodeIndex(neighbourId));
-			
-			//Get to node with maximum error (only nodes in 20% chance step are considered
-			if ( error > maxError ){
-				maxError = error;
-				nextNode = neighbourId;
-			}
-		}
+		int nodeDegree = graph.getNodeDegre(this.getNodeIndex());
 		
-		//Score is max error, score is used in sorting
-		this.score = maxError;
+		if (rnd.nextDouble() < rndMove && nodeDegree > 0){
+			int rndNeighbour = rnd.nextInt(nodeDegree);
+			int neighbourId = graph.getNodeNeighburId(this.getNodeIndex(), rndNeighbour);
+			nextNode = neighbourId;
+		}
+		else{
+			for(int i = 0 ; i < nodeDegree ; ++i){
+				
+				int neighbourId = graph.getNodeNeighburId(this.getNodeIndex(), i); 
+				
+				if ( neighbourId == this.previousNodeId )
+					continue;
+				
+				error = graph.getNodeError(graph.getNodeIndex(neighbourId));
+				
+				//Get to node with maximum error (only nodes in 20% chance step are considered)
+				if ( error > maxError ){
+					maxError = error;
+					nextNode = neighbourId;
+				}
+			}
+			
+			//Score is max error, score is used in sorting
+			this.score = maxError;
+		}
 		this.previousNodeId = this.currentNodeId;
 		this.currentNodeId = nextNode;
 	}

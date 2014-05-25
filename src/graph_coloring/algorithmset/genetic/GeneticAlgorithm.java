@@ -18,11 +18,12 @@ public class GeneticAlgorithm extends GraphColoringAlgorithm{
 	private int miSize;
 	private int lambdaSize;
 	private int iterations;
-	private int mutationIteration;
+	private int mutationIterations;
+	private double localProp;
 	private Random rnd = new Random();
 	private List<Integer> nodesForColoring;
-	private ColorSelector colorABW;
-	private ColorSelector colorRND;
+	private ColorSelector colorLocal;
+	private ColorSelector colorGlobal;
 	
 	/**
 	 * Constructor
@@ -31,14 +32,17 @@ public class GeneticAlgorithm extends GraphColoringAlgorithm{
 	 * @param iterations Total iterations
 	 * @param mutationIteration How many mutation is done on one unit
 	 */
-	public GeneticAlgorithm(int miSize, int lambdaSize, int iterations, int mutationIteration){
+	public GeneticAlgorithm(int miSize, int lambdaSize, int iterations, 
+			int mutationIterations, double localProp, 
+			String localColorSelector, String globalColorSelector){
 		this.miSize = miSize;
 		this.lambdaSize = lambdaSize;
 		this.iterations = iterations;
-		this.mutationIteration = mutationIteration;
+		this.mutationIterations = mutationIterations;
+		this.localProp = localProp;
 		try {
-			colorABW = ColorSelectorFactory.factory("ABW");
-			colorRND = ColorSelectorFactory.factory("RND");
+			colorLocal = ColorSelectorFactory.factory(localColorSelector);
+			colorGlobal = ColorSelectorFactory.factory(globalColorSelector);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -67,6 +71,7 @@ public class GeneticAlgorithm extends GraphColoringAlgorithm{
 		return newUnit;
 	}
 	
+	
 	/**
 	 * Make mutation on unit
 	 * @param unit
@@ -75,15 +80,15 @@ public class GeneticAlgorithm extends GraphColoringAlgorithm{
 		
 		double choice = rnd.nextDouble();
 		
-		for(int i = 0; i < this.mutationIteration ; ++i)
+		for(int i = 0; i < this.mutationIterations ; ++i)
 		{
 			int nodeId = this.nodesForColoring.get(rnd.nextInt(nodesForColoring.size()));
-			if ( choice < 0.8 ){
-				unit.setColor(nodeId, colorABW);
-			}
+			if ( choice < this.localProp )
+				unit.setColor(nodeId, colorLocal);
 			else
-				unit.setColor(nodeId, colorRND);
+				unit.setColor(nodeId, colorGlobal);
 		}
+		
 	}
 	
 	class GeneticUnitComp implements Comparator<GeneralUnit>{
@@ -101,7 +106,6 @@ public class GeneticAlgorithm extends GraphColoringAlgorithm{
 	 * @param lambdaSet
 	 */
 	private void collectBestUnits(List<GeneralUnit> miSet, List<GeneralUnit> lambdaSet){
-		Collections.sort(lambdaSet, new GeneticUnitComp());
 		miSet.clear();
 		for(int i = 0 ; i < miSize - 1; ++i)
 			miSet.add(lambdaSet.get(i));
@@ -112,7 +116,8 @@ public class GeneticAlgorithm extends GraphColoringAlgorithm{
 		
 		List<GeneralUnit> miSet = new ArrayList<GeneralUnit>();
 		List<GeneralUnit> lambdaSet = new ArrayList<GeneralUnit>();
-		GeneralUnit elit;
+		GeneralUnit elit = null;
+		
 		
 		initMiSet(miSet);
 		
@@ -124,16 +129,27 @@ public class GeneticAlgorithm extends GraphColoringAlgorithm{
 				lambdaSet.add(individual);
 				//System.out.format("Error: %f\n", individual.getError());
 			}
-			Collections.sort(miSet, new GeneticUnitComp());
-			elit = miSet.get(0);
+			
+			Collections.sort(lambdaSet, new GeneticUnitComp());
+			
+			/*
+			if ( elit != null && elit.getError() == lambdaSet.get(0).getError() )
+				for(Integer id : this.nodesForColoring){
+					lambdaSet.get(0).setColor(id, colorSWAP);
+				}
+			*/
+			
+			if ( elit == null || elit.getError() > lambdaSet.get(0).getError() )
+				elit = lambdaSet.get(0);
 			
 			if ( i % 100 == 0)
-				System.out.format("Error: %f\n", elit.getError());
+				System.out.format("Error global: %f\n", elit.getError());
 			
 			collectBestUnits(miSet, lambdaSet);
 			miSet.add(elit);
 		}
 		
+		elit.updateGraph();
 	}
 
 }

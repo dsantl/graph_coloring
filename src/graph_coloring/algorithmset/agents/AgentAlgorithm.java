@@ -18,7 +18,6 @@ public class AgentAlgorithm extends GraphColoringAlgorithm{
 	private int numberOfUnits;
 	private int iterations;
 	private List<AgentUnit> units = new ArrayList<AgentUnit>();
-	private String order;
 	private String colorSelector; 
 	
 	private class AgentCmp implements Comparator<AgentUnit>{
@@ -37,10 +36,9 @@ public class AgentAlgorithm extends GraphColoringAlgorithm{
 	 * @param order When algorithm have zero error change
 	 * @param colorSelector When algorithm have zero error change
 	 */
-	public AgentAlgorithm(int numberOfUnits, int iterations, String order, String colorSelector){
+	public AgentAlgorithm(int numberOfUnits, int iterations, String colorSelector){
 		this.numberOfUnits = numberOfUnits;
 		this.iterations = iterations;
-		this.order = order;
 		this.colorSelector = colorSelector;
 	}
 	
@@ -52,7 +50,7 @@ public class AgentAlgorithm extends GraphColoringAlgorithm{
 		
 		for(int i = 0 ; i < numberOfUnits ; ++i){
 			int randomId = graph.getNodeId(rnd.nextInt(nodeSize));
-			units.add(new AgentUnit(randomId, (EricssonGraph) this.graph));
+			units.add(new AgentUnit(randomId, (EricssonGraph) this.graph, colorSelector, 0.1, 0.2));
 		}
 		
 		startAlgorithm();
@@ -60,8 +58,8 @@ public class AgentAlgorithm extends GraphColoringAlgorithm{
 	
 	private void startAlgorithm(){
 		
-		GraphAlgorithmContext alg = new GraphAlgorithmContext(new Greedy(order, colorSelector, 1));
 		double oldError = 0;
+		GraphAlgorithmContext teleportAlg = new GraphAlgorithmContext(new Greedy("RND", "SWAP", 1));
 		
 		for(int i = 0 ; i < this.iterations ; ++i){
 			for(int j = 0 ; j < this.numberOfUnits ; ++j){
@@ -72,11 +70,14 @@ public class AgentAlgorithm extends GraphColoringAlgorithm{
 			Collections.sort(units, new AgentCmp());
 			
 			double error = ErrorFunctionEricsson.computeStat((EricssonGraph) graph);
-			if ( i != 0 && oldError == error)
-				alg.startAlgorithm(graph, this.getTouchableNodes());
+			
+			if ( oldError == error ){
+				teleportAlg.startAlgorithm(graph);
+			}
 			
 			oldError = error;
-			System.out.format("Error: %f\n", error);	
+			
+			System.out.format("Error: %f\n", error);
 			System.out.format("Color change: %f\n\n", ChangeColorGlobal.computeStat((EricssonGraph) graph));
 		}
 		
