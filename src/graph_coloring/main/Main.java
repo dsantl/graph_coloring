@@ -12,8 +12,8 @@ import graph_coloring.algorithmset.agents.AgentAlgorithm;
 import graph_coloring.algorithmset.genetic.GeneticAlgorithm;
 import graph_coloring.algorithmset.greedy.CombiGreedy;
 import graph_coloring.algorithmset.greedy.Greedy;
-import graph_coloring.algorithmset.simulated_anneling.GeneticAnneling;
-import graph_coloring.algorithmset.simulated_anneling.SimulatedAnneling;
+import graph_coloring.algorithmset.simulated_annealing.GeneticAnneling;
+import graph_coloring.algorithmset.simulated_annealing.SimulatedAnneling;
 import graph_coloring.common.Pair;
 import graph_coloring.input.FERFileFormat;
 import graph_coloring.input.FileFormat;
@@ -109,8 +109,16 @@ public class Main {
 		alg = new GraphAlgorithmContext(new CombiGreedy(20)); //5
 		alg.startAlgorithm(graph);
 		
-		alg = new GraphAlgorithmContext(new GeneticAlgorithm(3, 3, 31000, 100, 0.8,  "MF", "SWAP"));
-		alg.startAlgorithm(graph);
+		
+		alg = new GraphAlgorithmContext(new GeneticAnneling(10000000, 3, 10.0, 0.9, 0.8, "MF", "SWAP"));
+		alg.startAlgorithm(graph); 
+				
+		
+		//alg = new GraphAlgorithmContext(new SimulatedAnneling(0.2, 310000, 100, 0.8, 0.999, "ABW", "SWAP"));
+		//alg.startAlgorithm(graph);
+		
+		//alg = new GraphAlgorithmContext(new GeneticAlgorithm(2, 3, 31000, 100, 0.8,  "MF", "SWAP"));
+		//alg.startAlgorithm(graph);
 				
 		
 		//alg = new GraphAlgorithmContext(new AgentAlgorithm(2*graph.getNodeSize(), 1000, "MF"));
@@ -123,8 +131,6 @@ public class Main {
 		//int a = 5;
 		//while(a==5){
 		
-		//alg = new GraphAlgorithmContext(new SimulatedAnneling(1.0, 3100000, 100));
-		//alg.startAlgorithm(graph);
 		
 			//alg = new GraphAlgorithmContext(new Greedy("RND", "SWAP", 1, 0.1));
 			//alg.startAlgorithm(graph);

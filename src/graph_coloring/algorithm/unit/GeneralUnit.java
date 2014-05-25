@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import graph_coloring.color_selector.ColorSelector;
+import graph_coloring.common.Pair;
 import graph_coloring.stat.ErrorFunctionEricsson;
 import graph_coloring.structure.weight_graph.ericsson_graph.EricssonGraph;
 
@@ -43,6 +44,7 @@ public class GeneralUnit {
 		this.error = ErrorFunctionEricsson.computeStat(graph);
 	}
 	
+	
 	/**
 	 * Constructor for copy GeneralUnit into new one
 	 * @param graph Unit is connect to this graph
@@ -61,6 +63,7 @@ public class GeneralUnit {
 	 * Change color and compute new error
 	 * @param id Id of node
 	 * @param colorSelector Selector who can change color of node
+	 * @return pair (old color, error)
 	 */
 	public void setColor(int id, ColorSelector colorSelector){
 		int index = graph.getNodeIndex(id);
@@ -78,6 +81,8 @@ public class GeneralUnit {
 		double newError = graph.getNodeError(index);
 		this.error = this.error - 2*oldError + 2*newError;
 	}
+	
+	
 	
 	/**
 	 * Set unit colors to graph

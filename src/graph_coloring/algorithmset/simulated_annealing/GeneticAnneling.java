@@ -1,4 +1,4 @@
-package graph_coloring.algorithmset.simulated_anneling;
+package graph_coloring.algorithmset.simulated_annealing;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,8 +17,11 @@ public class GeneticAnneling extends GraphColoringAlgorithm{
 	private int numberOfUnits;
 	private double startEnergy;
 	private double coolingFactor;
-	private ColorSelector colorSelectorRND;
-	private ColorSelector colorSelectorABW;
+	private double prop;
+	private String localColorSelector;
+	private String globalColorSelector;
+	private ColorSelector gColorSelector;
+	private ColorSelector lColorSelector;
 	private List<GeneralUnit> units;
 	private List<Integer> colorableNodes;
 	private Random rnd = new Random();
@@ -31,11 +34,15 @@ public class GeneticAnneling extends GraphColoringAlgorithm{
 	 * @param startEnergy Start energy
 	 * @param coolingFactor Cooling factor for energy
 	 */
-	public GeneticAnneling(int steps, int numberOfUnits, double startEnergy, double coolingFactor){
+	public GeneticAnneling(int steps, int numberOfUnits, double startEnergy, double coolingFactor, double prop,
+			String localColorSelector, String globalColorSelector){
 		this.steps = steps;
 		this.numberOfUnits = numberOfUnits;
 		this.startEnergy = startEnergy;
 		this.coolingFactor = coolingFactor;
+		this.prop = prop;
+		this.localColorSelector = localColorSelector;
+		this.globalColorSelector = globalColorSelector;
 	}
 	
 	/**
@@ -46,7 +53,7 @@ public class GeneticAnneling extends GraphColoringAlgorithm{
 		
 		for(int i = 0 ; i < this.numberOfUnits ; ++i){
 			GeneralUnit unit = new GeneralUnit(this.ericssonGraph);
-			unit.setColor(colorableNodes.get(rnd.nextInt(colorableNodes.size())), colorSelectorRND);
+			unit.setColor(colorableNodes.get(rnd.nextInt(colorableNodes.size())), gColorSelector);
 			this.units.add(unit);
 		}
 	}
@@ -56,8 +63,8 @@ public class GeneticAnneling extends GraphColoringAlgorithm{
 	 */
 	private void initColorSelector(){
 		try {
-			colorSelectorRND = ColorSelectorFactory.factory("SWAP");
-			colorSelectorABW = ColorSelectorFactory.factory("ABW");
+			gColorSelector = ColorSelectorFactory.factory(this.globalColorSelector);
+			lColorSelector = ColorSelectorFactory.factory(this.localColorSelector);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -75,11 +82,11 @@ public class GeneticAnneling extends GraphColoringAlgorithm{
 		ColorSelector colorSelector;
 		
 		
-		if ( choose < 0.8 ){
-			colorSelector = colorSelectorABW;
+		if ( choose < this.prop ){
+			colorSelector = lColorSelector;
 		}
 		else{
-			colorSelector = colorSelectorRND;
+			colorSelector = gColorSelector;
 		}
 		
 		unit.setColor(nodeId, colorSelector);
@@ -131,12 +138,12 @@ public class GeneticAnneling extends GraphColoringAlgorithm{
 				}
 			}
 		
-		bestUnit = findBestUnit(bestUnit);
-		if ( i % 1000 == 0){
-			System.out.format("Error: %f\n", bestUnit.getError());
-		}
-		//System.out.format("Energy: %f\n", freeEnergy);
-		freeEnergy *= this.coolingFactor;
+			bestUnit = findBestUnit(bestUnit);
+			if ( i % 1000 == 0){
+				System.out.format("Error: %f\n", bestUnit.getError());
+			}
+			//System.out.format("Energy: %f\n", freeEnergy);
+			freeEnergy *= this.coolingFactor;
 		}
 		bestUnit.updateGraph();
 	}

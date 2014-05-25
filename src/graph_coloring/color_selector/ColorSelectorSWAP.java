@@ -28,8 +28,8 @@ public class ColorSelectorSWAP implements ColorSelector{
 			int currColor = colors.next();
 			double err = eNode.getError(currColor);
 			
-			if ( currColor == memColor )
-				continue;
+			//if ( currColor == memColor )
+			//	continue;
 			
 			if ( Math.abs(err-nodeError) <= 0.01*nodeError ){
 				swapColors.add(currColor);

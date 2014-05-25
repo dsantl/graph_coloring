@@ -1,4 +1,4 @@
-package graph_coloring.algorithmset.simulated_anneling;
+package graph_coloring.algorithmset.simulated_annealing;
 
 import java.util.List;
 import java.util.Random;
@@ -16,12 +16,22 @@ public class SimulatedAnneling extends GraphColoringAlgorithm{
 	private double startTemperature;
 	private int thermalEquilibrium;
 	private int temperatureChangeSteps;
+	private String localColorSelector;
+	private String globalColorSelector;
+	private double alpha;
+	private double prop;
 	private Random rnd = new Random();
 	
-	public SimulatedAnneling(double startTemperature, int temperatureChangeSteps, int thermalEquilibrium){
+	
+	public SimulatedAnneling(double startTemperature, int temperatureChangeSteps, int thermalEquilibrium,
+			double prop, double alpha, String localColorSelector, String globalColorSelector){
 		this.startTemperature = startTemperature;
 		this.thermalEquilibrium = thermalEquilibrium;
 		this.temperatureChangeSteps = temperatureChangeSteps;
+		this.alpha = alpha;
+		this.localColorSelector = localColorSelector;
+		this.globalColorSelector = globalColorSelector;
+		this.prop = prop;
 	}
 	
 	
@@ -36,32 +46,30 @@ public class SimulatedAnneling extends GraphColoringAlgorithm{
 		int NC = GetColorableNodes.getNumberOfColorableNodes(ericssonGraph);
 		int bestChange = (int)(NC*ChangeColorGlobal.computeStat(ericssonGraph));
 		int currChange;
+		ColorSelector globalColorSelector = null;
+		ColorSelector localColorSelector = null;
 		
-		ColorSelector abwColorSelector = null;
-		ColorSelector rndColorSelector = null;
 		
 		try {
-			rndColorSelector = ColorSelectorFactory.factory("RND");
-			abwColorSelector = ColorSelectorFactory.factory("ABW");
+			globalColorSelector = ColorSelectorFactory.factory(this.globalColorSelector);
+			localColorSelector = ColorSelectorFactory.factory(this.localColorSelector);
 		} catch (Exception e1) {
 			e1.printStackTrace();
 		}
 		
 		
 		List<Integer> colorableNodes = GetColorableNodes.getNodeIdsFilter(ericssonGraph, this.getTouchableNodes());
-		
-		double alpha = 0;
-		
+			
 		for(int i = 0 ; i < temperatureChangeSteps ; ++i){
 			for(int j = 0 ; j < thermalEquilibrium ; ++j){
 				
 				ColorSelector colorSelector;
 				double choice = rnd.nextDouble();
 				
-				if ( choice < 0.8 )
-					colorSelector = abwColorSelector;
+				if ( choice < this.prop )
+					colorSelector = localColorSelector;
 				else
-					colorSelector = rndColorSelector;
+					colorSelector = globalColorSelector;
 				
 				
 				int nodeId = colorableNodes.get(rnd.nextInt(colorableNodes.size()));
@@ -99,16 +107,15 @@ public class SimulatedAnneling extends GraphColoringAlgorithm{
 				}
 
 			}
-			T = this.startTemperature - this.startTemperature*(double)i/this.temperatureChangeSteps;
-			alpha += 0.001;
+			T = this.startTemperature*this.alpha;
 			
 			if (i%1000 == 0){
-				System.out.format("%f %f %f\n", bestError, currError, T);
+				System.out.format("%f\n", bestError);
 				System.out.println((double)bestChange/NC);
 			}
 			
-			if ( bestError < 1430.0 )
-				break;
+			//if ( bestError < 1430.0 )
+			//	break;
 		}
 	}
 }
