@@ -13,8 +13,7 @@ public class GraphAlgorithmContext {
 	 * Set algorithm to context
 	 * @param algorithm
 	 */
-	public GraphAlgorithmContext(GraphColoringAlgorithm algorithm)
-	{
+	public GraphAlgorithmContext(GraphColoringAlgorithm algorithm){
 		this.algorithm = algorithm;
 	}
 	
@@ -22,8 +21,7 @@ public class GraphAlgorithmContext {
 	 * Start algorithm on graph
 	 * @param graph
 	 */
-	public void startAlgorithm(Graph graph)
-	{
+	public void startAlgorithm(Graph graph){
 		algorithm.startAlgorithm(graph);
 	}
 	
@@ -32,8 +30,7 @@ public class GraphAlgorithmContext {
 	 * @param graph
 	 * @param touchableNodes
 	 */
-	public void startAlgorithm(Graph graph, Set<Integer> touchableNodes)
-	{
+	public void startAlgorithm(Graph graph, Set<Integer> touchableNodes){
 		algorithm.startAlgorithm(graph, touchableNodes);
 	}
 	

@@ -110,14 +110,14 @@ public class Main {
 		alg.startAlgorithm(graph);
 		
 		
-		alg = new GraphAlgorithmContext(new GeneticAnneling(10000000, 3, 10.0, 0.9, 0.8, "MF", "SWAP"));
+		alg = new GraphAlgorithmContext(new GeneticAnneling(10000000, 5, 100000.0, 0.99, 0.8, "MF", "SWAP"));
 		alg.startAlgorithm(graph); 
 				
 		
 		//alg = new GraphAlgorithmContext(new SimulatedAnneling(0.2, 310000, 100, 0.8, 0.999, "ABW", "SWAP"));
 		//alg.startAlgorithm(graph);
 		
-		//alg = new GraphAlgorithmContext(new GeneticAlgorithm(2, 3, 31000, 100, 0.8,  "MF", "SWAP"));
+		//alg = new GraphAlgorithmContext(new GeneticAlgorithm(5, 7, 31000, 150, 0.8,  "MF", "SWAP"));
 		//alg.startAlgorithm(graph);
 				
 		

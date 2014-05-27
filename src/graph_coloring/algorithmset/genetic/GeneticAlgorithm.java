@@ -80,7 +80,9 @@ public class GeneticAlgorithm extends GraphColoringAlgorithm{
 		
 		double choice = rnd.nextDouble();
 		
-		for(int i = 0; i < this.mutationIterations ; ++i)
+		int max_iterations = (int)(rnd.nextDouble() * this.mutationIterations)+1;
+		
+		for(int i = 0; i < max_iterations ; ++i)
 		{
 			int nodeId = this.nodesForColoring.get(rnd.nextInt(nodesForColoring.size()));
 			if ( choice < this.localProp )

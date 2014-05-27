@@ -125,12 +125,11 @@ public class GeneticAnneling extends GraphColoringAlgorithm{
 		
 		for(int i = 0 ; i < this.steps ; ++i){
 			double treshold = freeEnergy/this.numberOfUnits;
-			freeEnergy = 0;
+			freeEnergy = 0.0;
 			for(int j = 0 ; j < this.numberOfUnits ; ++j){
 				GeneralUnit currUnit = units.get(j);
 				GeneralUnit newUnit = new GeneralUnit(this.ericssonGraph, currUnit);
 				mutation(newUnit);
-				
 				if (newUnit.getError() < currUnit.getError() + treshold){
 					double diff = currUnit.getError() + treshold - newUnit.getError();
 					freeEnergy += diff;
@@ -139,10 +138,12 @@ public class GeneticAnneling extends GraphColoringAlgorithm{
 			}
 		
 			bestUnit = findBestUnit(bestUnit);
-			if ( i % 1000 == 0){
+			if ( i % 100 == 0){
 				System.out.format("Error: %f\n", bestUnit.getError());
 			}
-			//System.out.format("Energy: %f\n", freeEnergy);
+			if ( i % 100 == 0)
+				System.out.format("Energy: %f\n", freeEnergy);
+			
 			freeEnergy *= this.coolingFactor;
 		}
 		bestUnit.updateGraph();
