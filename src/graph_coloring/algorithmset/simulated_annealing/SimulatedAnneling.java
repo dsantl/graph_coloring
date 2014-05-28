@@ -109,9 +109,8 @@ public class SimulatedAnneling extends GraphColoringAlgorithm{
 			}
 			T = this.startTemperature*this.alpha;
 			
-			if (i%1000 == 0){
-				System.out.format("%f\n", bestError);
-				System.out.println((double)bestChange/NC);
+			if (i%1 == 0){
+				System.out.format("%f %f\n", bestError, (double)bestChange/NC);
 			}
 			
 			//if ( bestError < 1430.0 )

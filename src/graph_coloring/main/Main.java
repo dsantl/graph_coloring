@@ -17,6 +17,8 @@ import graph_coloring.algorithmset.simulated_annealing.SimulatedAnneling;
 import graph_coloring.common.Pair;
 import graph_coloring.input.FERFileFormat;
 import graph_coloring.input.FileFormat;
+import graph_coloring.input.NodeColorFormat;
+import graph_coloring.output.FERoutput;
 import graph_coloring.output.GreedyStatOutput;
 import graph_coloring.output.NodeColorOutput;
 import graph_coloring.stat.ChangeColorGlobal;
@@ -72,6 +74,27 @@ public class Main {
 			e.printStackTrace();
 		}
 		*/
+		/*
+		NodeColorOutput out = new NodeColorOutput();
+		try {
+			out.convertGraphToFile(graph, "Tokai-Combi20.out");
+		}
+		catch(Exception e){
+			e.printStackTrace();
+		}
+		*/
+		
+		
+		try {
+			NodeColorFormat.setColorsFromFileToGraph("Tokai-Combi20.out", graph);
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+		
+		
+
 		
 		EricssonGraph newGraph = MakeSubGraph.filterByNodeGroup(graph, 'C');
 		graph = newGraph;
@@ -91,7 +114,6 @@ public class Main {
 		
 		GreedyStatOutput out = new GreedyStatOutput();
 		
-		
 		try {
 			out.saveStatistics(list, "/home/dino/Desktop/stat.txt");
 		} catch (FileNotFoundException e) {
@@ -105,21 +127,27 @@ public class Main {
 		
 		//alg = new GraphAlgorithmContext(new Greedy("SDO", "ABW", 1));
 		//alg.startAlgorithm(graph);
+		
+		
+		//alg = new GraphAlgorithmContext(new SimulatedAnneling(0.2, 310000, 100, 0.8, 0.999, "ABW", "SWAP"));
+		//alg.startAlgorithm(graph);
 				
-		alg = new GraphAlgorithmContext(new CombiGreedy(20)); //5
-		alg.startAlgorithm(graph);
+		//alg = new GraphAlgorithmContext(new CombiGreedy(20)); //5
+		//alg.startAlgorithm(graph);
 		
+		//alg = new GraphAlgorithmContext(new GeneticAlgorithm(5, 7, 31000, 150, 0.8,  "MF", "SWAP"));
+		//alg.startAlgorithm(graph);
+				
 		
-		alg = new GraphAlgorithmContext(new GeneticAnneling(10000000, 5, 100000.0, 0.99, 0.8, "MF", "SWAP"));
+		alg = new GraphAlgorithmContext(new GeneticAnneling(10000000, 5, 50.0, 0.999, 0.8, "MF", "SWAP"));
 		alg.startAlgorithm(graph); 
-				
 		
 		//alg = new GraphAlgorithmContext(new SimulatedAnneling(0.2, 310000, 100, 0.8, 0.999, "ABW", "SWAP"));
 		//alg.startAlgorithm(graph);
 		
 		//alg = new GraphAlgorithmContext(new GeneticAlgorithm(5, 7, 31000, 150, 0.8,  "MF", "SWAP"));
 		//alg.startAlgorithm(graph);
-				
+		
 		
 		//alg = new GraphAlgorithmContext(new AgentAlgorithm(2*graph.getNodeSize(), 1000, "MF"));
 		//alg.startAlgorithm(graph);
