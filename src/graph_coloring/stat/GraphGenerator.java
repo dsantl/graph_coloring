@@ -46,17 +46,81 @@ public class GraphGenerator {
 		}
 	}
 	
-	private static void generateColorClasses(List<Set<Integer>> colorsDomains, int numberColorDomains, int colorDomainSize, int colors, double overlapping){
+	private static void generateColors(Set<Integer> colors, int sameColors, int colorDomainSize, int numberColor){
+		
+		for(int i = 0 ; i < sameColors ; ++i){
+			colors.add(i);
+		}
+		
+		for(int i = 0 ; i < numberColor - sameColors ; ++i){
+			int color = rnd.nextInt(numberColor-sameColors);
+			colors.add(color+sameColors);
+		}
+	}
+	
+	private static void generateColorClasses(List<Set<Integer>> colorsDomains, int numberColorDomains, int colorDomainSize, int numberColor, double overlapping){
+		int sameColors = (int)(colorDomainSize * overlapping);
+		
+		for(int i = 0 ; i < numberColorDomains ; ++i){
+			colorsDomains.add(new HashSet<Integer>());
+			generateColors(colorsDomains.get(i), sameColors, colorDomainSize, numberColor);
+		}
+		
+		
 		
 	}
 	
-	public static EricssonGraph generate(int nodeSize, double density, int numberColorDomains, int colorDomainSize, int colors, double overlapping, double notColorable){
+	private static double generateWeight(){
+		int categoryCount = 4;
+		double sizer = 1;
+		double category = rnd.nextInt(categoryCount);
+		
+		
+		if (category == 0)
+			sizer = 1;
+		else if (category == 1)
+			sizer = 1000;
+		else if (category == 2)
+			sizer = 10000;
+		else if (category == 3)
+			sizer = 100000;
+		
+		return Math.abs(rnd.nextGaussian()*sizer);
+	}
+	
+	private static EricssonGraph generateGraph(List<Set<Integer>> nodes, List<Set<Integer>> colorsDomains, int numberColor, double notColorable){
+		EricssonGraph graph = new EricssonGraph();
+		
+		for(int i = 0 ; i < colorsDomains.size() ; ++i){
+			graph.addColorClass(i);
+			for(Integer color : colorsDomains.get(i)){
+				graph.addColorToColorClass(i, color);
+			}
+		}
+		
+		for(int i = 0 ; i < nodes.size() ; ++i){
+			boolean colorable = true;
+			if ( rnd.nextDouble() < notColorable )
+				colorable = false;
+			graph.addEricssonNode(i, 'A', rnd.nextInt(colorsDomains.size()), rnd.nextInt(numberColor),  colorable); 
+		}
+		
+		for(int i = 0 ; i < nodes.size() ; ++i){
+			for(Integer neighbour : nodes.get(i)){
+				graph.addWeightBridge(i, neighbour, generateWeight());
+			}
+		}
+		
+		return graph;
+	}
+	
+	public static EricssonGraph generate(int nodeSize, double density, int numberColorDomains, int colorDomainSize, int numberColor, double overlapping, double notColorable){
 		List<Set<Integer>> nodes = new ArrayList<Set<Integer>>();
 		List<Set<Integer>> colorsDomains = new ArrayList<Set<Integer>>();
 		init(nodes, nodeSize);
 		generateBridges(nodes, density);
-		generateColorClasses(colorsDomains, numberColorDomains, colorDomainSize, colors, overlapping);
-		return null;
+		generateColorClasses(colorsDomains, numberColorDomains, colorDomainSize, numberColor, overlapping);
+		return generateGraph(nodes, colorsDomains, numberColor, notColorable);
 	}
 	
 }

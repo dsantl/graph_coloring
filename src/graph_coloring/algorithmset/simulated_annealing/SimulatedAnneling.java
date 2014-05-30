@@ -6,6 +6,7 @@ import java.util.Random;
 import graph_coloring.algorithm.GraphColoringAlgorithm;
 import graph_coloring.color_selector.ColorSelector;
 import graph_coloring.color_selector.ColorSelectorFactory;
+import graph_coloring.order.OrderMethodFactory;
 import graph_coloring.stat.ChangeColorGlobal;
 import graph_coloring.stat.ErrorFunctionEricsson;
 import graph_coloring.stat.GetColorableNodes;
@@ -91,30 +92,22 @@ public class SimulatedAnneling extends GraphColoringAlgorithm{
 					changeTmp = -1;
 				
 				currChange = bestChange + changeTmp;
-				double pos = (double)(currChange)/NC; 
-				
 				
 				dError = currError - bestError;
-				//dError *= pos;
-				
-				//if ( pos > 0.64 )
-				//	start = rnd.nextBoolean();
 				
 				if ( dError < 0 || rnd.nextDouble() < Math.exp(-dError/T) ){
 					graph.setNodeColor(nodeIndex, color);
 					bestError = currError;
 					bestChange = currChange;
 				}
-
 			}
-			T = this.startTemperature*this.alpha;
+			T = T * this.alpha;
 			
-			if (i%1 == 0){
+			if (i % 1 == 0){
 				System.out.format("%f %f\n", bestError, (double)bestChange/NC);
+				System.out.format("%f\n", T);
 			}
 			
-			//if ( bestError < 1430.0 )
-			//	break;
 		}
 	}
 }

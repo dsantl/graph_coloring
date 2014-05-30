@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Set;
 
 import graph_coloring.algorithm.GraphAlgorithmContext;
+import graph_coloring.algorithmset.HillClimbing;
 import graph_coloring.algorithmset.agents.AgentAlgorithm;
 import graph_coloring.algorithmset.genetic.GeneticAlgorithm;
 import graph_coloring.algorithmset.greedy.CombiGreedy;
@@ -15,6 +16,7 @@ import graph_coloring.algorithmset.greedy.Greedy;
 import graph_coloring.algorithmset.simulated_annealing.GeneticAnneling;
 import graph_coloring.algorithmset.simulated_annealing.SimulatedAnneling;
 import graph_coloring.common.Pair;
+import graph_coloring.input.EricssonFileFormat;
 import graph_coloring.input.FERFileFormat;
 import graph_coloring.input.FileFormat;
 import graph_coloring.input.NodeColorFormat;
@@ -25,6 +27,7 @@ import graph_coloring.stat.ChangeColorGlobal;
 import graph_coloring.stat.CheckValidColoring;
 import graph_coloring.stat.ErrorFunctionEricsson;
 import graph_coloring.stat.GetColorableGroupNodes;
+import graph_coloring.stat.GraphGenerator;
 import graph_coloring.stat.MakeSubGraph;
 import graph_coloring.stat.machine_learning.GreedyDataNode;
 import graph_coloring.stat.machine_learning.NodeOrder;
@@ -44,7 +47,7 @@ public class Main {
 		
 		try {
 			//graph = (EricssonGraph) fileFormat.getGraphFromFile("/home/dino/Desktop/FER/9. SEM/PROJEKT/diplomski/FER-Kansai.txt");
-			//graph = fileFormat.getGraphFromFile("/home/dino/Desktop/FER-Tokai_coloring.txt");
+			//graph = (EricssonGraph) fileFormat.getGraphFromFile("/home/dino/Desktop/Tokyo-FER-graph.txt");
 			
 			//graph = (EricssonGraph) fileFormat.getGraphFromFile("Tokai-new.out");
 			//String fileName = args[0];
@@ -85,8 +88,9 @@ public class Main {
 		*/
 		
 		
+		
 		try {
-			NodeColorFormat.setColorsFromFileToGraph("Tokai-Combi20.out", graph);
+			//NodeColorFormat.setColorsFromFileToGraph("Tokai-Combi20.out", graph);
 		}
 		catch(Exception e)
 		{
@@ -94,10 +98,10 @@ public class Main {
 		}
 		
 		
-
-		
-		EricssonGraph newGraph = MakeSubGraph.filterByNodeGroup(graph, 'C');
+		EricssonGraph newGraph = MakeSubGraph.filterByNodeGroup(graph, 'A');
 		graph = newGraph;
+		
+		//graph = GraphGenerator.generate(1000, 0.4, 10, 50, 300, 0.0, 0);
 		
 		double oldError = ErrorFunctionEricsson.computeStat(graph);
 		
@@ -128,28 +132,57 @@ public class Main {
 		//alg = new GraphAlgorithmContext(new Greedy("SDO", "ABW", 1));
 		//alg.startAlgorithm(graph);
 		
-		
-		//alg = new GraphAlgorithmContext(new SimulatedAnneling(0.2, 310000, 100, 0.8, 0.999, "ABW", "SWAP"));
+		//Treba naci optimalni boj lokalizacije!
+		//alg = new GraphAlgorithmContext(new CombiGreedy(5));
 		//alg.startAlgorithm(graph);
 				
-		//alg = new GraphAlgorithmContext(new CombiGreedy(20)); //5
+		//alg = new GraphAlgorithmContext(new SimulatedAnneling(1.0, 1000, 500, 0.8, 0.99999, "ABW", "SWAP"));
 		//alg.startAlgorithm(graph);
+		
+		
+		/*
+		NodeColorOutput out = new NodeColorOutput();
+		try {
+			out.convertGraphToFile(graph, "Tokai-Combi20-A.out");
+		}
+		catch(Exception e){
+			e.printStackTrace();
+		}
+		*/
+		
+		
+		//alg = new GraphAlgorithmContext(new GeneticAlgorithm(5, 7, 31000, 1, 0.8,  "ABW", "SWAP"));
+		//alg.startAlgorithm(graph);
+		
+		
+		alg = new GraphAlgorithmContext(new Greedy("SDO", "ABW", 1)); 
+		alg.startAlgorithm(graph);
+		alg = new GraphAlgorithmContext(new HillClimbing());
+		alg.startAlgorithm(graph);
+		alg = new GraphAlgorithmContext(new Greedy("SDO", "ABW", 5)); 
+		alg.startAlgorithm(graph);
+		
+		
+		GraphAlgorithmContext swap = new GraphAlgorithmContext(new Greedy("RND", "SWAP", 1)); 
+		
+		alg = new GraphAlgorithmContext(new SimulatedAnneling(0.3, 10000, 100, 0.7, 0.9999, "ABW", "SWAP"));
+		alg.startAlgorithm(graph);
+		
+		/*
+		alg = new GraphAlgorithmContext(new SimulatedAnneling(0.1, 1000, 100, 0.5, 0.999, "MF", "RND"));
+		int k = 5;
+		while(k == 5){
+			alg.startAlgorithm(graph);
+			System.out.println("END");
+			swap.startAlgorithm(graph);
+		}
+		*/
 		
 		//alg = new GraphAlgorithmContext(new GeneticAlgorithm(5, 7, 31000, 150, 0.8,  "MF", "SWAP"));
 		//alg.startAlgorithm(graph);
-				
-		
-		alg = new GraphAlgorithmContext(new GeneticAnneling(10000000, 5, 50.0, 0.999, 0.8, "MF", "SWAP"));
-		alg.startAlgorithm(graph); 
-		
-		//alg = new GraphAlgorithmContext(new SimulatedAnneling(0.2, 310000, 100, 0.8, 0.999, "ABW", "SWAP"));
-		//alg.startAlgorithm(graph);
-		
-		//alg = new GraphAlgorithmContext(new GeneticAlgorithm(5, 7, 31000, 150, 0.8,  "MF", "SWAP"));
-		//alg.startAlgorithm(graph);
 		
 		
-		//alg = new GraphAlgorithmContext(new AgentAlgorithm(2*graph.getNodeSize(), 1000, "MF"));
+		//alg = new GraphAlgorithmContext(new AgentAlgorithm(graph.getNodeSize()/100, 1000, "MF"));
 		//alg.startAlgorithm(graph);
 
 		

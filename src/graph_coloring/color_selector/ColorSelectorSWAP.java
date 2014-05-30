@@ -39,8 +39,8 @@ public class ColorSelectorSWAP implements ColorSelector{
 		if ( swapColors.size() == 0 )
 			return memColor;
 		
-		if ( swapColors.contains(eNode.getStartColor()) )
-			return eNode.getStartColor();
+		//if ( swapColors.contains(eNode.getStartColor()) )
+		//	return eNode.getStartColor();
 		
 		return swapColors.get(rnd.nextInt(swapColors.size()));
 	}

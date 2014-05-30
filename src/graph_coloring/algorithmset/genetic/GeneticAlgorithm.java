@@ -90,7 +90,6 @@ public class GeneticAlgorithm extends GraphColoringAlgorithm{
 			else
 				unit.setColor(nodeId, colorGlobal);
 		}
-		
 	}
 	
 	class GeneticUnitComp implements Comparator<GeneralUnit>{

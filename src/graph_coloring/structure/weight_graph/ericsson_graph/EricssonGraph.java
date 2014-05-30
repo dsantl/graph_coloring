@@ -16,7 +16,7 @@ public class EricssonGraph extends WeightGraph implements IEricssonGraph{
 	
 	/**
 	 * Get object EricssonNode
-	 * @param id
+	 * @param index
 	 * @return EricsonNode object
 	 */
 	private EricssonNode getEricssonNode(int index){
@@ -55,7 +55,7 @@ public class EricssonGraph extends WeightGraph implements IEricssonGraph{
 	
 	/**
 	 * Get node property colorable
-	 * @param id
+	 * @param index
 	 * @return colorable (boolean), true if node is colorable
 	 */
 	@Override
