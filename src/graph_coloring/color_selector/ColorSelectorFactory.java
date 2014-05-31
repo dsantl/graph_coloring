@@ -16,6 +16,10 @@ public class ColorSelectorFactory {
 			return new ColorSelectorSTART();
 		else if ( name.equals("SWAP") )
 			return new ColorSelectorSWAP();
+		else if ( name.equals("SWAPSTART") )
+			return new ColorSelectorSWAPSTART();
+		else if ( name.equals("ABWSTART") )
+			return new ColorSelectorABWSTART();
 		else if ( name.equals("RND") )
 			return new ColorSelectorRND();
 		else

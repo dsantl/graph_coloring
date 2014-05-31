@@ -8,7 +8,7 @@ import java.util.Random;
 import graph_coloring.structure.Node;
 import graph_coloring.structure.weight_graph.ericsson_graph.EricssonNode;
 
-public class ColorSelectorSWAP implements ColorSelector{
+public class ColorSelectorSWAPSTART implements ColorSelector{
 
 	private Random rnd = new Random();
 	
@@ -38,6 +38,9 @@ public class ColorSelectorSWAP implements ColorSelector{
 		
 		if ( swapColors.size() == 0 )
 			return memColor;
+		
+		if ( swapColors.contains(eNode.getStartColor()) )
+			return eNode.getStartColor();
 		
 		return swapColors.get(rnd.nextInt(swapColors.size()));
 	}

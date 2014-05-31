@@ -1,6 +1,8 @@
 package graph_coloring.algorithmset.simulated_annealing;
 
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Queue;
 import java.util.Random;
 
 import graph_coloring.algorithm.GraphColoringAlgorithm;
@@ -60,7 +62,8 @@ public class SimulatedAnneling extends GraphColoringAlgorithm{
 		
 		
 		List<Integer> colorableNodes = GetColorableNodes.getNodeIdsFilter(ericssonGraph, this.getTouchableNodes());
-			
+		
+		
 		for(int i = 0 ; i < temperatureChangeSteps ; ++i){
 			for(int j = 0 ; j < thermalEquilibrium ; ++j){
 				

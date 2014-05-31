@@ -72,6 +72,7 @@ public class EricssonFileFormat implements FileFormat {
 		numberOfBridges = Integer.parseInt(file.getNextLine());
 		
 		for (int i = 0; i < numberOfBridges; ++i) {
+			System.out.format("%d\n", numberOfBridges - i - 1);
 			String line = file.getNextLine();
 			String[] splitLine = line.split("\\s+");
 			int node1, node2;
@@ -81,8 +82,7 @@ public class EricssonFileFormat implements FileFormat {
 			node2 = Integer.parseInt(splitLine[1]);
 			weight = Double.parseDouble(splitLine[2]);
 			
-			if ( bridgeFlag.contains(new OrderPair(node1, node2)) )
-			{
+			if ( bridgeFlag.contains(new OrderPair(node1, node2))) {
 				bridgeFlag.remove(new OrderPair(node1, node2));
 				continue;
 			}

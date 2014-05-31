@@ -9,7 +9,7 @@ import graph_coloring.structure.Node;
 import graph_coloring.structure.weight_graph.WeightNode;
 import graph_coloring.structure.weight_graph.ericsson_graph.EricssonNode;
 
-public class ColorSelectorABW implements ColorSelector{
+public class ColorSelectorABWSTART implements ColorSelector{
 	
 	@Override
 	public int selectColor(Node node, Iterator<Integer> colors){
@@ -33,6 +33,9 @@ public class ColorSelectorABW implements ColorSelector{
 				break;
 			nodeColors.remove(it.next().getSecond().getColor());
 		}
+		
+		if (nodeColors.contains(eNode.getStartColor()))
+			return eNode.getStartColor();
 		
 		retColor = nodeColors.iterator().next();
 		

@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Set;
 
 import graph_coloring.algorithm.GraphAlgorithmContext;
+import graph_coloring.algorithmset.CounterMinimize;
 import graph_coloring.algorithmset.HillClimbing;
 import graph_coloring.algorithmset.agents.AgentAlgorithm;
 import graph_coloring.algorithmset.genetic.GeneticAlgorithm;
@@ -26,6 +27,7 @@ import graph_coloring.output.NodeColorOutput;
 import graph_coloring.stat.ChangeColorGlobal;
 import graph_coloring.stat.CheckValidColoring;
 import graph_coloring.stat.ErrorFunctionEricsson;
+import graph_coloring.stat.GenerateGraphFiles;
 import graph_coloring.stat.GetColorableGroupNodes;
 import graph_coloring.stat.GraphGenerator;
 import graph_coloring.stat.MakeSubGraph;
@@ -52,11 +54,13 @@ public class Main {
 			//graph = (EricssonGraph) fileFormat.getGraphFromFile("Tokai-new.out");
 			//String fileName = args[0];
 			//graph = (EricssonGraph) fileFormat.getGraphFromFile(fileName);
-			graph = (EricssonGraph) fileFormat.getGraphFromFile("Tokai.out");
-			//graph = (EricssonGraph) fileFormat.getGraphFromFile("Kansai.out");
+			//graph = (EricssonGraph) fileFormat.getGraphFromFile("Tokai.out");
+			graph = (EricssonGraph) fileFormat.getGraphFromFile("Kansai.out");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		
+		//GenerateGraphFiles.generate("/home/dino/Desktop/graph_test/");
 		
 		/*
 		FERoutput out = new FERoutput();
@@ -90,7 +94,7 @@ public class Main {
 		
 		
 		try {
-			//NodeColorFormat.setColorsFromFileToGraph("Tokai-Combi20.out", graph);
+			//NodeColorFormat.setColorsFromFileToGraph("Tokai-Combi20-A.out", graph);
 		}
 		catch(Exception e)
 		{
@@ -101,7 +105,7 @@ public class Main {
 		EricssonGraph newGraph = MakeSubGraph.filterByNodeGroup(graph, 'A');
 		graph = newGraph;
 		
-		//graph = GraphGenerator.generate(1000, 0.4, 10, 50, 300, 0.0, 0);
+		//graph = GraphGenerator.generate(1000, 1.0, 8, 300, 512, 0.1, 0.07);
 		
 		double oldError = ErrorFunctionEricsson.computeStat(graph);
 		
@@ -133,9 +137,13 @@ public class Main {
 		//alg.startAlgorithm(graph);
 		
 		//Treba naci optimalni boj lokalizacije!
-		//alg = new GraphAlgorithmContext(new CombiGreedy(5));
-		//alg.startAlgorithm(graph);
+		alg = new GraphAlgorithmContext(new CombiGreedy(5));
+		alg.startAlgorithm(graph);
+		
+		//alg = new GraphAlgorithmContext(new GeneticAnneling(10000000, 5, 5.0, 0.9, 0.6, "ABW", "SWAP"));
+		//alg.startAlgorithm(graph); 
 				
+		
 		//alg = new GraphAlgorithmContext(new SimulatedAnneling(1.0, 1000, 500, 0.8, 0.99999, "ABW", "SWAP"));
 		//alg.startAlgorithm(graph);
 		
@@ -151,25 +159,35 @@ public class Main {
 		*/
 		
 		
-		//alg = new GraphAlgorithmContext(new GeneticAlgorithm(5, 7, 31000, 1, 0.8,  "ABW", "SWAP"));
+		//alg = new GraphAlgorithmContext(new GeneticAlgorithm(5, 7, 31000, 10, 0.8,  "ABW", "SWAP"));
 		//alg.startAlgorithm(graph);
 		
 		
+		
+		/*
 		alg = new GraphAlgorithmContext(new Greedy("SDO", "ABW", 1)); 
 		alg.startAlgorithm(graph);
 		alg = new GraphAlgorithmContext(new HillClimbing());
 		alg.startAlgorithm(graph);
 		alg = new GraphAlgorithmContext(new Greedy("SDO", "ABW", 5)); 
 		alg.startAlgorithm(graph);
+		*/
+		
+		//alg = new GraphAlgorithmContext(new CounterMinimize(1000000));
+		//alg.startAlgorithm(graph);
 		
 		
-		GraphAlgorithmContext swap = new GraphAlgorithmContext(new Greedy("RND", "SWAP", 1)); 
 		
-		alg = new GraphAlgorithmContext(new SimulatedAnneling(0.3, 10000, 100, 0.7, 0.9999, "ABW", "SWAP"));
+		alg = new GraphAlgorithmContext(new SimulatedAnneling(0.5, 10000, 100, 0.7, 0.9999, "ABW", "SWAP"));
 		alg.startAlgorithm(graph);
 		
+		alg = new GraphAlgorithmContext(new SimulatedAnneling(0.3, 6000, 100, 0.7, 0.9999, "ABWSTART", "SWAPSTART"));
+		alg.startAlgorithm(graph);
+		
+		
 		/*
-		alg = new GraphAlgorithmContext(new SimulatedAnneling(0.1, 1000, 100, 0.5, 0.999, "MF", "RND"));
+		GraphAlgorithmContext swap = new GraphAlgorithmContext(new Greedy("SDO", "SWAP", 1));
+		alg = new GraphAlgorithmContext(new SimulatedAnneling(0.3, 10000, 100, 0.7, 0.999, "ABW", "SWAP"));
 		int k = 5;
 		while(k == 5){
 			alg.startAlgorithm(graph);
@@ -182,7 +200,7 @@ public class Main {
 		//alg.startAlgorithm(graph);
 		
 		
-		//alg = new GraphAlgorithmContext(new AgentAlgorithm(graph.getNodeSize()/100, 1000, "MF"));
+		//alg = new GraphAlgorithmContext(new AgentAlgorithm(graph.getNodeSize(), 1000, "MF"));
 		//alg.startAlgorithm(graph);
 
 		
