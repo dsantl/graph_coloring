@@ -1,7 +1,10 @@
 package graph_coloring.color_selector;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
+import java.util.Random;
 import java.util.Set;
 
 import graph_coloring.common.Pair;
@@ -10,6 +13,8 @@ import graph_coloring.structure.weight_graph.WeightNode;
 import graph_coloring.structure.weight_graph.ericsson_graph.EricssonNode;
 
 public class ColorSelectorABW implements ColorSelector{
+	
+	private Random rnd = new Random();
 	
 	@Override
 	public int selectColor(Node node, Iterator<Integer> colors){
@@ -34,6 +39,12 @@ public class ColorSelectorABW implements ColorSelector{
 			nodeColors.remove(it.next().getSecond().getColor());
 		}
 		
+		//List<Integer> ret = new ArrayList();
+		/*
+		for(Integer i : nodeColors){
+			ret.add(i);
+		}ret.get(rnd.nextInt(ret.size()));
+		*/
 		retColor = nodeColors.iterator().next();
 		
 		return retColor;

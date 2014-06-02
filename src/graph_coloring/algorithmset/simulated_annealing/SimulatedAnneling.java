@@ -1,14 +1,11 @@
 package graph_coloring.algorithmset.simulated_annealing;
 
-import java.util.LinkedList;
 import java.util.List;
-import java.util.Queue;
 import java.util.Random;
 
 import graph_coloring.algorithm.GraphColoringAlgorithm;
 import graph_coloring.color_selector.ColorSelector;
 import graph_coloring.color_selector.ColorSelectorFactory;
-import graph_coloring.order.OrderMethodFactory;
 import graph_coloring.stat.ChangeColorGlobal;
 import graph_coloring.stat.ErrorFunctionEricsson;
 import graph_coloring.stat.GetColorableNodes;
@@ -63,9 +60,11 @@ public class SimulatedAnneling extends GraphColoringAlgorithm{
 		
 		List<Integer> colorableNodes = GetColorableNodes.getNodeIdsFilter(ericssonGraph, this.getTouchableNodes());
 		
+		int cnt = 0;
 		
 		for(int i = 0 ; i < temperatureChangeSteps ; ++i){
 			for(int j = 0 ; j < thermalEquilibrium ; ++j){
+				
 				
 				ColorSelector colorSelector;
 				double choice = rnd.nextDouble();
@@ -74,7 +73,6 @@ public class SimulatedAnneling extends GraphColoringAlgorithm{
 					colorSelector = localColorSelector;
 				else
 					colorSelector = globalColorSelector;
-				
 				
 				int nodeId = colorableNodes.get(rnd.nextInt(colorableNodes.size()));
 				int nodeIndex = ericssonGraph.getNodeIndex(nodeId);
@@ -98,19 +96,23 @@ public class SimulatedAnneling extends GraphColoringAlgorithm{
 				
 				dError = currError - bestError;
 				
+				if ( dError == 0.0 && colorSelector == localColorSelector )
+					cnt += 1;
+				else if (colorSelector == localColorSelector)
+					cnt = 0;
+				
+				if ( cnt == 10000 )
+					return;
+				
 				if ( dError < 0 || rnd.nextDouble() < Math.exp(-dError/T) ){
 					graph.setNodeColor(nodeIndex, color);
 					bestError = currError;
 					bestChange = currChange;
 				}
+				
+				System.out.format("%f %f\n", bestError, (double)bestChange/NC);
 			}
 			T = T * this.alpha;
-			
-			if (i % 1 == 0){
-				System.out.format("%f %f\n", bestError, (double)bestChange/NC);
-				System.out.format("%f\n", T);
-			}
-			
 		}
 	}
 }

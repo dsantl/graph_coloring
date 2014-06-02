@@ -141,11 +141,10 @@ public class GeneticAnneling extends GraphColoringAlgorithm{
 			}
 		
 			bestUnit = findBestUnit(bestUnit);
-			if ( i % 100 == 0){
-				System.out.format("Error: %f\n", bestUnit.getError());
-			}
-			if ( i % 100 == 0)
-				System.out.format("Energy: %f\n", freeEnergy);
+			
+			//System.out.format("%f %f\n", bestUnit.getError(), bestUnit.getColorChange());
+			//if ( i % 100 == 0)
+			//	System.out.format("Energy: %f\n", freeEnergy);
 			
 			freeEnergy *= this.coolingFactor;
 		}

@@ -1,6 +1,8 @@
 package graph_coloring.main;
 
+import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.PrintStream;
 import java.io.UnsupportedEncodingException;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -17,6 +19,7 @@ import graph_coloring.algorithmset.greedy.Greedy;
 import graph_coloring.algorithmset.simulated_annealing.GeneticAnneling;
 import graph_coloring.algorithmset.simulated_annealing.SimulatedAnneling;
 import graph_coloring.common.Pair;
+import graph_coloring.input.DIMACSInput;
 import graph_coloring.input.EricssonFileFormat;
 import graph_coloring.input.FERFileFormat;
 import graph_coloring.input.FileFormat;
@@ -33,6 +36,7 @@ import graph_coloring.stat.GraphGenerator;
 import graph_coloring.stat.MakeSubGraph;
 import graph_coloring.stat.machine_learning.GreedyDataNode;
 import graph_coloring.stat.machine_learning.NodeOrder;
+import graph_coloring.structure.Graph;
 import graph_coloring.structure.weight_graph.WeightNode;
 import graph_coloring.structure.weight_graph.ericsson_graph.EricssonGraph;
 
@@ -43,9 +47,9 @@ public class Main {
 		
 		//FileFormat fileFormat = new EricssonFileFormat();
 		FileFormat fileFormat = new FERFileFormat();
-		long start = System.currentTimeMillis();
-		
+		//FileFormat fileFormat = new DIMACSInput();
 		EricssonGraph graph = null;
+		//Graph dimacsGraph = null;
 		
 		try {
 			//graph = (EricssonGraph) fileFormat.getGraphFromFile("/home/dino/Desktop/FER/9. SEM/PROJEKT/diplomski/FER-Kansai.txt");
@@ -54,11 +58,16 @@ public class Main {
 			//graph = (EricssonGraph) fileFormat.getGraphFromFile("Tokai-new.out");
 			//String fileName = args[0];
 			//graph = (EricssonGraph) fileFormat.getGraphFromFile(fileName);
-			//graph = (EricssonGraph) fileFormat.getGraphFromFile("Tokai.out");
-			graph = (EricssonGraph) fileFormat.getGraphFromFile("Kansai.out");
+			graph = (EricssonGraph) fileFormat.getGraphFromFile("Tokai.out");
+			//graph = (EricssonGraph) fileFormat.getGraphFromFile("Kansai.out");
+			//dimacsGraph = fileFormat.getGraphFromFile(
+			//		"/home/dino/Desktop/FER/10. SEM/Diplomski/Test/Graphs/DIMACS/dsjr500.1c.col");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		
+		//System.out.println(dimacsGraph.getNodeSize());
+		
 		
 		//GenerateGraphFiles.generate("/home/dino/Desktop/graph_test/");
 		
@@ -102,20 +111,51 @@ public class Main {
 		}
 		
 		
-		EricssonGraph newGraph = MakeSubGraph.filterByNodeGroup(graph, 'A');
-		graph = newGraph;
 		
 		//graph = GraphGenerator.generate(1000, 1.0, 8, 300, 512, 0.1, 0.07);
 		
-		double oldError = ErrorFunctionEricsson.computeStat(graph);
+		//double oldError = ErrorFunctionEricsson.computeStat(graph);
 		
 		//System.out.println(graph.getNodeSize());
 		//System.out.println(graph.getBridgeSize());
-		System.out.println("Algorithm...");
+		//System.out.println("Algorithm...");
+		
+		
+		EricssonGraph newGraph = MakeSubGraph.filterByNodeGroup(graph, 'C');
+		graph = newGraph;
+		
+		double oldError =  ErrorFunctionEricsson.computeStat(graph);
+		
 		GraphAlgorithmContext alg;
 		
-		System.out.println(graph.getNodeSize());
-		System.out.println(graph.getBridgeSize());
+		
+		//Treba naci optimalni boj lokalizacije!
+		alg = new GraphAlgorithmContext(new CombiGreedy(5));
+		alg.startAlgorithm(graph);
+		
+		try {
+		    System.setOut(new PrintStream(new File("/home/dino/Desktop/test.txt")));
+		} catch (Exception e) {
+		     e.printStackTrace();
+		}
+		
+		long start = System.currentTimeMillis();
+		
+		alg = new GraphAlgorithmContext(new SimulatedAnneling(0.5, 500, 100, 0.7, 0.9999, "ABW", "SWAP"));
+		alg.startAlgorithm(graph);
+		
+		long end = System.currentTimeMillis() - start;
+		
+		System.out.format("Old error: %f\n", oldError);
+		System.out.format("New error: %f\n", ErrorFunctionEricsson.computeStat(graph));
+		System.out.format("Color change: %f\n", ChangeColorGlobal.computeStat(graph));
+		System.out.format("Time: %f s\n", (double)end/1000);
+		System.out.format("Valid coloring: %b\n", CheckValidColoring.computeStat(graph));
+		System.err.println("DONE!");
+		
+		
+		//System.out.println(graph.getNodeSize());
+		//System.out.println(graph.getBridgeSize());
 		
 		/*
 		List<Pair<Double, GreedyDataNode>> list = NodeOrder.generateData(graph, 2000, 0.1);
@@ -136,9 +176,6 @@ public class Main {
 		//alg = new GraphAlgorithmContext(new Greedy("SDO", "ABW", 1));
 		//alg.startAlgorithm(graph);
 		
-		//Treba naci optimalni boj lokalizacije!
-		alg = new GraphAlgorithmContext(new CombiGreedy(5));
-		alg.startAlgorithm(graph);
 		
 		//alg = new GraphAlgorithmContext(new GeneticAnneling(10000000, 5, 5.0, 0.9, 0.6, "ABW", "SWAP"));
 		//alg.startAlgorithm(graph); 
@@ -178,20 +215,42 @@ public class Main {
 		
 		
 		
-		alg = new GraphAlgorithmContext(new SimulatedAnneling(0.5, 10000, 100, 0.7, 0.9999, "ABW", "SWAP"));
-		alg.startAlgorithm(graph);
+		//alg = new GraphAlgorithmContext(new SimulatedAnneling(0.5, 8000, 100, 0.7, 0.9999, "ABWSTART", "SWAPSTART"));
+		//alg.startAlgorithm(graph);
+		/*
+		int cnt = 0;
+		Set<Integer> errors = new HashSet<Integer>();
+		for(int i = 0 ; i < graph.getNodeSize() ; ++i ){
+			if ( graph.getNodeError(i) != 0.0 && graph.getNodeColorable(i)){
+				cnt += 1;
+				errors.add(graph.getNodeId(i));
+				for(int j = 0 ; j < graph.getNodeDegre(i) ; ++j){
+					errors.add(graph.getNodeNeighburId(i, j));
+				}
+			}
+		}
 		
-		alg = new GraphAlgorithmContext(new SimulatedAnneling(0.3, 6000, 100, 0.7, 0.9999, "ABWSTART", "SWAPSTART"));
-		alg.startAlgorithm(graph);
+		System.out.format("Percent: %f\n", (double)errors.size()/graph.getNodeSize());
+		
+		//alg = new GraphAlgorithmContext(new SimulatedAnneling(0.2, 5000, 100, 0.7, 0.9999, "ABW", "SWAP"));
+		//alg.startAlgorithm(graph, errors);
+		
+		
+		//alg = new GraphAlgorithmContext(new GeneticAlgorithm(5, 7, 31000, 150, 0.8,  "MF", "SWAP"));
+		//alg.startAlgorithm(graph);
+						
+		
+		//alg = new GraphAlgorithmContext(new SimulatedAnneling(0.3, 10000, 100, 0.7, 0.9999, "ABWSTART", "SWAPSTART"));
+		//alg.startAlgorithm(graph);
+		
 		
 		
 		/*
 		GraphAlgorithmContext swap = new GraphAlgorithmContext(new Greedy("SDO", "SWAP", 1));
-		alg = new GraphAlgorithmContext(new SimulatedAnneling(0.3, 10000, 100, 0.7, 0.999, "ABW", "SWAP"));
+		alg = new GraphAlgorithmContext(new SimulatedAnneling(0.5, 5000, 100, 0.7, 0.9999, "ABW", "SWAP"));
 		int k = 5;
 		while(k == 5){
 			alg.startAlgorithm(graph);
-			System.out.println("END");
 			swap.startAlgorithm(graph);
 		}
 		*/
@@ -266,16 +325,5 @@ public class Main {
 		
 		//alg = new GraphAlgorithmContext(new AgentAlgorithm(3*graph.getNodeSize()/4, 1000, "SDO", "ABW"));
 		//alg.startAlgorithm(graph);
-		
-		
-		System.out.format("Old error: %f\n", oldError);		
-		System.out.format("New error: %f\n", ErrorFunctionEricsson.computeStat(graph));
-		
-		System.out.format("Color change: %f\n", ChangeColorGlobal.computeStat(graph));
-		System.out.format("Valid coloring: %b\n", CheckValidColoring.computeStat(graph));
-		
-		long end = System.currentTimeMillis();
-		System.out.println(end-start);
-	
 	}
 }
