@@ -32,6 +32,7 @@ import graph_coloring.stat.CheckValidColoring;
 import graph_coloring.stat.ErrorFunctionEricsson;
 import graph_coloring.stat.GenerateGraphFiles;
 import graph_coloring.stat.GetColorableGroupNodes;
+import graph_coloring.stat.GraphFileFinder;
 import graph_coloring.stat.GraphGenerator;
 import graph_coloring.stat.MakeSubGraph;
 import graph_coloring.stat.machine_learning.GreedyDataNode;
@@ -39,11 +40,15 @@ import graph_coloring.stat.machine_learning.NodeOrder;
 import graph_coloring.structure.Graph;
 import graph_coloring.structure.weight_graph.WeightNode;
 import graph_coloring.structure.weight_graph.ericsson_graph.EricssonGraph;
+import graph_coloring.testing.RandomTest;
 
 
 public class Main {
 
 	public static void main(String[] args) {
+		
+		
+		//RandomTest.start("/home/dino/Desktop/FER/10. SEM/Diplomski/Test/Graphs/");
 		
 		//FileFormat fileFormat = new EricssonFileFormat();
 		FileFormat fileFormat = new FERFileFormat();
@@ -100,7 +105,15 @@ public class Main {
 		}
 		*/
 		
-		
+		/*
+		FERoutput out = new FERoutput();
+		try {
+			out.convertGraphToFile(graph, "/home/dino/Desktop/Kansai-C.txt");
+		}
+		catch(Exception e){
+			e.printStackTrace();
+		}
+		*/
 		
 		try {
 			//NodeColorFormat.setColorsFromFileToGraph("Tokai-Combi20-A.out", graph);
@@ -120,10 +133,18 @@ public class Main {
 		//System.out.println(graph.getBridgeSize());
 		//System.out.println("Algorithm...");
 		
+		/*
+		List<String> fileNames = GraphFileFinder.find("/home/dino/Desktop/FER/10. SEM/Diplomski/Test/Graphs/");
+		
+		for(String name : fileNames){
+			System.out.println(name);
+		}
+		*/
 		
 		EricssonGraph newGraph = MakeSubGraph.filterByNodeGroup(graph, 'C');
 		graph = newGraph;
 		
+	
 		double oldError =  ErrorFunctionEricsson.computeStat(graph);
 		
 		GraphAlgorithmContext alg;
@@ -134,24 +155,48 @@ public class Main {
 		alg.startAlgorithm(graph);
 		
 		try {
-		    System.setOut(new PrintStream(new File("/home/dino/Desktop/test.txt")));
+			System.setOut(new PrintStream(new File("/home/dino/Desktop/test.txt")));
 		} catch (Exception e) {
 		     e.printStackTrace();
 		}
 		
 		long start = System.currentTimeMillis();
 		
-		alg = new GraphAlgorithmContext(new SimulatedAnneling(0.5, 500, 100, 0.7, 0.9999, "ABW", "SWAP"));
+		alg = new GraphAlgorithmContext(new SimulatedAnneling(0.5, 1000, 100, 0.7, 0.9999, "ABW", "SWAP"));
 		alg.startAlgorithm(graph);
 		
 		long end = System.currentTimeMillis() - start;
 		
+		System.out.format("STAT\n", oldError);
 		System.out.format("Old error: %f\n", oldError);
 		System.out.format("New error: %f\n", ErrorFunctionEricsson.computeStat(graph));
 		System.out.format("Color change: %f\n", ChangeColorGlobal.computeStat(graph));
 		System.out.format("Time: %f s\n", (double)end/1000);
 		System.out.format("Valid coloring: %b\n", CheckValidColoring.computeStat(graph));
 		System.err.println("DONE!");
+		
+		/*
+		Set<Integer> errors = new HashSet<Integer>();
+		for(int i = 0 ; i < graph.getNodeSize() ; ++i ){
+			if ( graph.getNodeError(i) != 0.0 && graph.getNodeColorable(i)){
+				errors.add(graph.getNodeId(i));
+			}
+		}
+		/
+		for(Integer id : errors){
+			int index = graph.getNodeIndex(id);
+			double currError = graph.getNodeError(index); 
+			Iterator<Integer> colors = graph.getAvailableColorsOfNode(index);
+			while(colors.hasNext()){
+				int color = colors.next();
+				double newError = graph.getNodeColorError(index, color);
+				if ( newError < currError )
+					System.out.format("Manja greska: %f %f\n", newError, currError);
+			}
+		}
+		
+		System.out.format("Percent: %f\n", (double)errors.size()/graph.getNodeSize());
+		System.out.format("Number: %d\n", errors.size());
 		
 		
 		//System.out.println(graph.getNodeSize());
