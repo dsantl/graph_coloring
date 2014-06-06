@@ -9,7 +9,7 @@ import graph_coloring.structure.Node;
 import graph_coloring.structure.weight_graph.WeightNode;
 import graph_coloring.structure.weight_graph.ericsson_graph.EricssonNode;
 
-public class ColorSelectorABW implements ColorSelector{
+public class ColorSelectorABWMD implements ColorSelector{
 	
 	
 	@Override
@@ -35,8 +35,15 @@ public class ColorSelectorABW implements ColorSelector{
 			nodeColors.remove(it.next().getSecond().getColor());
 		}
 		
+		double minError = Double.MAX_VALUE;
+		for(Integer i : nodeColors){
+			double newError = eNode.getError(i);
+			if (newError < minError){
+				minError = newError;
+				retColor = i;
+			}
+		}
 		
-		retColor = nodeColors.iterator().next();
 		
 		return retColor;
 	}

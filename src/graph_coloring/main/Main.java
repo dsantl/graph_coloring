@@ -24,6 +24,8 @@ import graph_coloring.input.EricssonFileFormat;
 import graph_coloring.input.FERFileFormat;
 import graph_coloring.input.FileFormat;
 import graph_coloring.input.NodeColorFormat;
+import graph_coloring.order.OrderMethod;
+import graph_coloring.order.OrderMethodFactory;
 import graph_coloring.output.FERoutput;
 import graph_coloring.output.GreedyStatOutput;
 import graph_coloring.output.NodeColorOutput;
@@ -32,6 +34,7 @@ import graph_coloring.stat.CheckValidColoring;
 import graph_coloring.stat.ErrorFunctionEricsson;
 import graph_coloring.stat.GenerateGraphFiles;
 import graph_coloring.stat.GetColorableGroupNodes;
+import graph_coloring.stat.GetColorableNodes;
 import graph_coloring.stat.GraphFileFinder;
 import graph_coloring.stat.GraphGenerator;
 import graph_coloring.stat.MakeSubGraph;
@@ -41,6 +44,7 @@ import graph_coloring.structure.Graph;
 import graph_coloring.structure.weight_graph.WeightNode;
 import graph_coloring.structure.weight_graph.ericsson_graph.EricssonGraph;
 import graph_coloring.testing.RandomTest;
+import graph_coloring.testing.SimulatedAnnealingTest;
 
 
 public class Main {
@@ -49,6 +53,15 @@ public class Main {
 		
 		
 		//RandomTest.start("/home/dino/Desktop/FER/10. SEM/Diplomski/Test/Graphs/");
+		
+		//SimulatedAnnealingTest.start("/home/dino/Desktop/FER/10. SEM/Diplomski/Test/Graphs/");
+		
+		GenerateGraphFiles.generate("/home/dino/Desktop/FER/10. SEM/Diplomski/Test/Graphs/sintetic/medium/");
+		
+		int k = 5;
+		if (k == 5 )
+			return;
+		
 		
 		//FileFormat fileFormat = new EricssonFileFormat();
 		FileFormat fileFormat = new FERFileFormat();
@@ -65,11 +78,13 @@ public class Main {
 			//graph = (EricssonGraph) fileFormat.getGraphFromFile(fileName);
 			graph = (EricssonGraph) fileFormat.getGraphFromFile("Tokai.out");
 			//graph = (EricssonGraph) fileFormat.getGraphFromFile("Kansai.out");
+			
 			//dimacsGraph = fileFormat.getGraphFromFile(
 			//		"/home/dino/Desktop/FER/10. SEM/Diplomski/Test/Graphs/DIMACS/dsjr500.1c.col");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		
 		
 		//System.out.println(dimacsGraph.getNodeSize());
 		
@@ -105,15 +120,7 @@ public class Main {
 		}
 		*/
 		
-		/*
-		FERoutput out = new FERoutput();
-		try {
-			out.convertGraphToFile(graph, "/home/dino/Desktop/Kansai-C.txt");
-		}
-		catch(Exception e){
-			e.printStackTrace();
-		}
-		*/
+		
 		
 		try {
 			//NodeColorFormat.setColorsFromFileToGraph("Tokai-Combi20-A.out", graph);
@@ -141,29 +148,46 @@ public class Main {
 		}
 		*/
 		
-		EricssonGraph newGraph = MakeSubGraph.filterByNodeGroup(graph, 'C');
+		
+		EricssonGraph newGraph = MakeSubGraph.filterByNodeGroup(graph, 'A');
 		graph = newGraph;
 		
-	
+		
+		/*
+		FERoutput out = new FERoutput();
+		try {
+			out.convertGraphToFile(graph, "/home/dino/Desktop/Tokai-A.txt");
+		}
+		catch(Exception e){
+			e.printStackTrace();
+		}
+		*/
+		
 		double oldError =  ErrorFunctionEricsson.computeStat(graph);
+		System.err.println(graph.getNodeSize());
+		System.err.println(graph.getBridgeSize());
+		System.err.println(oldError);
+		
 		
 		GraphAlgorithmContext alg;
 		
 		
 		//Treba naci optimalni boj lokalizacije!
 		alg = new GraphAlgorithmContext(new CombiGreedy(5));
-		alg.startAlgorithm(graph);
+		//alg.startAlgorithm(graph);
+		
 		
 		try {
-			System.setOut(new PrintStream(new File("/home/dino/Desktop/test.txt")));
+			//System.setOut(new PrintStream(new File("/home/dino/Desktop/test.txt")));
 		} catch (Exception e) {
 		     e.printStackTrace();
 		}
 		
 		long start = System.currentTimeMillis();
 		
-		alg = new GraphAlgorithmContext(new SimulatedAnneling(0.5, 1000, 100, 0.7, 0.9999, "ABW", "SWAP"));
-		alg.startAlgorithm(graph);
+		alg = new GraphAlgorithmContext(new SimulatedAnneling(0.5, 5000, 100, 0.7, 0.9999, "ABW", "SWAP"));
+		//alg.startAlgorithm(graph);
+		
 		
 		long end = System.currentTimeMillis() - start;
 		

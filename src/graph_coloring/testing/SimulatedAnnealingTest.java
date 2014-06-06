@@ -37,13 +37,14 @@ public class SimulatedAnnealingTest{
 			e.printStackTrace();
 		}
 		
+		System.err.println("START");
 		GraphAlgorithmContext greedy = new GraphAlgorithmContext(new CombiGreedy(5));
 		greedy.startAlgorithm(graph);
 		
 		double oldError =  ErrorFunctionEricsson.computeStat(graph);
 		
 		try {
-			System.setOut(new PrintStream(new File("/home/dino/Desktop/simulated_annealing_test_"+graphName)));
+			System.setOut(new PrintStream(new File("/home/dino/Desktop/sa/simulated_annealing_test_"+graphName)));
 		} catch (Exception e) {
 		     e.printStackTrace();
 		}
@@ -54,6 +55,7 @@ public class SimulatedAnnealingTest{
 		
 		long end = System.currentTimeMillis() - start;
 		
+		System.out.format("STAT\n");
 		System.out.format("Graph: %s\n", graphName);
 		System.out.format("Old error: %f\n", oldError);
 		System.out.format("New error: %f\n", ErrorFunctionEricsson.computeStat(graph));

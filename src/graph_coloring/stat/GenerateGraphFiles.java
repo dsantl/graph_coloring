@@ -19,6 +19,7 @@ public class GenerateGraphFiles {
 	}
 	
 	private static void generateGraph(File dir, int nodeSize, double density){
+		System.gc();
 		System.out.format("%s %d %f\n", dir.getAbsoluteFile(), nodeSize, density);
 		EricssonGraph graph = GraphGenerator.generate(nodeSize, density, 8, 300, 512, 0.2, 0.07);
 		FERoutput file = new FERoutput();
@@ -31,6 +32,7 @@ public class GenerateGraphFiles {
 		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();
 		}
+		
 		
 		System.out.println("DONE!");
 	}

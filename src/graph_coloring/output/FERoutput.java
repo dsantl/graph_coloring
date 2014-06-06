@@ -49,10 +49,10 @@ public class FERoutput implements Converter{
 		
 		outFile.println(bridgeSize); //number of bridges
 		
+		Set<OrderPair> bridgeFlag = new HashSet<OrderPair>();
 		for(int nodeIndex = 0 ; nodeIndex < graph.getNodeSize() ; ++nodeIndex){
 			
 			int id = graph.getNodeId(nodeIndex);
-			Set<OrderPair> bridgeFlag = new HashSet<OrderPair>();
 			Iterator<Pair<Double, WeightNode>> neighbourIterator = graph.getNeighbours(nodeIndex);
 			
 			while(neighbourIterator.hasNext()){
