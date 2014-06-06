@@ -31,6 +31,7 @@ import graph_coloring.output.GreedyStatOutput;
 import graph_coloring.output.NodeColorOutput;
 import graph_coloring.stat.ChangeColorGlobal;
 import graph_coloring.stat.CheckValidColoring;
+import graph_coloring.stat.CollisionCounter;
 import graph_coloring.stat.ErrorFunctionEricsson;
 import graph_coloring.stat.GenerateGraphFiles;
 import graph_coloring.stat.GetColorableGroupNodes;
@@ -56,12 +57,12 @@ public class Main {
 		
 		//SimulatedAnnealingTest.start("/home/dino/Desktop/FER/10. SEM/Diplomski/Test/Graphs/");
 		
-		GenerateGraphFiles.generate("/home/dino/Desktop/FER/10. SEM/Diplomski/Test/Graphs/sintetic/medium/");
-		
+		//GenerateGraphFiles.generate("/home/dino/Desktop/FER/10. SEM/Diplomski/Test/Graphs/sintetic/small/");
+		/*
 		int k = 5;
 		if (k == 5 )
 			return;
-		
+		*/
 		
 		//FileFormat fileFormat = new EricssonFileFormat();
 		FileFormat fileFormat = new FERFileFormat();
@@ -80,11 +81,24 @@ public class Main {
 			//graph = (EricssonGraph) fileFormat.getGraphFromFile("Kansai.out");
 			
 			//dimacsGraph = fileFormat.getGraphFromFile(
-			//		"/home/dino/Desktop/FER/10. SEM/Diplomski/Test/Graphs/DIMACS/dsjr500.1c.col");
+			//		"/home/dino/Desktop/FER/10. SEM/Diplomski/Test/DIMACS/dsjr500.1c.col");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		
+		
+		/*
+		for(int i = 0 ; i < dimacsGraph.getNodeSize() ; ++i)
+			dimacsGraph.setNodeColor(i, 1);
+		
+		System.out.println(CollisionCounter.computeStat(dimacsGraph));
+		
+		dimacsGraph.setMaxColors(10);
+		GraphAlgorithmContext alg = new GraphAlgorithmContext(new Greedy("LDO", "RND_D", 20));
+		alg.startAlgorithm(dimacsGraph);
+		
+		System.out.println(CollisionCounter.computeStat(dimacsGraph));
+		*/	
 		
 		//System.out.println(dimacsGraph.getNodeSize());
 		
@@ -149,8 +163,8 @@ public class Main {
 		*/
 		
 		
-		EricssonGraph newGraph = MakeSubGraph.filterByNodeGroup(graph, 'A');
-		graph = newGraph;
+		//EricssonGraph newGraph = MakeSubGraph.filterByNodeGroup(graph, 'C');
+		//graph = newGraph;
 		
 		
 		/*
@@ -163,10 +177,28 @@ public class Main {
 		}
 		*/
 		
+		
 		double oldError =  ErrorFunctionEricsson.computeStat(graph);
 		System.err.println(graph.getNodeSize());
 		System.err.println(graph.getBridgeSize());
 		System.err.println(oldError);
+		
+		
+		try {
+			System.setOut(new PrintStream(new File("/home/dino/Desktop/weight.txt")));
+		} catch (Exception e) {
+		     e.printStackTrace();
+		}
+		
+		for(int i = 0 ; i < graph.getNodeSize() ; ++i){
+			Iterator<Pair<Double, WeightNode>> neighbours = graph.getNeighbours(i);
+			while(neighbours.hasNext()){
+				System.out.println(neighbours.next().getFirst());
+			}
+		}
+		
+		if (5 == 2+3)
+			return;
 		
 		
 		GraphAlgorithmContext alg;
@@ -177,18 +209,14 @@ public class Main {
 		//alg.startAlgorithm(graph);
 		
 		
-		try {
-			//System.setOut(new PrintStream(new File("/home/dino/Desktop/test.txt")));
-		} catch (Exception e) {
-		     e.printStackTrace();
-		}
+		
 		
 		long start = System.currentTimeMillis();
 		
 		alg = new GraphAlgorithmContext(new SimulatedAnneling(0.5, 5000, 100, 0.7, 0.9999, "ABW", "SWAP"));
 		//alg.startAlgorithm(graph);
 		
-		
+		/*
 		long end = System.currentTimeMillis() - start;
 		
 		System.out.format("STAT\n", oldError);
@@ -198,7 +226,7 @@ public class Main {
 		System.out.format("Time: %f s\n", (double)end/1000);
 		System.out.format("Valid coloring: %b\n", CheckValidColoring.computeStat(graph));
 		System.err.println("DONE!");
-		
+		*/
 		/*
 		Set<Integer> errors = new HashSet<Integer>();
 		for(int i = 0 ; i < graph.getNodeSize() ; ++i ){

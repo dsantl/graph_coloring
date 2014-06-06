@@ -24,6 +24,12 @@ public class ColorSelectorFactory {
 			return new ColorSelectorABWMD();
 		else if ( name.equals("RND") )
 			return new ColorSelectorRND();
+		else if ( name.equals("MC_D") )
+			return new ColorSelectorMC_D();
+		else if ( name.equals("SWAP_D") )
+			return new ColorSelectorSWAP_D();
+		else if ( name.equals("RND_D") )
+			return new ColorSelectorRND_D();
 		else
 			throw new Exception("Wrong color selector!");
 	}

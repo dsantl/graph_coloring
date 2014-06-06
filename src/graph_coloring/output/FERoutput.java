@@ -51,7 +51,7 @@ public class FERoutput implements Converter{
 		
 		Set<OrderPair> bridgeFlag = new HashSet<OrderPair>();
 		for(int nodeIndex = 0 ; nodeIndex < graph.getNodeSize() ; ++nodeIndex){
-			
+			System.out.format("%d %d\n", nodeIndex+1, graph.getNodeSize());
 			int id = graph.getNodeId(nodeIndex);
 			Iterator<Pair<Double, WeightNode>> neighbourIterator = graph.getNeighbours(nodeIndex);
 			

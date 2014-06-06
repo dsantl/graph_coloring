@@ -87,10 +87,11 @@ public class Greedy extends GraphColoringAlgorithm {
 	private void setColorToNode(int index){
 		if ( !checkNode(index) )
 			return;
-
+		
 		int newColor = graph.chooseColor(index, colorSelector);
 		graph.setNodeColor(index, newColor);
 	}
+	
 	
 	
 	@Override

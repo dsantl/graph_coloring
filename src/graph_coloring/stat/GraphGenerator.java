@@ -19,8 +19,8 @@ public class GraphGenerator {
 				neighbours.add(graph.getNodeNeighburId(index, i));
 		}
 		
-		double noise  = density*(rnd.nextDouble()-0.5); //density*[-0.5,0.5]
-		double per = Math.max(1, density + noise);
+		double noise  = 0.1*(rnd.nextDouble()-0.5); //density*[-0.5,0.5]
+		double per = Math.min(1, density + noise);
 		int neighboursSize = (int)(nodes*per);
 		neighboursSize = Math.max(neighboursSize, 1);
 		neighboursSize = Math.min(neighboursSize, nodes-1);
@@ -44,7 +44,6 @@ public class GraphGenerator {
 	
 	private static void generateBridges(EricssonGraph graph, int nodes, double density){
 		for(int i = 0 ; i < nodes ; ++i){
-			System.out.format("%d %d\n", i, nodes);
 			generateBridge(graph, i, nodes, density);
 		}
 	}

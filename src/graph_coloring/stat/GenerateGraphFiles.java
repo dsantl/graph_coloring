@@ -24,7 +24,8 @@ public class GenerateGraphFiles {
 		EricssonGraph graph = GraphGenerator.generate(nodeSize, density, 8, 300, 512, 0.2, 0.07);
 		FERoutput file = new FERoutput();
 		String fileName = String.format("graph_%d.txt", rnd.nextInt(Integer.MAX_VALUE));
-		
+		System.out.println(graph.getNodeSize());
+		System.out.println(graph.getBridgeSize());
 		try {
 			file.convertGraphToFile(graph, dir.getAbsolutePath()+"/"+fileName);
 		} catch (FileNotFoundException e) {

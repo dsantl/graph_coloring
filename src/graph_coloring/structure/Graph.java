@@ -22,6 +22,14 @@ public class Graph implements IGraph{
 	//map id-index in list
 	private Map<Integer, Integer> nodeMap = new HashMap<Integer, Integer>();
 	
+	private List<Integer> avbColors = null;
+	
+	public void setMaxColors(int color){
+		avbColors = new ArrayList<Integer>();
+		for(int i = 0 ; i < color ; ++i)
+			avbColors.add(i);
+	}
+	
 	private int bridgeSize = 0;
 	
 	public boolean isId(int id) {
@@ -179,7 +187,7 @@ public class Graph implements IGraph{
 
 	@Override
 	public int chooseColor(int nodeIndex, ColorSelector colorSelector) {
-		return colorSelector.selectColor(this.getNode(nodeIndex), null);
+		return colorSelector.selectColor(this.getNode(nodeIndex), avbColors.iterator());
 	}
 
 	@Override

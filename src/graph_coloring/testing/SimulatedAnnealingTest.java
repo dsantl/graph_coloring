@@ -68,7 +68,7 @@ public class SimulatedAnnealingTest{
 	public static void start(String path){
 		
 		List<String> fileNames = GraphFileFinder.find(path);
-		GraphAlgorithmContext alg = new GraphAlgorithmContext(new SimulatedAnneling(0.5, 1000, 100, 0.7, 0.9999, "ABW", "SWAP"));
+		GraphAlgorithmContext alg = new GraphAlgorithmContext(new SimulatedAnneling(0.5, 10000, 100, 0.7, 0.9999, "ABW", "SWAP"));
 		
 		for(String name : fileNames){
 			testGraph(name, alg);
