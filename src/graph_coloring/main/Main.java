@@ -57,12 +57,13 @@ public class Main {
 		
 		//SimulatedAnnealingTest.start("/home/dino/Desktop/FER/10. SEM/Diplomski/Test/Graphs/");
 		
-		//GenerateGraphFiles.generate("/home/dino/Desktop/FER/10. SEM/Diplomski/Test/Graphs/sintetic/small/");
-		/*
-		int k = 5;
-		if (k == 5 )
-			return;
-		*/
+		//GenerateGraphFiles.generate("/home/dino/Desktop/FER/10. SEM/Diplomski/Test/Graphs/sintetic/medium/");
+		
+		
+		//int k = 5;
+		//if (k == 5 )
+		//	return;
+		
 		
 		//FileFormat fileFormat = new EricssonFileFormat();
 		FileFormat fileFormat = new FERFileFormat();
@@ -163,8 +164,8 @@ public class Main {
 		*/
 		
 		
-		//EricssonGraph newGraph = MakeSubGraph.filterByNodeGroup(graph, 'C');
-		//graph = newGraph;
+		EricssonGraph newGraph = MakeSubGraph.filterByNodeGroup(graph, 'C');
+		graph = newGraph;
 		
 		
 		/*
@@ -183,9 +184,9 @@ public class Main {
 		System.err.println(graph.getBridgeSize());
 		System.err.println(oldError);
 		
-		
+		/*
 		try {
-			System.setOut(new PrintStream(new File("/home/dino/Desktop/weight.txt")));
+			System.setOut(new PrintStream(new File("/home/dino/Desktop/weight-tokai.txt")));
 		} catch (Exception e) {
 		     e.printStackTrace();
 		}
@@ -200,23 +201,25 @@ public class Main {
 		if (5 == 2+3)
 			return;
 		
+		*/
 		
 		GraphAlgorithmContext alg;
 		
 		
 		//Treba naci optimalni boj lokalizacije!
 		alg = new GraphAlgorithmContext(new CombiGreedy(5));
-		//alg.startAlgorithm(graph);
-		
-		
-		
+		alg.startAlgorithm(graph);
 		
 		long start = System.currentTimeMillis();
 		
-		alg = new GraphAlgorithmContext(new SimulatedAnneling(0.5, 5000, 100, 0.7, 0.9999, "ABW", "SWAP"));
+		//alg = new GraphAlgorithmContext(new SimulatedAnneling(0.5, 5000, 100, 0.7, 0.9999, "ABW", "SWAP"));
 		//alg.startAlgorithm(graph);
 		
-		/*
+		alg = new GraphAlgorithmContext(new AgentAlgorithm(2*graph.getNodeSize(), 1000, "ABW", 0.1, 0.3));
+		alg.startAlgorithm(graph);
+
+
+		
 		long end = System.currentTimeMillis() - start;
 		
 		System.out.format("STAT\n", oldError);
@@ -226,7 +229,7 @@ public class Main {
 		System.out.format("Time: %f s\n", (double)end/1000);
 		System.out.format("Valid coloring: %b\n", CheckValidColoring.computeStat(graph));
 		System.err.println("DONE!");
-		*/
+		
 		/*
 		Set<Integer> errors = new HashSet<Integer>();
 		for(int i = 0 ; i < graph.getNodeSize() ; ++i ){
@@ -420,7 +423,5 @@ public class Main {
 		//alg.startAlgorithm(graph);
 		
 		
-		//alg = new GraphAlgorithmContext(new AgentAlgorithm(3*graph.getNodeSize()/4, 1000, "SDO", "ABW"));
-		//alg.startAlgorithm(graph);
 	}
 }

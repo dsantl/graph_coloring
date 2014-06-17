@@ -19,6 +19,8 @@ public class AgentAlgorithm extends GraphColoringAlgorithm{
 	private int iterations;
 	private List<AgentUnit> units = new ArrayList<AgentUnit>();
 	private String colorSelector; 
+	private double noMove;
+	private double rndMove;
 	
 	private class AgentCmp implements Comparator<AgentUnit>{
 
@@ -36,10 +38,12 @@ public class AgentAlgorithm extends GraphColoringAlgorithm{
 	 * @param order When algorithm have zero error change
 	 * @param colorSelector When algorithm have zero error change
 	 */
-	public AgentAlgorithm(int numberOfUnits, int iterations, String colorSelector){
+	public AgentAlgorithm(int numberOfUnits, int iterations, String colorSelector, double noMove, double rndMove){
 		this.numberOfUnits = numberOfUnits;
 		this.iterations = iterations;
 		this.colorSelector = colorSelector;
+		this.noMove = noMove;
+		this.rndMove = rndMove;
 	}
 	
 	@Override
@@ -50,7 +54,7 @@ public class AgentAlgorithm extends GraphColoringAlgorithm{
 		
 		for(int i = 0 ; i < numberOfUnits ; ++i){
 			int randomId = graph.getNodeId(rnd.nextInt(nodeSize));
-			units.add(new AgentUnit(randomId, (EricssonGraph) this.graph, colorSelector, 0.1, 0.2));
+			units.add(new AgentUnit(randomId, (EricssonGraph) this.graph, colorSelector, noMove, rndMove));
 		}
 		
 		startAlgorithm();

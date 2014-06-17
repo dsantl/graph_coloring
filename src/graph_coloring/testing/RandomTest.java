@@ -39,6 +39,7 @@ public class RandomTest {
 		String[] splitName = fileName.split("/");
 		String graphName = splitName[splitName.length-1]; 
 		
+		System.err.println(graphName);
 		System.out.format("%s & ", graphName);
 		System.out.format("%d & ", graph.getNodeSize());
 		System.out.format("%d & ", graph.getBridgeSize());

@@ -7,7 +7,7 @@ public class GreedyDataNode {
 	private double LDO;
 	private double SDO;
 	
-	GreedyDataNode(double COL, double FIT, double LDO, double SDO){
+	public GreedyDataNode(double COL, double FIT, double LDO, double SDO){
 		this.COL = COL;
 		this.FIT = FIT;
 		this.LDO = LDO;

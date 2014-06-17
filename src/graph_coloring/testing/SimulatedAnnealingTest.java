@@ -44,7 +44,7 @@ public class SimulatedAnnealingTest{
 		double oldError =  ErrorFunctionEricsson.computeStat(graph);
 		
 		try {
-			System.setOut(new PrintStream(new File("/home/dino/Desktop/sa/simulated_annealing_test_"+graphName)));
+			System.setOut(new PrintStream(new File("/home/dino/Desktop/sa/sa15/simulated_annealing_test_"+graphName)));
 		} catch (Exception e) {
 		     e.printStackTrace();
 		}
@@ -68,10 +68,14 @@ public class SimulatedAnnealingTest{
 	public static void start(String path){
 		
 		List<String> fileNames = GraphFileFinder.find(path);
-		GraphAlgorithmContext alg = new GraphAlgorithmContext(new SimulatedAnneling(0.5, 10000, 100, 0.7, 0.9999, "ABW", "SWAP"));
+		GraphAlgorithmContext alg = new GraphAlgorithmContext(new SimulatedAnneling(0.2, 1000, 100, 0.7, 0.9999, "ABW", "SWAP"));
 		
+		int cnt = 1;
 		for(String name : fileNames){
+			System.err.format("%d %d %s\n", cnt, fileNames.size(), name);
 			testGraph(name, alg);
+			System.gc();
+			cnt += 1;
 		}	
 	}	
 }

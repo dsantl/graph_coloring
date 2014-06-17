@@ -101,8 +101,8 @@ public class SimulatedAnneling extends GraphColoringAlgorithm{
 				else if (colorSelector == localColorSelector)
 					cnt = 0;
 				
-				if ( cnt == 10000 )
-					return;
+				//if ( cnt == 10000 )
+				//	return;
 				
 				if ( dError < 0 || rnd.nextDouble() < Math.exp(-dError/T) ){
 					graph.setNodeColor(nodeIndex, color);
@@ -112,6 +112,8 @@ public class SimulatedAnneling extends GraphColoringAlgorithm{
 				
 				System.out.format("%f %f\n", bestError, (double)bestChange/NC);
 			}
+			if (i % 100 == 0)
+				System.err.println(i);
 			T = T * this.alpha;
 		}
 	}
