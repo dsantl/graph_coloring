@@ -9,6 +9,7 @@ import java.util.List;
 
 import graph_coloring.algorithm.GraphAlgorithmContext;
 import graph_coloring.algorithm.unit.GeneralUnit;
+import graph_coloring.algorithmset.agents.AgentAlgorithm;
 import graph_coloring.algorithmset.greedy.CombiGreedy;
 import graph_coloring.algorithmset.simulated_annealing.SimulatedAnneling;
 import graph_coloring.input.FERFileFormat;
@@ -19,7 +20,7 @@ import graph_coloring.stat.ErrorFunctionEricsson;
 import graph_coloring.stat.GraphFileFinder;
 import graph_coloring.structure.weight_graph.ericsson_graph.EricssonGraph;
 
-public class SimulatedAnnealingTest{
+public class MetaheuristicTest{
 	
 	private static void testGraph(String fileName, GraphAlgorithmContext alg){
 		FileFormat fileFormat = new FERFileFormat();
@@ -44,7 +45,7 @@ public class SimulatedAnnealingTest{
 		double oldError =  ErrorFunctionEricsson.computeStat(graph);
 		
 		try {
-			System.setOut(new PrintStream(new File("/home/dino/Desktop/sa/sa15/simulated_annealing_test_"+graphName)));
+			System.setOut(new PrintStream(new File("/home/dino/Desktop/aa/aa7/agent_alg_test_"+graphName)));
 		} catch (Exception e) {
 		     e.printStackTrace();
 		}
@@ -68,7 +69,7 @@ public class SimulatedAnnealingTest{
 	public static void start(String path){
 		
 		List<String> fileNames = GraphFileFinder.find(path);
-		GraphAlgorithmContext alg = new GraphAlgorithmContext(new SimulatedAnneling(0.2, 1000, 100, 0.7, 0.9999, "ABW", "SWAP"));
+		GraphAlgorithmContext alg = new GraphAlgorithmContext(new AgentAlgorithm(1600, 100, "ABW", 0.01, 0.3));
 		
 		int cnt = 1;
 		for(String name : fileNames){

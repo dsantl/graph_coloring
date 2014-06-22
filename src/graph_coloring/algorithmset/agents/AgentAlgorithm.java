@@ -67,9 +67,8 @@ public class AgentAlgorithm extends GraphColoringAlgorithm{
 		
 		for(int i = 0 ; i < this.iterations ; ++i){
 			for(int j = 0 ; j < this.numberOfUnits ; ++j){
-				if ( this.checkNode(units.get(j).getNodeIndex()) )
 					units.get(j).setColor();
-				units.get(j).move();
+					units.get(j).move();
 			}
 			Collections.sort(units, new AgentCmp());
 			
@@ -79,10 +78,16 @@ public class AgentAlgorithm extends GraphColoringAlgorithm{
 				teleportAlg.startAlgorithm(graph);
 			}
 			
+			
 			oldError = error;
 			
-			System.out.format("Error: %f\n", error);
-			System.out.format("Color change: %f\n\n", ChangeColorGlobal.computeStat((EricssonGraph) graph));
+			if ( i%10 == 0)
+				System.err.format("%d %d\n", i, this.iterations);
+			
+			System.out.format("%f %f\n", error, ChangeColorGlobal.computeStat((EricssonGraph) graph));
+			
+			//System.out.format("Error: %f\n", error);
+			//System.out.format("Color change: %f\n\n", ChangeColorGlobal.computeStat((EricssonGraph) graph));
 		}
 		
 	}

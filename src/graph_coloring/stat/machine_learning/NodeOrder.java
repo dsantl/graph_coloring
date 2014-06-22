@@ -70,17 +70,17 @@ public class NodeOrder {
 		oneRound.put(error, ret);
 	}
 	
-	public static List<Pair<Double, GreedyDataNode>> generateData(EricssonGraph g, int samples, double goodSolutions){
+	public static List<Pair<Double, GreedyDataNode>> generateData(EricssonGraph g, int samples, double goodSolutions, String colorSelector){
 		
 		List<Pair<Double, GreedyDataNode>> ret = new ArrayList<Pair<Double, GreedyDataNode>>(); 
 		
 		
 		GraphAlgorithmContext alg = new GraphAlgorithmContext(new Greedy("STDORD", "ABW", 1));
-		alg.startAlgorithm(g);
+		//alg.startAlgorithm(g);
 		
 		GeneralUnit unit = new GeneralUnit(g);
 		
-		GraphAlgorithmContext algStep = new GraphAlgorithmContext(new Greedy("RND", "ABW", 1));
+		GraphAlgorithmContext algStep = new GraphAlgorithmContext(new Greedy("RND", colorSelector, 1));
 		
 		List<Integer> colorableNodes = GetColorableNodes.getNodeIds(g);
 		

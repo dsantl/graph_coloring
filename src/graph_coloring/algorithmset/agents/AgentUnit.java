@@ -58,10 +58,12 @@ public class AgentUnit {
 	/**
 	 * Set color to node
 	 */
-	public void setColor(){
-		
+	public double setColor(){
 		int color = graph.chooseColor(this.getNodeIndex(), colorSelector);
+		double oldError = ((EricssonGraph)graph).getNodeError(this.getNodeIndex());
+		double error = ((EricssonGraph)graph).getNodeColorError(this.getNodeIndex(), color);
 		graph.setNodeColor(this.getNodeIndex(), color);
+		return -2*oldError + 2*error;
 	}
 	
 	/**

@@ -30,8 +30,8 @@ public class CombiGreedy extends GraphColoringAlgorithm {
 		
 		for(int i = 0 ; i < step ; ++i){
 			
-			System.out.format("Old error: %f\n", error);		
-			System.out.format("Color change: %f\n\n", ChangeColorGlobal.computeStat((EricssonGraph) graph));
+			//System.out.format("Old error: %f\n", error);		
+			//System.out.format("Color change: %f\n\n", ChangeColorGlobal.computeStat((EricssonGraph) graph));
 			
 			algSDO.startAlgorithm(graph, this.getTouchableNodes());
 			

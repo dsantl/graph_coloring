@@ -1,7 +1,7 @@
 package graph_coloring.order;
 
 import graph_coloring.structure.ElementProperty;
-import graph_coloring.structure.weight_graph.WeightNode;
+import graph_coloring.structure.Node;
 
 import java.util.List;
 
@@ -14,7 +14,7 @@ public class OrderNodeCOL extends OrderMethod{
 	@Override
 	protected void init(List<? extends ElementProperty> list) {
 		for(ElementProperty element : list){
-			element.addProperty(((WeightNode)element).getCollision());
+			element.addProperty(((Node)element).getCollision());
 		}
 	}
 }

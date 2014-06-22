@@ -18,6 +18,7 @@ import graph_coloring.algorithmset.greedy.CombiGreedy;
 import graph_coloring.algorithmset.greedy.Greedy;
 import graph_coloring.algorithmset.simulated_annealing.GeneticAnneling;
 import graph_coloring.algorithmset.simulated_annealing.SimulatedAnneling;
+import graph_coloring.algorithmset.simulated_annealing.SimulatedAnneling_D;
 import graph_coloring.common.Pair;
 import graph_coloring.input.DIMACSInput;
 import graph_coloring.input.EricssonFileFormat;
@@ -41,11 +42,12 @@ import graph_coloring.stat.GraphGenerator;
 import graph_coloring.stat.MakeSubGraph;
 import graph_coloring.stat.machine_learning.GreedyDataNode;
 import graph_coloring.stat.machine_learning.NodeOrder;
+import graph_coloring.stat.machine_learning.ProcessGraphs;
 import graph_coloring.structure.Graph;
 import graph_coloring.structure.weight_graph.WeightNode;
 import graph_coloring.structure.weight_graph.ericsson_graph.EricssonGraph;
+import graph_coloring.testing.MetaheuristicTest;
 import graph_coloring.testing.RandomTest;
-import graph_coloring.testing.SimulatedAnnealingTest;
 
 
 public class Main {
@@ -55,21 +57,23 @@ public class Main {
 		
 		//RandomTest.start("/home/dino/Desktop/FER/10. SEM/Diplomski/Test/Graphs/");
 		
-		//SimulatedAnnealingTest.start("/home/dino/Desktop/FER/10. SEM/Diplomski/Test/Graphs/");
+		//MetaheuristicTest.start("/home/dino/Desktop/FER/10. SEM/Diplomski/Test/Graphs/public/");
 		
 		//GenerateGraphFiles.generate("/home/dino/Desktop/FER/10. SEM/Diplomski/Test/Graphs/sintetic/medium/");
 		
+		//ProcessGraphs.SaveStat("/home/dino/Desktop/FER/10. SEM/Diplomski/Test/Graphs/sintetic/small", 2000, 0.1, "ABW");
 		
-		//int k = 5;
-		//if (k == 5 )
-		//	return;
-		
+		/*
+		int k = 5;
+		if (k == 5 )
+			return;
+		*/
 		
 		//FileFormat fileFormat = new EricssonFileFormat();
-		FileFormat fileFormat = new FERFileFormat();
-		//FileFormat fileFormat = new DIMACSInput();
-		EricssonGraph graph = null;
-		//Graph dimacsGraph = null;
+		//FileFormat fileFormat = new FERFileFormat();
+		FileFormat fileFormat = new DIMACSInput();
+		//EricssonGraph graph = null;
+		Graph dimacsGraph = null;
 		
 		try {
 			//graph = (EricssonGraph) fileFormat.getGraphFromFile("/home/dino/Desktop/FER/9. SEM/PROJEKT/diplomski/FER-Kansai.txt");
@@ -78,14 +82,57 @@ public class Main {
 			//graph = (EricssonGraph) fileFormat.getGraphFromFile("Tokai-new.out");
 			//String fileName = args[0];
 			//graph = (EricssonGraph) fileFormat.getGraphFromFile(fileName);
-			graph = (EricssonGraph) fileFormat.getGraphFromFile("Tokai.out");
+			//graph = (EricssonGraph) fileFormat.getGraphFromFile("Tokai.out");
 			//graph = (EricssonGraph) fileFormat.getGraphFromFile("Kansai.out");
 			
-			//dimacsGraph = fileFormat.getGraphFromFile(
-			//		"/home/dino/Desktop/FER/10. SEM/Diplomski/Test/DIMACS/dsjr500.1c.col");
+			dimacsGraph = fileFormat.getGraphFromFile(
+					"/home/dino/Desktop/FER/10. SEM/Diplomski/Test/DIMACS/dsjr500.5.col");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		
+		
+		try {
+			System.setOut(new PrintStream(new File("/home/dino/Desktop/dimacs_test/dsjr500.5/test_125_4.out")));
+		} catch (Exception e) {
+		     e.printStackTrace();
+		}
+		
+		dimacsGraph.setMaxColors(125);
+		
+		long start = System.currentTimeMillis();
+
+		
+		GraphAlgorithmContext alg = new GraphAlgorithmContext(new Greedy("SDO", "MC_D", 20));
+		alg.startAlgorithm(dimacsGraph);
+		
+		alg = new GraphAlgorithmContext(new SimulatedAnneling_D(200.0, 5000, 100, 0.6, 0.999, "MC_D", "SWAP_D"));
+		alg.startAlgorithm(dimacsGraph);
+		
+		alg = new GraphAlgorithmContext(new Greedy("SDO", "SWAP_D", 20));
+		alg.startAlgorithm(dimacsGraph);
+		
+		alg = new GraphAlgorithmContext(new SimulatedAnneling_D(10.0, 5000, 100, 0.6, 0.999, "MC_D", "SWAP_D"));
+		alg.startAlgorithm(dimacsGraph);
+		
+		
+		long end = System.currentTimeMillis() - start;
+		System.out.println(end);
+		System.out.println(CollisionCounter.computeStat(dimacsGraph));
+		
+		
+		/*
+		for(int i = 0 ; i < dimacsGraph.getNodeSize() ; ++i){
+			if ( dimacsGraph.getNodeCollision(i) > 0)
+				System.out.println(dimacsGraph.getNodeSaturation(i));
+		}
+		*/
+		
+		
+		
+		int k = 5;
+		if (k == 5 )
+			return;
 		
 		
 		/*
@@ -164,8 +211,10 @@ public class Main {
 		*/
 		
 		
-		EricssonGraph newGraph = MakeSubGraph.filterByNodeGroup(graph, 'C');
-		graph = newGraph;
+		//EricssonGraph newGraph = MakeSubGraph.filterByNodeGroup(graph, 'C');
+		//graph = newGraph;
+		
+		
 		
 		
 		/*
@@ -178,11 +227,12 @@ public class Main {
 		}
 		*/
 		
-		
+		/*
 		double oldError =  ErrorFunctionEricsson.computeStat(graph);
 		System.err.println(graph.getNodeSize());
 		System.err.println(graph.getBridgeSize());
 		System.err.println(oldError);
+		*/
 		
 		/*
 		try {
@@ -203,6 +253,7 @@ public class Main {
 		
 		*/
 		
+		/*
 		GraphAlgorithmContext alg;
 		
 		
@@ -215,7 +266,7 @@ public class Main {
 		//alg = new GraphAlgorithmContext(new SimulatedAnneling(0.5, 5000, 100, 0.7, 0.9999, "ABW", "SWAP"));
 		//alg.startAlgorithm(graph);
 		
-		alg = new GraphAlgorithmContext(new AgentAlgorithm(2*graph.getNodeSize(), 1000, "ABW", 0.1, 0.3));
+		alg = new GraphAlgorithmContext(new AgentAlgorithm(graph.getNodeSize(), 100, "MF", 0.01, 0.3));
 		alg.startAlgorithm(graph);
 
 
@@ -257,21 +308,6 @@ public class Main {
 		//System.out.println(graph.getNodeSize());
 		//System.out.println(graph.getBridgeSize());
 		
-		/*
-		List<Pair<Double, GreedyDataNode>> list = NodeOrder.generateData(graph, 2000, 0.1);
-		
-		GreedyStatOutput out = new GreedyStatOutput();
-		
-		try {
-			out.saveStatistics(list, "/home/dino/Desktop/stat.txt");
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (UnsupportedEncodingException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		*/
 		
 		//alg = new GraphAlgorithmContext(new Greedy("SDO", "ABW", 1));
 		//alg.startAlgorithm(graph);

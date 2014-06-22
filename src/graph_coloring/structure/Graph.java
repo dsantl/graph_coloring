@@ -1,14 +1,10 @@
 package graph_coloring.structure;
 
 import graph_coloring.color_selector.ColorSelector;
-import graph_coloring.common.Pair;
 import graph_coloring.order.OrderMethod;
-import graph_coloring.structure.weight_graph.WeightNode;
-import graph_coloring.structure.weight_graph.ericsson_graph.EricssonGraph;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -198,5 +194,10 @@ public class Graph implements IGraph{
 	@Override
 	public int getNodeCollision(int index) {
 		return this.getNode(index).getCollision();
+	}
+
+	@Override
+	public int getNodeColorCollsision(int index, int color) {
+		return this.getNode(index).getCollision(color);
 	}
 }
